@@ -3,4 +3,7 @@
     <string name="hello">Hello World, WAKiMailActivity!</string>
     <string name="app_name">WAKiMail</string>
     <string name="app_description">Read your e-mails from the WAK platform on your Android device.</string>
+    <string name="title_login">Login</string>
+    <string name="login_email_hint">E-Mail Address</string>
+    <string name="login_password_hint">Password</string>
 </resources>
