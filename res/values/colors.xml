@@ -6,9 +6,9 @@
     <color name="link_color">#ff236ed8</color>
     <color name="gray_color">#ff888888</color>
     <color name="clear">#00000000</color>
-    <color name="nav_btn_text">#ff1f1f1f</color>
     <color name="action_bar">#fff4f4f4</color>
     <color name="button_text_disabled">#ff858585</color>
     <color name="soft_black">#ff333333</color>
+    <color name="solid_white">#ffffffff</color>
     
 </resources>
