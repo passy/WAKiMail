@@ -5,7 +5,7 @@
     <uses-sdk android:minSdkVersion="10" />
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:description="@string/app_description">
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:description="@string/app_description" android:theme="@style/Theme">
         <activity android:label="@string/app_name" android:name=".ui.WAKiMailActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
