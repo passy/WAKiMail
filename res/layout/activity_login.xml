@@ -7,9 +7,6 @@
 		android:id="@+id/navbar" style="?attr/navbarStyle">
 		<TextView android:id="@+id/title" android:text="@string/login_signin"
 			style="@style/NavbarTitle.Text" />
-		<Button android:id="@+id/title_button_3" android:text="Test"
-			android:layout_alignParentRight="true"
-			style="@style/NavbarTextBtn.Dark" />
 	</net.rdrei.android.wakimail.widget.Navbar>
 
 	<include layout="@layout/partial_login_form" />
