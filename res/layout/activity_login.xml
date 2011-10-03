@@ -15,11 +15,11 @@
 		<Button android:enabled="false" android:id="@+id/login_login_btn"
 			android:layout_width="match_parent" android:layout_height="wrap_content"
 			android:layout_marginRight="3dp" android:layout_weight="0.5"
-			android:text="@string/login_cancel" style="@style/Button" />
+			android:text="@string/login_signin" style="@style/Button" />
 		<Button android:id="@+id/login_cancel_btn"
 			android:layout_width="match_parent" android:layout_height="wrap_content"
 			android:layout_marginLeft="3dp" android:layout_weight="0.5"
-			android:text="@string/login_signin" style="@style/Button" />
+			android:text="@string/login_cancel" style="@style/Button" />
 	</LinearLayout>
 
 </LinearLayout>
