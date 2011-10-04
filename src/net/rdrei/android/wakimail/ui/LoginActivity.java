@@ -1,15 +1,16 @@
 package net.rdrei.android.wakimail.ui;
+import net.rdrei.android.wakimail.R;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
-import net.rdrei.android.wakimail.R;
-import android.app.Activity;
+import roboguice.util.Ln;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class LoginActivity extends RoboActivity  {
+public class LoginActivity extends RoboActivity {
 	
 	@InjectView(R.id.login_login_btn)
 	private Button signInButton;
@@ -56,5 +57,14 @@ public class LoginActivity extends RoboActivity  {
         
         this.emailEdit.addTextChangedListener(watcher);
         this.passwordEdit.addTextChangedListener(watcher);
+    }
+    
+    public void onSubmit(View v) {
+    	Ln.d("onSubmit says hello!");
+    }
+    
+    public void onCancel(View v) {
+    	Ln.d("Finishing Login activity.");
+    	this.finish();
     }
 }
