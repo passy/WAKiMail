@@ -3,6 +3,7 @@ import net.rdrei.android.wakimail.R;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -61,6 +62,8 @@ public class LoginActivity extends RoboActivity {
     
     public void onSubmit(View v) {
     	Ln.d("onSubmit says hello!");
+    	CharSequence message = getText(R.string.login_signing_in);
+    	ProgressDialog dialog = ProgressDialog.show(this, "", message);
     }
     
     public void onCancel(View v) {
