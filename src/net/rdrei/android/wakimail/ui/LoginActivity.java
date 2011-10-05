@@ -2,7 +2,9 @@ package net.rdrei.android.wakimail.ui;
 import java.io.IOException;
 
 import net.rdrei.android.wakimail.R;
+import net.rdrei.android.wakimail.task.LoginTask;
 import net.rdrei.android.wakimail.wak.LoginManager;
+import net.rdrei.android.wakimail.wak.User;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
@@ -64,12 +66,7 @@ public class LoginActivity extends RoboActivity {
     }
     
     public void onSubmit(View v) {
-    	CharSequence message = getText(R.string.login_signing_in);
-    	ProgressDialog dialog = ProgressDialog.show(this, "", message);
-    	
     	this.login();
-    	
-    	dialog.dismiss();
     }
     
     public void onCancel(View v) {
@@ -82,11 +79,9 @@ public class LoginActivity extends RoboActivity {
     	String password = this.passwordEdit.getText().toString();
     	
     	LoginManager manager = new LoginManager(email, password);
-    	try {
-    		Ln.d("Starting login operation.");
-			manager.login();
-		} catch (IOException e) {
-			Ln.w(e, "raised during login.");
-		}
+		Ln.d("Starting login operation.");
+		
+		LoginTask loginTask = new LoginTask(manager);
+		loginTask.execute();
     }
 }

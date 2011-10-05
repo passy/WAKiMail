@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, WAKiMailActivity!</string>
-    <string name="app_name">WAKiMail</string>
-    <string name="app_description">Read your e-mails from the WAK platform on your Android device.</string>
-    <string name="title_login">Login</string>
-    <string name="login_email_hint">E-Mail Address</string>
-    <string name="login_password_hint">Password</string>
-    <string name="dot">•</string>
-    
-    <string name="login_password">Password</string>
-    <string name="login_email">E-Mail Address</string>
-    <string name="login_signin">Sign In</string>
-    <string name="login_signing_in">Signing in …</string>
-    <string name="login_cancel">Cancel</string>
+	<string name="hello">Hello World, WAKiMailActivity!</string>
+	<string name="app_name">WAKiMail</string>
+	<string name="app_description">Read your e-mails from the WAK platform on your
+		Android device.</string>
+	<string name="title_login">Login</string>
+	<string name="login_email_hint">E-Mail Address</string>
+	<string name="login_password_hint">Password</string>
+	<string name="dot">•</string>
+
+	<string name="login_password">Password</string>
+	<string name="login_email">E-Mail Address</string>
+	<string name="login_signin">Sign In</string>
+	<string name="login_signing_in">Signing in …</string>
+	<string name="login_cancel">Cancel</string>
+	<string name="login_error">Woops, something went wrong during the login: {0}</string>
 </resources>
