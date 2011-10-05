@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -35,26 +35,27 @@ public class LoginManager {
 		
 		BufferedReader bufferedReader = new BufferedReader(
 				new InputStreamReader(stream), 2 << 11);
-		StringBuilder content = new StringBuilder();
+		
 		String line;
+		String challenge = "not found";
 		
 		try {
 			// XXX: Refactor!
 			do {
 				line = bufferedReader.readLine();
 				if (line != null) {
-					String challange = this.extractChallange(line);
-					if (challange != null) {
+					challenge = this.extractChallange(line);
+					if (challenge.length() > 0) {
 						break;
 					}
 				}
-			} while(line != null);
+			} while (line != null);
 	 	} finally {
 			bufferedReader.close();
 	 		connection.disconnect();
 	 	}
 		
-		Ln.d("Response text: " + content.toString());
+		Ln.d("Found the challenge: " + challenge);
 		
 		User dummy = new User("test", "test");
 		
@@ -62,6 +63,14 @@ public class LoginManager {
 	}
 	
 	private String extractChallange(String line) {
-		Pattern pattern = new Pattern.compile();
+		Pattern pattern = Pattern.compile("<input type=\"hidden\" " +
+				"name=\"challenge\" value=\"([a-z0-9]+)\">");
+		Matcher matcher = pattern.matcher(line);
+		
+		while (matcher.find()) {
+			return matcher.group(1);
+		}
+		
+		return "";
 	}
 }
