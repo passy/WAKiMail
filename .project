@@ -3,6 +3,7 @@
 	<name>WAKiMail</name>
 	<comment></comment>
 	<projects>
+		<project>WAKiMailTest</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
