@@ -19,6 +19,14 @@ public class LoginManager {
 	
 	private final String URL_BASE = "https://www.wak-sh.de/";
 	
+	public class ChallengeException extends Exception {
+		private static final long serialVersionUID = 1L;
+
+		public ChallengeException(String detailMessage) {
+			super(detailMessage);
+		}
+	}
+	
 	public LoginManager(String email, String password) {
 		this.email = email;
 		this.password = password;
@@ -29,7 +37,7 @@ public class LoginManager {
 		return (HttpsURLConnection) url.openConnection();
 	}
 	
-	public User login() throws IOException {
+	public User login() throws IOException, ChallengeException {
 		HttpsURLConnection connection = this.buildConnection("30.html");
 		InputStream stream = connection.getInputStream();
 		
@@ -37,19 +45,10 @@ public class LoginManager {
 				new InputStreamReader(stream), 2 << 11);
 		
 		String line;
-		String challenge = "not found";
+		String challenge = null;
 		
 		try {
-			// XXX: Refactor!
-			do {
-				line = bufferedReader.readLine();
-				if (line != null) {
-					challenge = this.extractChallange(line);
-					if (challenge.length() > 0) {
-						break;
-					}
-				}
-			} while (line != null);
+			challenge = readChallenge(bufferedReader);
 	 	} finally {
 			bufferedReader.close();
 	 		connection.disconnect();
@@ -61,8 +60,33 @@ public class LoginManager {
 		
 		return dummy;
 	}
+
+	/**
+	 * Extract the challenge value from the response.
+	 * @param bufferedReader
+	 * @return String
+	 * @throws IOException 
+	 */
+	private String readChallenge(BufferedReader bufferedReader)
+			throws IOException, ChallengeException {
+		
+		String line, challenge;
+		
+		do {
+			line = bufferedReader.readLine();
+			if (line != null) {
+				challenge = this.extractChallengeFromLine(line);
+				if (challenge.length() > 0) {
+					return challenge;
+				}
+			}
+		} while (line != null);
+		
+		throw new ChallengeException("Challenge not found in page. " +
+				"Are you getting pay-walled?");
+	}
 	
-	private String extractChallange(String line) {
+	private String extractChallengeFromLine(String line) {
 		Pattern pattern = Pattern.compile("<input type=\"hidden\" " +
 				"name=\"challenge\" value=\"([a-z0-9]+)\">");
 		Matcher matcher = pattern.matcher(line);

@@ -25,7 +25,7 @@ public class LoginTask extends RdreiAsyncTask<User> {
 	}
 	
 	@Override
-	public User call() throws IOException {
+	public User call() throws IOException, LoginManager.ChallengeException {
 		return this.manager.login();
 	}
 	
