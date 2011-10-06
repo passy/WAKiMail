@@ -1,6 +1,7 @@
 package net.rdrei.android.wakimail.task;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.wak.LoginManager;
@@ -25,8 +26,12 @@ public class LoginTask extends RdreiAsyncTask<User> {
 	}
 	
 	@Override
-	public User call() throws IOException, LoginManager.ChallengeException {
-		return this.manager.login();
+	public User call() throws IOException,
+		LoginManager.ChallengeException, NoSuchAlgorithmException {
+		String challenge = this.manager.retrieveChallenge();
+		// Would be a good point to push back some progress information to the
+		// UI thread. This is, however, not supported yet by this interface.
+		return this.manager.login(challenge);
 	}
 	
 	@Override

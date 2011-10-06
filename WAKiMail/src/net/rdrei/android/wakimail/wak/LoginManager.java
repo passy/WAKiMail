@@ -4,7 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,14 +41,13 @@ public class LoginManager {
 		return (HttpsURLConnection) url.openConnection();
 	}
 	
-	public User login() throws IOException, ChallengeException {
+	public String retrieveChallenge() throws IOException, ChallengeException {
 		HttpsURLConnection connection = this.buildConnection("30.html");
 		InputStream stream = connection.getInputStream();
 		
 		BufferedReader bufferedReader = new BufferedReader(
 				new InputStreamReader(stream), 2 << 11);
 		
-		String line;
 		String challenge = null;
 		
 		try {
@@ -55,10 +58,63 @@ public class LoginManager {
 	 	}
 		
 		Ln.d("Found the challenge: " + challenge);
+		// This cannot be null, because this would have raised an exception
+		// until then.
+		return challenge;
+	}
+	
+	/**
+	 * In order to retrieve the current challenge, you got to call the
+	 * retrieveChallenge() methode first.
+	 * 
+	 * @param challenge
+	 * @return
+	 * @throws NoSuchAlgorithmException 
+	 * @throws IOException 
+	 */
+	public User login(String challenge) throws NoSuchAlgorithmException,
+		IOException {
 		
-		User dummy = new User("test", "test");
+		String passphrase = this.generatePassphrase(challenge);
+		Ln.d("Passphrase: " + passphrase);
 		
-		return dummy;
+		HttpsURLConnection connection = this.buildConnection(
+				"community-login.html");
+		// Setting method to POST per default.
+		connection.setDoOutput(true);
+		
+		byte[] params = "just?an=example".getBytes();
+		
+		connection.setFixedLengthStreamingMode(params.length);
+		PrintWriter out = new PrintWriter(connection.getOutputStream());
+		out.print(params);
+		out.close();
+		
+		BufferedReader bufferedReader = new BufferedReader(
+				new InputStreamReader(connection.getInputStream()), 2 << 11);
+		
+		// Dummy user.
+		return new User("test", "test");
+	}
+	
+	/**
+	 * Generates the passphrase based on password and current challenge.
+	 * @return
+	 * @throws NoSuchAlgorithmException 
+	 */
+	private String generatePassphrase(String challenge) 
+			throws NoSuchAlgorithmException {
+		MessageDigest phraseMD5 = MessageDigest.getInstance("MD5");
+		// Yeah, really. Security by obscurity at it's finest. Unfortunately
+		// so easy to reverse-engineer.
+		MessageDigest passwordMD5 = MessageDigest.getInstance("MD5");
+		
+		byte[] passwordHash = passwordMD5.digest(this.password.getBytes());
+		phraseMD5.update((this.email + ":").getBytes());
+		phraseMD5.update(passwordHash);
+		phraseMD5.update(":".getBytes());
+		phraseMD5.update(challenge.getBytes());
+		return phraseMD5.digest().toString();
 	}
 
 	/**
