@@ -27,7 +27,9 @@ public class LoginTask extends RdreiAsyncTask<User> {
 	
 	@Override
 	public User call() throws IOException,
-		LoginManager.ChallengeException, NoSuchAlgorithmException {
+		LoginManager.ChallengeException, LoginManager.LoginException,
+		NoSuchAlgorithmException {
+		
 		String challenge = this.manager.retrieveChallenge();
 		// Would be a good point to push back some progress information to the
 		// UI thread. This is, however, not supported yet by this interface.
@@ -50,7 +52,9 @@ public class LoginTask extends RdreiAsyncTask<User> {
 		
 		String errorMessage = this.formatResourceString(R.string.login_error,
 				err.getMessage());
-		Toast.makeText(this.context, errorMessage, Toast.LENGTH_LONG);
+		Ln.d("Error message: " + errorMessage);
+		Toast toast = Toast.makeText(this.context, errorMessage, Toast.LENGTH_LONG);
+		toast.show();
 	}
 	
 	/**

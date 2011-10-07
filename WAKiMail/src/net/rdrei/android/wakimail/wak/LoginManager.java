@@ -4,11 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Scanner;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +29,7 @@ public class LoginManager {
 	private String password;
 	
 	private final String URL_BASE = "https://www.wak-sh.de/";
+	private final String URL_ENCODING = "UTF8";
 	
 	public class ChallengeException extends Exception {
 		private static final long serialVersionUID = 1L;
@@ -29,6 +37,15 @@ public class LoginManager {
 		public ChallengeException(String detailMessage) {
 			super(detailMessage);
 		}
+	}
+	
+	public class LoginException extends Exception {
+		private static final long serialVersionUID = 1L;
+
+		public LoginException(String detailMessage) {
+			super(detailMessage);
+		}
+		
 	}
 	
 	public LoginManager(String email, String password) {
@@ -73,7 +90,7 @@ public class LoginManager {
 	 * @throws IOException 
 	 */
 	public User login(String challenge) throws NoSuchAlgorithmException,
-		IOException {
+		IOException, LoginException {
 		
 		String passphrase = this.generatePassphrase(challenge);
 		Ln.d("Passphrase: " + passphrase);
@@ -82,21 +99,86 @@ public class LoginManager {
 				"community-login.html");
 		// Setting method to POST per default.
 		connection.setDoOutput(true);
+		connection.setRequestMethod("POST");
 		
-		byte[] params = "just?an=example".getBytes();
+		byte[] params = this.getLoginPostParameters(passphrase, challenge);
+		Ln.d("Sending POST params for login " + new String(params));
 		
 		connection.setFixedLengthStreamingMode(params.length);
-		PrintWriter out = new PrintWriter(connection.getOutputStream());
-		out.print(params);
+		OutputStream out = connection.getOutputStream();
+		Map<String, List<String>> headerFields = connection.getHeaderFields();
+		out.write(params);
 		out.close();
 		
 		BufferedReader bufferedReader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream()), 2 << 11);
 		
-		// Dummy user.
-		return new User("test", "test");
+		return this.readUserData(bufferedReader);
 	}
 	
+	private User readUserData(BufferedReader bufferedReader)
+			throws LoginException, IOException {
+		
+		String line;
+		String debug = "";
+		
+		do {
+			line = bufferedReader.readLine();
+			if (line != null) {
+				if (line.indexOf("<h3>Anmeldefehler</h3>") >= 0) {
+					throw new LoginException("Invalid email/password " +
+							"combination!");
+				}
+				debug += line + "\n";
+			}
+		} while (line != null);
+		
+		return null;
+	}
+
+	/**
+	 * Generates the POST parameters required for submitting the login form.
+	 * @param passphrase
+	 * @return
+	 * @throws UnsupportedEncodingException 
+	 */
+	private byte[] getLoginPostParameters(String passphrase,
+			String challenge) throws UnsupportedEncodingException {
+		HashMap<String, String> values = new HashMap<String, String>();
+		
+		values.put("user", this.email);
+		values.put("pass", passphrase);
+		values.put("submit", "Anmelden");
+		values.put("logintype", "login");
+		values.put("pid", "3");
+		values.put("redirect_url", "");
+		values.put("challenge", challenge);
+		
+		return this.generatePostParamsFromMap(values);
+	}
+	
+	private byte[] generatePostParamsFromMap(
+			Map<String, String> values)
+			throws UnsupportedEncodingException {
+		
+		Iterable<Entry<String,String>> set = values.entrySet();
+		StringBuilder builder = new StringBuilder();
+		int count = 0;
+		
+		for (Entry<String, String> entry : set) {
+			if (count > 0) {
+				builder.append("&");
+			}
+			builder.append(URLEncoder.encode(entry.getKey(), URL_ENCODING)
+					+ "=");
+			builder.append(URLEncoder.encode(entry.getValue(), URL_ENCODING));
+			
+			count += 1;
+		}
+		
+		return builder.toString().getBytes();
+	}
+
 	/**
 	 * Generates the passphrase based on password and current challenge.
 	 * @return
