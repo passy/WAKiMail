@@ -14,7 +14,6 @@ import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -114,12 +113,28 @@ public class LoginManager {
 		out.write(params);
 		out.close();
 		
-		// XXX: Debugging only!
-		Map<String, List<String>> headerFields = connection.getHeaderFields();
-		BufferedReader bufferedReader = new BufferedReader(
-				new InputStreamReader(connection.getInputStream()), 2 << 11);
+		return handleLoginResponse(connection);
+	}
+
+	private User handleLoginResponse(HttpsURLConnection connection)
+			throws IOException, LoginException {
 		
-		return this.readUserData(bufferedReader);
+		int responseCode = connection.getResponseCode();
+		switch (responseCode) {
+		case 200:
+			// OK
+			BufferedReader bufferedReader = new BufferedReader(
+					new InputStreamReader(
+							connection.getInputStream()), 2 << 11);
+			
+			return this.readUserData(bufferedReader);
+		case 302:
+			throw new LoginException("Your account was banned for an hour.");
+		default:
+			Ln.e("Login failed with code " + responseCode);
+			throw new LoginException("The login failed for an " +
+					" unknown reason.");
+		}
 	}
 	
 	private User readUserData(BufferedReader bufferedReader)
