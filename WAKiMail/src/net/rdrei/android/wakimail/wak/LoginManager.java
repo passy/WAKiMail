@@ -5,13 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ public class LoginManager {
 	
 	private final String URL_BASE = "https://www.wak-sh.de/";
 	private final String URL_ENCODING = "UTF8";
+	private CookieManager cookieManager;
 	
 	public class ChallengeException extends Exception {
 		private static final long serialVersionUID = 1L;
@@ -51,6 +53,9 @@ public class LoginManager {
 	public LoginManager(String email, String password) {
 		this.email = email;
 		this.password = password;
+		
+		this.cookieManager = new CookieManager();
+		CookieHandler.setDefault(this.cookieManager);
 	}
 
 	private HttpsURLConnection buildConnection(String path) throws IOException {
@@ -82,7 +87,7 @@ public class LoginManager {
 	
 	/**
 	 * In order to retrieve the current challenge, you got to call the
-	 * retrieveChallenge() methode first.
+	 * retrieveChallenge() method first.
 	 * 
 	 * @param challenge
 	 * @return
@@ -106,10 +111,11 @@ public class LoginManager {
 		
 		connection.setFixedLengthStreamingMode(params.length);
 		OutputStream out = connection.getOutputStream();
-		Map<String, List<String>> headerFields = connection.getHeaderFields();
 		out.write(params);
 		out.close();
 		
+		// XXX: Debugging only!
+		Map<String, List<String>> headerFields = connection.getHeaderFields();
 		BufferedReader bufferedReader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream()), 2 << 11);
 		
@@ -125,7 +131,9 @@ public class LoginManager {
 		do {
 			line = bufferedReader.readLine();
 			if (line != null) {
-				if (line.indexOf("<h3>Anmeldefehler</h3>") >= 0) {
+				// XXX: DEBUG ONLY
+				int index = line.indexOf("<h3>Anmeldefehler</h3>");
+				if (index >= 0) {
 					throw new LoginException("Invalid email/password " +
 							"combination!");
 				}
@@ -196,7 +204,11 @@ public class LoginManager {
 		phraseMD5.update(passwordHash);
 		phraseMD5.update(":".getBytes());
 		phraseMD5.update(challenge.getBytes());
-		return phraseMD5.digest().toString();
+		
+		byte[] digest = phraseMD5.digest();
+		// Convert to a hexadecimal representation of the digest.
+		BigInteger bi = new BigInteger(1, digest);
+	    return String.format("%0" + (digest.length << 1) + "x", bi);
 	}
 
 	/**
