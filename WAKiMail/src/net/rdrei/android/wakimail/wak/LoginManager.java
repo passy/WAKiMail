@@ -14,6 +14,7 @@ import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -146,9 +147,7 @@ public class LoginManager {
 		do {
 			line = bufferedReader.readLine();
 			if (line != null) {
-				// XXX: DEBUG ONLY
-				int index = line.indexOf("<h3>Anmeldefehler</h3>");
-				if (index >= 0) {
+				if (line.indexOf("<h3>Anmeldefehler</h3>") >= 0) {
 					throw new LoginException("Invalid email/password " +
 							"combination!");
 				}
@@ -167,7 +166,10 @@ public class LoginManager {
 	 */
 	private byte[] getLoginPostParameters(String passphrase,
 			String challenge) throws UnsupportedEncodingException {
-		HashMap<String, String> values = new HashMap<String, String>();
+		// The order might matter, so we use the linked hash map 
+		// implementation here.
+		LinkedHashMap<String, String> values = 
+				new LinkedHashMap<String, String>();
 		
 		values.put("user", this.email);
 		values.put("pass", passphrase);
@@ -209,21 +211,10 @@ public class LoginManager {
 	 */
 	private String generatePassphrase(String challenge) 
 			throws NoSuchAlgorithmException {
-		MessageDigest phraseMD5 = MessageDigest.getInstance("MD5");
-		// Yeah, really. Security by obscurity at it's finest. Unfortunately
-		// so easy to reverse-engineer.
-		MessageDigest passwordMD5 = MessageDigest.getInstance("MD5");
 		
-		byte[] passwordHash = passwordMD5.digest(this.password.getBytes());
-		phraseMD5.update((this.email + ":").getBytes());
-		phraseMD5.update(passwordHash);
-		phraseMD5.update(":".getBytes());
-		phraseMD5.update(challenge.getBytes());
-		
-		byte[] digest = phraseMD5.digest();
-		// Convert to a hexadecimal representation of the digest.
-		BigInteger bi = new BigInteger(1, digest);
-	    return String.format("%0" + (digest.length << 1) + "x", bi);
+		PassphraseGenerator passphraseGenerator = new PassphraseGenerator(
+				this.email, this.password, challenge);
+		return passphraseGenerator.generate();
 	}
 
 	/**
