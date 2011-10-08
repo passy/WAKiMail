@@ -15,6 +15,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -130,7 +131,15 @@ public class LoginManager {
 			
 			return this.readUserData(bufferedReader);
 		case 302:
-			throw new LoginException("Your account was banned for an hour.");
+			String location = connection.getHeaderField("Location");
+			if (location == "/index.php?id=90") {
+				// XXX: LOGIN SUCCESSFUL
+			} else {
+				// There could actually be other reasons for this to happen,
+				// but this is the most likely case.
+				throw new LoginException(
+						"Your account was banned for an hour.");
+			}
 		default:
 			Ln.e("Login failed with code " + responseCode);
 			throw new LoginException("The login failed for an " +
