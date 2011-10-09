@@ -6,14 +6,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.net.HttpCookie;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +27,6 @@ import roboguice.util.Ln;
 
 public class LoginManager {
 	
-	private String email;
-	private String password;
-	
-	private final String URL_BASE = "https://www.wak-sh.de/";
-	private final String URL_ENCODING = "UTF8";
-	private CookieManager cookieManager;
-	
 	public class ChallengeException extends Exception {
 		private static final long serialVersionUID = 1L;
 
@@ -41,7 +34,6 @@ public class LoginManager {
 			super(detailMessage);
 		}
 	}
-	
 	public class LoginException extends Exception {
 		private static final long serialVersionUID = 1L;
 
@@ -50,6 +42,21 @@ public class LoginManager {
 		}
 		
 	}
+	
+	private final Pattern challengePattern = Pattern.compile(
+			"<input type=\"hidden\" " +
+			"name=\"challenge\" value=\"([a-z0-9]+)\">");
+	private CookieManager cookieManager;
+	private String email;
+	
+	private String password;
+	private final String URL_BASE = "https://www.wak-sh.de/";
+	
+	private final String URL_ENCODING = "UTF8";
+	
+	private final Pattern userNamePattern = Pattern.compile(
+			"<b>Hallo&nbsp;(.*?)!</b>"
+	);
 	
 	public LoginManager(String email, String password) {
 		this.email = email;
@@ -64,28 +71,142 @@ public class LoginManager {
 		return (HttpsURLConnection) url.openConnection();
 	}
 	
-	public String retrieveChallenge() throws IOException, ChallengeException {
-		HttpsURLConnection connection = this.buildConnection("30.html");
-		InputStream stream = connection.getInputStream();
+	private String extractChallengeFromLine(String line) {
+		Matcher matcher = challengePattern.matcher(line);
 		
-		BufferedReader bufferedReader = new BufferedReader(
-				new InputStreamReader(stream), 2 << 11);
+		while (matcher.find()) {
+			return matcher.group(1);
+		}
 		
-		String challenge = null;
-		
-		try {
-			challenge = readChallenge(bufferedReader);
-	 	} finally {
-			bufferedReader.close();
-	 		connection.disconnect();
-	 	}
-		
-		Ln.d("Found the challenge: " + challenge);
-		// This cannot be null, because this would have raised an exception
-		// until then.
-		return challenge;
+		return "";
 	}
 	
+	private String getSessionId() {
+		List<HttpCookie> cookies = null;
+		try {
+			cookies = this.cookieManager.getCookieStore()
+					.get(new URI(URL_BASE));
+		} catch (URISyntaxException e) {
+			// Constant value, cannot happen at runtime.
+			e.printStackTrace();
+			return null;
+		}
+		
+		for (HttpCookie httpCookie : cookies) {
+			if (httpCookie.getName().equals("fe_typo_user")) {
+				return httpCookie.getValue();
+			}
+		}
+		
+		return null;
+	}
+	
+	private String extractUserName(String line) {
+		Matcher matcher = userNamePattern.matcher(line);
+		
+		String userName = null;
+		while (matcher.find()) {
+			userName = matcher.group(1);
+		}
+		
+		return userName;
+	}
+
+	/**
+	 * Generates the passphrase based on password and current challenge.
+	 * @return
+	 * @throws NoSuchAlgorithmException 
+	 */
+	private String generatePassphrase(String challenge) 
+			throws NoSuchAlgorithmException {
+		
+		PassphraseGenerator passphraseGenerator = new PassphraseGenerator(
+				this.email, this.password, challenge);
+		return passphraseGenerator.generate();
+	}
+	
+	private byte[] generatePostParamsFromMap(
+			Map<String, String> values)
+			throws UnsupportedEncodingException {
+		
+		Iterable<Entry<String,String>> set = values.entrySet();
+		StringBuilder builder = new StringBuilder();
+		int count = 0;
+		
+		for (Entry<String, String> entry : set) {
+			if (count > 0) {
+				builder.append("&");
+			}
+			builder.append(URLEncoder.encode(entry.getKey(), URL_ENCODING)
+					+ "=");
+			builder.append(URLEncoder.encode(entry.getValue(), URL_ENCODING));
+			
+			count += 1;
+		}
+		
+		return builder.toString().getBytes();
+	}
+
+	/**
+	 * Generates the POST parameters required for submitting the login form.
+	 * @param passphrase
+	 * @return
+	 * @throws UnsupportedEncodingException 
+	 */
+	private byte[] getLoginPostParameters(String passphrase,
+			String challenge) throws UnsupportedEncodingException {
+		// The order might matter, so we use the linked hash map 
+		// implementation here.
+		LinkedHashMap<String, String> values = 
+				new LinkedHashMap<String, String>();
+		
+		values.put("user", this.email);
+		values.put("pass", passphrase);
+		values.put("submit", "Anmelden");
+		values.put("logintype", "login");
+		values.put("pid", "3");
+		values.put("redirect_url", "");
+		values.put("challenge", challenge);
+		
+		return this.generatePostParamsFromMap(values);
+	}
+
+	private User handleLoginResponse(HttpsURLConnection connection)
+			throws IOException, LoginException {
+		
+		int responseCode = connection.getResponseCode();
+		switch (responseCode) {
+		case 200:
+			// OK, but means we had an error on login.
+			BufferedReader bufferedReader = new BufferedReader(
+					new InputStreamReader(
+							connection.getInputStream()), 2 << 11);
+			
+			this.raiseLoginErrorFromResponseStream(bufferedReader);
+			break;
+		case 302:
+			// Can mean we reached the maximum login attempts or the login
+			// did actually work.
+			String location = connection.getHeaderField("Location");
+			
+			if (location.equals("/index.php?id=90")) {
+				// The success page.
+				return this.retrieveUserInformation();
+			} else {
+				// There could actually be other reasons for this to happen,
+				// but this is the most likely case.
+				Ln.w("Got a redirect on login to " + location);
+				throw new LoginException(
+						"Your account was banned for an hour.");
+			}
+		}
+		
+		// Cannot happen, just to make the compiler happy.
+		Ln.e("Login failed with code " + responseCode);
+		throw new LoginException("The login failed for an " +
+				" unknown reason.");
+	}
+
 	/**
 	 * In order to retrieve the current challenge, you got to call the
 	 * retrieveChallenge() method first.
@@ -117,41 +238,12 @@ public class LoginManager {
 		
 		return handleLoginResponse(connection);
 	}
-
-	private User handleLoginResponse(HttpsURLConnection connection)
-			throws IOException, LoginException {
-		
-		int responseCode = connection.getResponseCode();
-		switch (responseCode) {
-		case 200:
-			// OK
-			BufferedReader bufferedReader = new BufferedReader(
-					new InputStreamReader(
-							connection.getInputStream()), 2 << 11);
-			
-			return this.readUserData(bufferedReader);
-		case 302:
-			String location = connection.getHeaderField("Location");
-			if (location == "/index.php?id=90") {
-				// XXX: LOGIN SUCCESSFUL
-			} else {
-				// There could actually be other reasons for this to happen,
-				// but this is the most likely case.
-				throw new LoginException(
-						"Your account was banned for an hour.");
-			}
-		default:
-			Ln.e("Login failed with code " + responseCode);
-			throw new LoginException("The login failed for an " +
-					" unknown reason.");
-		}
-	}
 	
-	private User readUserData(BufferedReader bufferedReader)
+	private void raiseLoginErrorFromResponseStream(
+			BufferedReader bufferedReader)
 			throws LoginException, IOException {
 		
 		String line;
-		String debug = "";
 		
 		do {
 			line = bufferedReader.readLine();
@@ -160,70 +252,10 @@ public class LoginManager {
 					throw new LoginException("Invalid email/password " +
 							"combination!");
 				}
-				debug += line + "\n";
 			}
 		} while (line != null);
 		
-		return null;
-	}
-
-	/**
-	 * Generates the POST parameters required for submitting the login form.
-	 * @param passphrase
-	 * @return
-	 * @throws UnsupportedEncodingException 
-	 */
-	private byte[] getLoginPostParameters(String passphrase,
-			String challenge) throws UnsupportedEncodingException {
-		// The order might matter, so we use the linked hash map 
-		// implementation here.
-		LinkedHashMap<String, String> values = 
-				new LinkedHashMap<String, String>();
-		
-		values.put("user", this.email);
-		values.put("pass", passphrase);
-		values.put("submit", "Anmelden");
-		values.put("logintype", "login");
-		values.put("pid", "3");
-		values.put("redirect_url", "");
-		values.put("challenge", challenge);
-		
-		return this.generatePostParamsFromMap(values);
-	}
-	
-	private byte[] generatePostParamsFromMap(
-			Map<String, String> values)
-			throws UnsupportedEncodingException {
-		
-		Iterable<Entry<String,String>> set = values.entrySet();
-		StringBuilder builder = new StringBuilder();
-		int count = 0;
-		
-		for (Entry<String, String> entry : set) {
-			if (count > 0) {
-				builder.append("&");
-			}
-			builder.append(URLEncoder.encode(entry.getKey(), URL_ENCODING)
-					+ "=");
-			builder.append(URLEncoder.encode(entry.getValue(), URL_ENCODING));
-			
-			count += 1;
-		}
-		
-		return builder.toString().getBytes();
-	}
-
-	/**
-	 * Generates the passphrase based on password and current challenge.
-	 * @return
-	 * @throws NoSuchAlgorithmException 
-	 */
-	private String generatePassphrase(String challenge) 
-			throws NoSuchAlgorithmException {
-		
-		PassphraseGenerator passphraseGenerator = new PassphraseGenerator(
-				this.email, this.password, challenge);
-		return passphraseGenerator.generate();
+		throw new LoginException("Unknown login exception.");
 	}
 
 	/**
@@ -250,16 +282,64 @@ public class LoginManager {
 		throw new ChallengeException("Challenge not found in page. " +
 				"Are you getting pay-walled?");
 	}
-	
-	private String extractChallengeFromLine(String line) {
-		Pattern pattern = Pattern.compile("<input type=\"hidden\" " +
-				"name=\"challenge\" value=\"([a-z0-9]+)\">");
-		Matcher matcher = pattern.matcher(line);
+
+	public String retrieveChallenge() throws IOException, ChallengeException {
+		HttpsURLConnection connection = this.buildConnection("30.html");
+		InputStream stream = connection.getInputStream();
 		
-		while (matcher.find()) {
-			return matcher.group(1);
+		BufferedReader bufferedReader = new BufferedReader(
+				new InputStreamReader(stream), 2 << 11);
+		
+		String challenge = null;
+		
+		try {
+			challenge = readChallenge(bufferedReader);
+	 	} finally {
+			bufferedReader.close();
+	 		connection.disconnect();
+	 	}
+		
+		Ln.d("Found the challenge: " + challenge);
+		// This cannot be null, because this would have raised an exception
+		// until then.
+		return challenge;
+	}
+	
+	/**
+	 * After successful login, try to retrieve the user information from the
+	 * main page and verify that the login actually happened or raise an
+	 * exception.
+	 * 
+	 * @return
+	 * @throws LoginException
+	 * @throws IOException 
+	 */
+	private User retrieveUserInformation() throws LoginException,
+			IOException {
+		HttpsURLConnection connection = buildConnection("c_uebersicht.html");		
+		
+		InputStream stream = connection.getInputStream();
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(stream));
+		
+		String userName = null;
+		String line;
+		
+		do {
+			line = reader.readLine();
+			if (line != null) {
+				userName = extractUserName(line);
+				
+				if (userName != null) {
+					break;
+				}
+			}
+		} while (line != null);
+		
+		if (userName == null) {
+			throw new LoginException("Could not retrieve user name.");
 		}
 		
-		return "";
+		return new User(this.email, userName, getSessionId());
 	}
 }

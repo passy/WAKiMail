@@ -16,4 +16,5 @@
 	<string name="login_signing_in">Signing in …</string>
 	<string name="login_cancel">Cancel</string>
 	<string name="login_error">Woops, something went wrong during the login: %s</string>
+	<string name="login_success">Login successful.</string>
 </resources>
