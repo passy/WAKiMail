@@ -7,6 +7,9 @@ import java.util.regex.Pattern;
 
 import net.rdrei.android.wakimail.ui.NetLoader;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
 /**
  * Loads the list of messages from the web.
  * @author pascal
@@ -29,7 +32,8 @@ public class MailListLoader extends NetLoader {
 	
 	private User user;
 
-	public MailListLoader(User user) {
+	@Inject
+	public MailListLoader(@Assisted User user) {
 		super();
 		this.user = user;
 	}

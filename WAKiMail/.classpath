@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="libs/android-support-v4.jar"/>
 	<classpathentry kind="lib" path="libs/guice-2.0-no_aop.jar"/>
 	<classpathentry kind="lib" path="libs/roboguice-1.1.1.jar"/>
+	<classpathentry kind="lib" path="libs/guice-assistedinject-2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -6,13 +6,14 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 public class URLWrapper {
-	
 	@Inject protected URLConnectionFactory urlConnectionFactory;
 	private URL url;
 	
-	public URLWrapper(String spec) throws MalformedURLException {
+	@Inject
+	public URLWrapper(@Assisted String spec) throws MalformedURLException {
 		this.url = new URL(spec);
 	}
 
