@@ -13,6 +13,7 @@ import android.widget.TextView;
 public class DashboardActivity extends RoboActivity {
 	
 	@InjectView(R.id.dashboard_sign_btn) Button signInButton;
+	@InjectView(R.id.dashboard_show_mail_btn) Button showMailButton;
 	@InjectView(R.id.dashboard_hello_text) TextView helloText;
 	
 	static final int LOGIN_REQUEST = 1;
@@ -23,6 +24,7 @@ public class DashboardActivity extends RoboActivity {
 		
 		setContentView(R.layout.activity_dashboard);
 		this.bindSignInButton();
+		this.bindShowMailButton();
 	}
 	
 	@Override
@@ -46,6 +48,18 @@ public class DashboardActivity extends RoboActivity {
 				Intent intent = new Intent(DashboardActivity.this,
 						LoginActivity.class);
 				startActivityForResult(intent, LOGIN_REQUEST);
+			}
+		});
+	}
+	
+	protected void bindShowMailButton() {
+		showMailButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(DashboardActivity.this,
+						MailListView.class);
+				startActivity(intent);
 			}
 		});
 	}
