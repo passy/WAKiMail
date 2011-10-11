@@ -23,6 +23,8 @@ import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import net.rdrei.android.wakimail.Constants;
+
 import roboguice.util.Ln;
 
 public class LoginManager {
@@ -34,6 +36,7 @@ public class LoginManager {
 			super(detailMessage);
 		}
 	}
+	
 	public class LoginException extends Exception {
 		private static final long serialVersionUID = 1L;
 
@@ -46,17 +49,16 @@ public class LoginManager {
 	private final Pattern challengePattern = Pattern.compile(
 			"<input type=\"hidden\" " +
 			"name=\"challenge\" value=\"([a-z0-9]+)\">");
+	private final Pattern userNamePattern = Pattern.compile(
+			"<b>Hallo&nbsp;(.*?)!</b>"
+	);
+	
 	private CookieManager cookieManager;
 	private String email;
 	
 	private String password;
-	private final String URL_BASE = "https://www.wak-sh.de/";
 	
 	private final String URL_ENCODING = "UTF8";
-	
-	private final Pattern userNamePattern = Pattern.compile(
-			"<b>Hallo&nbsp;(.*?)!</b>"
-	);
 	
 	public LoginManager(String email, String password) {
 		this.email = email;
@@ -67,7 +69,7 @@ public class LoginManager {
 	}
 
 	private HttpsURLConnection buildConnection(String path) throws IOException {
-		URL url = new URL(URL_BASE + path);
+		URL url = new URL(Constants.URL_BASE + path);
 		return (HttpsURLConnection) url.openConnection();
 	}
 	
@@ -85,7 +87,7 @@ public class LoginManager {
 		List<HttpCookie> cookies = null;
 		try {
 			cookies = this.cookieManager.getCookieStore()
-					.get(new URI(URL_BASE));
+					.get(new URI(Constants.URL_BASE));
 		} catch (URISyntaxException e) {
 			// Constant value, cannot happen at runtime.
 			e.printStackTrace();
