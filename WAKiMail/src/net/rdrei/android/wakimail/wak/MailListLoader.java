@@ -1,5 +1,8 @@
 package net.rdrei.android.wakimail.wak;
 
+import java.io.IOException;
+import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import net.rdrei.android.wakimail.ui.NetLoader;
@@ -22,10 +25,18 @@ public class MailListLoader extends NetLoader {
 			// Group 3: Sender
 			"<td>([^&]+)&nbsp;</td>");
 	
+	private final String messagesPath = "c_email.html";
+	
 	private User user;
 
 	public MailListLoader(User user) {
 		super();
 		this.user = user;
+	}
+	
+	public ArrayList<String> fetchAllMails() throws IOException {
+		URLConnection connection = this.openWAKConnection(this.messagesPath);
+		
+		return null;
 	}
 }
