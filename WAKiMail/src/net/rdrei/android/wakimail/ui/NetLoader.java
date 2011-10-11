@@ -1,12 +1,9 @@
 package net.rdrei.android.wakimail.ui;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLConnection;
 
 import net.rdrei.android.wakimail.Constants;
-import net.rdrei.android.wakimail.URLConnectionFactory;
 import net.rdrei.android.wakimail.URLWrapper;
 import net.rdrei.android.wakimail.URLWrapperFactory;
 

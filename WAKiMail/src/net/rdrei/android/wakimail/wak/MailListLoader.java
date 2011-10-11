@@ -1,9 +1,10 @@
 package net.rdrei.android.wakimail.wak;
 
 import java.io.IOException;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import net.rdrei.android.wakimail.ui.NetLoader;
 
@@ -39,7 +40,12 @@ public class MailListLoader extends NetLoader {
 	}
 	
 	public ArrayList<String> fetchAllMails() throws IOException {
-		URLConnection connection = this.openWAKConnection(this.messagesPath);
+		HttpsURLConnection connection = 
+				(HttpsURLConnection) this.openWAKConnection(
+						this.messagesPath);
+		connection.getInputStream();
+		
+		// TODO: Continue parsing and stuff here.
 		
 		return null;
 	}
