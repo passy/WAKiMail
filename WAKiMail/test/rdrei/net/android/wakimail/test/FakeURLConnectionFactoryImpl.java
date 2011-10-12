@@ -19,6 +19,8 @@ import net.rdrei.android.wakimail.URLConnectionFactory;
  * @author pascal
  */
 class FakeURLConnection extends HttpsURLConnection {
+	
+	private String streamFixture = "resources/test_nachrichten.html";
 
 	protected FakeURLConnection(URL url) {
 		super(url);
@@ -29,10 +31,18 @@ class FakeURLConnection extends HttpsURLConnection {
 		throw new IOException("Hello!");
 	}
 	
-    public InputStream getInputStream() throws IOException {
-    	// This is were the magic happens.
-    	return this.getClass().getResourceAsStream("/resources/test_nachrichten.html");
-    }
+	public InputStream getInputStream() throws IOException {
+		// This is were the magic happens.
+		InputStream stream = this.getClass().getResourceAsStream(
+				this.streamFixture);
+		
+		if (stream == null) {
+			throw new IOException("Could not find test fixture " + 
+				this.streamFixture);
+		}
+		
+		return stream;
+	}
 
 	@Override
 	public String getCipherSuite() {

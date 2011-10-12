@@ -2,6 +2,7 @@ package net.rdrei.android.wakimail.wak;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -17,17 +18,18 @@ import com.google.inject.assistedinject.Assisted;
  */
 public class MailListLoader extends NetLoader {
 	
-	private final Pattern mailPattern = Pattern.compile(
+	private static final Pattern MAIL_PATTERN = Pattern.compile(
 			// I think it's pretty unbelievable that Java < 7 doesn't
 			// support named groups.
 			// Group 0: Message ID
-			"c_email.html?&action=getviewmessagessingle&msg_uid=([0-9]+)\">" + 
+			"c_email.html\\?&action=getviewmessagessingle" +
+			"&msg_uid=([0-9]+)&folder=[0-9]*\">.*?" + 
 			// Group 1: Title
-			"(.+?)</a></td>" +
+			"(.+?)</a></td>.*?" +
 			// Group 2: Date
-			"<td>(.+?)</td>" +
+			"<td>(.+?)</td>.*?" +
 			// Group 3: Sender
-			"<td>([^&]+)&nbsp;</td>");
+			"<td>([^&]+)&nbsp;</td>", Pattern.MULTILINE | Pattern.DOTALL);
 	
 	private final String messagesPath = "c_email.html";
 	
@@ -39,14 +41,25 @@ public class MailListLoader extends NetLoader {
 		this.user = user;
 	}
 	
-	public ArrayList<String> fetchAllMails() throws IOException {
+	public ArrayList<Mail> fetchAllMails() throws IOException {
+		// TODO: Setting cookie from user here!!
 		HttpsURLConnection connection = 
 				(HttpsURLConnection) this.openWAKConnection(
 						this.messagesPath);
-		connection.getInputStream();
 		
-		// TODO: Continue parsing and stuff here.
+		String response = readResponseIntoString(connection);
+		Matcher matcher = MAIL_PATTERN.matcher(response);
 		
-		return null;
+		ArrayList<Mail> result = new ArrayList<Mail>();
+		while (matcher.find()) {
+			Mail mail = new Mail();
+			mail.setId(matcher.group(0));
+			mail.setTitle(matcher.group(1));
+			mail.setDate(matcher.group(2));
+			mail.setSender(matcher.group(3));
+			result.add(mail);
+		}
+		
+		return result;
 	}
 }
