@@ -1,6 +1,5 @@
 package net.rdrei.android.wakimail.wak;
 
-import java.sql.Date;
 import java.util.Calendar;
 
 /**

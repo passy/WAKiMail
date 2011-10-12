@@ -95,7 +95,7 @@ public class LoginManager {
 		}
 		
 		for (HttpCookie httpCookie : cookies) {
-			if (httpCookie.getName().equals("fe_typo_user")) {
+			if (httpCookie.getName().equals(Constants.SESSION_COOKIE_NAME)) {
 				return httpCookie.getValue();
 			}
 		}

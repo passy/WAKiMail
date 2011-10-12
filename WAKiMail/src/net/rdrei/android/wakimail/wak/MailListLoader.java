@@ -1,13 +1,23 @@
 package net.rdrei.android.wakimail.wak;
 
 import java.io.IOException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookieStore;
+import java.net.HttpCookie;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import net.rdrei.android.wakimail.Constants;
 import net.rdrei.android.wakimail.ui.NetLoader;
+
+import android.location.Address;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -34,13 +44,34 @@ public class MailListLoader extends NetLoader {
 	private final String messagesPath = "c_email.html";
 	
 	private User user;
+	private CookieManager cookieManager;
 
 	@Inject
 	public MailListLoader(@Assisted User user) {
 		super();
 		this.user = user;
+		this.setDefaultCookieManager();
+		this.enableUserCookie();
 	}
 	
+	private void enableUserCookie() {
+		CookieStore store = this.cookieManager.getCookieStore();
+		URI cookieURI = null;
+		try {
+			cookieURI = new URI(Constants.URL_BASE);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return;
+		}
+		List<HttpCookie> cookies = store.get(cookieURI);
+		// The cookie we would like to have in it.
+		HttpCookie cookie = new HttpCookie(Constants.SESSION_COOKIE_NAME,
+				this.user.sessionId);
+		if (!cookies.contains(cookie)) {
+			store.add(cookieURI, cookie);
+		}
+	}
+
 	public ArrayList<Mail> fetchAllMails() throws IOException {
 		// TODO: Setting cookie from user here!!
 		HttpsURLConnection connection = 
@@ -61,5 +92,16 @@ public class MailListLoader extends NetLoader {
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * Injects the user session cookie into the cookie manager.
+	 */
+	private synchronized void setDefaultCookieManager() {
+		this.cookieManager = (CookieManager) CookieHandler.getDefault();
+		if (this.cookieManager == null) {
+			this.cookieManager = new CookieManager();
+			CookieHandler.setDefault(this.cookieManager);
+		}
 	}
 }
