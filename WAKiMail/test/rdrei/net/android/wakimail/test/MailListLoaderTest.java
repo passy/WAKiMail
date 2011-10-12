@@ -32,15 +32,21 @@ public class MailListLoaderTest {
 	}
 	
 	@Test
-	public void injectMeYourPoison() {
+	public void injectMeWithYourPoison() {
 		Assert.assertNotNull(urlConnectionFactory);
 		Assert.assertNotNull(loader);
 		Assert.assertTrue(urlConnectionFactory instanceof FakeURLConnectionFactoryImpl);
 	}
 	
 	@Test
-	public void runAndFail() throws IOException {
+	public void fetchAllMails() throws IOException {
 		ArrayList<Mail> mails = this.loader.fetchAllMails();
-		Assert.assertEquals(50, mails.size());
+		Assert.assertEquals(112, mails.size());
+		
+		// Test a control sample
+		Mail mail = mails.get(5);
+		Assert.assertEquals("392797", mail.getId());
+		Assert.assertEquals("Dirk Marx-Stölting", mail.getSender());
+		Assert.assertEquals("Unterrichtstausch", mail.getTitle());
 	}
 }

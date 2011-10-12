@@ -1,6 +1,7 @@
 package net.rdrei.android.wakimail.wak;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 /**
  * Represents a single mail. The content might need to be asynchronously
@@ -15,7 +16,7 @@ public class Mail {
 	private String sender;
 	private String body;
 	
-	private Date date;
+	private Calendar date;
 
 	public String getId() {
 		return id;
@@ -49,11 +50,11 @@ public class Mail {
 		this.body = body;
 	}
 
-	public Date getDate() {
+	public Calendar getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Calendar date) {
 		this.date = date;
 	}
 	
@@ -63,13 +64,14 @@ public class Mail {
 	 * @param date
 	 */
 	public void setDate(String date) {
-		this.date = new Date(Date.parse(date));
+		this.date = WAKDateParser.parse(date);
 	}
 
 	public Mail() {
 	}
 	
-	public Mail(String id, String title, String sender, String body, Date date) {
+	public Mail(String id, String title, String sender, String body,
+			Calendar date) {
 		super();
 		this.id = id;
 		this.title = title;

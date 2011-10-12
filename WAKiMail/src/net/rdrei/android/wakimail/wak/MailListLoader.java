@@ -53,10 +53,10 @@ public class MailListLoader extends NetLoader {
 		ArrayList<Mail> result = new ArrayList<Mail>();
 		while (matcher.find()) {
 			Mail mail = new Mail();
-			mail.setId(matcher.group(0));
-			mail.setTitle(matcher.group(1));
-			mail.setDate(matcher.group(2));
-			mail.setSender(matcher.group(3));
+			mail.setId(matcher.group(1));
+			mail.setTitle(matcher.group(2));
+			mail.setDate(matcher.group(3));
+			mail.setSender(matcher.group(4));
 			result.add(mail);
 		}
 		
