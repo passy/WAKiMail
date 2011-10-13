@@ -5,7 +5,7 @@ public final class Constants {
 	/**
 	 * URL root used to resolve the urls.
 	 */
-	public static final String URL_BASE = "http://www.wak-sh.de/";
+	public static final String URL_BASE = "https://www.wak-sh.de/";
 	
 	/**
 	 * The cookie name used to store the session ID.

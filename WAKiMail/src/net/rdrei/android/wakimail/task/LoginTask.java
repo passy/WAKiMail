@@ -8,6 +8,7 @@ import net.rdrei.android.wakimail.wak.LoginManager;
 import net.rdrei.android.wakimail.wak.User;
 import roboguice.util.Ln;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,8 +25,8 @@ public class LoginTask extends RdreiAsyncTask<User> {
 
 	private LoginManager manager;
 	
-	public LoginTask(Handler handler, LoginManager manager) {
-		super(handler);
+	public LoginTask(Context context, Handler handler, LoginManager manager) {
+		super(context, handler);
 		
 		this.manager = manager;
 	}

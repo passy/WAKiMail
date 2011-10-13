@@ -12,6 +12,7 @@ import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
@@ -70,7 +71,8 @@ public class LoginManager {
 
 	private HttpsURLConnection buildConnection(String path) throws IOException {
 		URL url = new URL(Constants.URL_BASE + path);
-		return (HttpsURLConnection) url.openConnection();
+		URLConnection connection = url.openConnection();
+		return (HttpsURLConnection) connection;
 	}
 	
 	private String extractChallengeFromLine(String line) {

@@ -5,9 +5,10 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/WAKiMail"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="/home/pascal/Applications/android-sdk-linux_x86/platforms/android-10/android.jar"/>
-	<classpathentry kind="lib" path="libs/robolectric-1.0-RC5-20111004.180732-83-jar-with-dependencies.jar"/>
-	<classpathentry kind="lib" path="/WAKiMail/libs/roboguice-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/WAKiMail/libs/guice-2.0-no_aop.jar"/>
-	<classpathentry kind="lib" path="libs/guice-assistedinject-2.0.jar"/>
+	<classpathentry kind="lib" path="libs/robolectric-1.0-RC5-20111004.180732-83-jar-with-dependencies.jar" sourcepath="/home/pascal/Downloads/robolectric-1.0-RC5-20111011.235525-85-sources.jar"/>
+	<classpathentry kind="lib" path="/WAKiMail/libs/guice-3.0-no_aop.jar"/>
+	<classpathentry kind="lib" path="/WAKiMail/libs/guice-assistedinject-3.0.jar"/>
+	<classpathentry kind="lib" path="/WAKiMail/libs/javax.inject-1.jar"/>
+	<classpathentry kind="lib" path="/WAKiMail/libs/roboguice-1.2-20111006.142313-28.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

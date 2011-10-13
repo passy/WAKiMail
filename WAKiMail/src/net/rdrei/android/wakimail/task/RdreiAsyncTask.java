@@ -2,9 +2,9 @@ package net.rdrei.android.wakimail.task;
 
 import java.util.concurrent.Executor;
 
-import android.os.Handler;
-import roboguice.inject.InjectorProvider;
 import roboguice.util.RoboAsyncTask;
+import android.content.Context;
+import android.os.Handler;
 
 /**
  * Custom async task class to work around a few oddities in RoboGuice.
@@ -13,32 +13,21 @@ import roboguice.util.RoboAsyncTask;
  * @param <ResultT>
  */
 public abstract class RdreiAsyncTask<ResultT> extends RoboAsyncTask<ResultT> {
-	
-	public RdreiAsyncTask() {
-		super();
-		inject();
-	}
-	
-	public RdreiAsyncTask(Executor executor) {
-		super(executor);
-		inject();
+
+	public RdreiAsyncTask(Context context, Executor executor) {
+		super(context, executor);
 	}
 
-	public RdreiAsyncTask(Handler handler, Executor executor) {
-		super(handler, executor);
-		inject();
+	public RdreiAsyncTask(Context context, Handler handler, Executor executor) {
+		super(context, handler, executor);
 	}
 
-	public RdreiAsyncTask(Handler handler) {
-		super(handler);
-		inject();
+	public RdreiAsyncTask(Context context, Handler handler) {
+		super(context, handler);
 	}
-	
-	private void inject() {
-		// Work around RoboGuice bug #93
-		// https://code.google.com/p/roboguice/issues/detail?id=93	
-		((InjectorProvider)contextProvider.get()).getInjector()
-			.injectMembers(this);
+
+	public RdreiAsyncTask(Context context) {
+		super(context);
 	}
 
 	protected String formatResourceString(int resId, java.lang.Object... formatArgs) {

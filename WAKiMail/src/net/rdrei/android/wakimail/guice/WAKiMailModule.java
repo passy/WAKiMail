@@ -1,17 +1,17 @@
 package net.rdrei.android.wakimail.guice;
 
-import com.google.inject.assistedinject.FactoryProvider;
-
 import net.rdrei.android.wakimail.URLConnectionFactory;
 import net.rdrei.android.wakimail.URLConnectionFactoryImpl;
 import net.rdrei.android.wakimail.URLWrapper;
 import net.rdrei.android.wakimail.URLWrapperFactory;
 import net.rdrei.android.wakimail.wak.MailListLoader;
 import net.rdrei.android.wakimail.wak.MailListLoaderFactory;
-import roboguice.config.AbstractAndroidModule;
 import android.app.ProgressDialog;
 
-public class WAKiMailModule extends AbstractAndroidModule {
+import com.google.inject.AbstractModule;
+import com.google.inject.assistedinject.FactoryProvider;
+
+public class WAKiMailModule extends AbstractModule {
 
 	@Override
 	protected void configure() {

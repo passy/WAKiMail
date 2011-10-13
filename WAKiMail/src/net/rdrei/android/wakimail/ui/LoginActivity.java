@@ -79,7 +79,7 @@ public class LoginActivity extends RoboActivity {
 		Ln.d("Starting login operation.");
 		
 		Handler handler = new Handler(new LoginTaskResultHandlerCallback());
-		LoginTask loginTask = new LoginTask(handler, manager);
+		LoginTask loginTask = new LoginTask(this, handler, manager);
 		loginTask.execute();
     }
     

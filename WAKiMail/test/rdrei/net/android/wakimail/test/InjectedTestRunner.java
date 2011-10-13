@@ -2,8 +2,9 @@ package rdrei.net.android.wakimail.test;
 
 import org.junit.runners.model.InitializationError;
 
-import roboguice.application.RoboApplication;
+import roboguice.RoboGuice;
 import roboguice.inject.ContextScope;
+import android.app.Application;
 
 import com.google.inject.Injector;
 import com.xtremelabs.robolectric.Robolectric;
@@ -14,20 +15,15 @@ public class InjectedTestRunner extends RobolectricTestRunner {
     public InjectedTestRunner(Class<?> testClass) throws InitializationError {
         super(testClass);
     }
-    
-    protected RoboApplication getApplication() {
-    	return (RoboApplication) Robolectric.application;
-    }
 
     @Override
     public void prepareTest(Object test) {
-        RoboApplication application = this.getApplication();
-
+        Application application = Robolectric.application;
+        
         // Enter the project context scope in order to access it within
         // the tests.
-        Injector injector = application.getInjector();
-        ContextScope scope = injector.getInstance(ContextScope.class);
-        scope.enter(application);
+        Injector injector = RoboGuice.getInjector(application);
+        injector.getInstance(ContextScope.class).enter(application);
 
         injector.injectMembers(test);
     }

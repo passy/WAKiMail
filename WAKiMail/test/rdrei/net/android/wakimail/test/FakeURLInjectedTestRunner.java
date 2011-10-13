@@ -11,7 +11,7 @@ import net.rdrei.android.wakimail.wak.MailListLoaderFactory;
 
 import org.junit.runners.model.InitializationError;
 
-import roboguice.application.RoboApplication;
+import android.app.Application;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
@@ -39,22 +39,11 @@ public class FakeURLInjectedTestRunner extends InjectedTestRunner {
 	}
 	
 	private class FakeURLApplication extends WAKiMailApplication {
-
-		@Override
-		protected void addApplicationModules(List<Module> modules) {
-			modules.add(new FakeURLModule());
-		}
-		
 	}
 
 	public FakeURLInjectedTestRunner(Class<?> testClass)
 			throws InitializationError {
 		
 		super(testClass);
-	}
-
-	@Override
-	protected RoboApplication getApplication() {
-    	return (RoboApplication) new FakeURLApplication();
 	}
 }
