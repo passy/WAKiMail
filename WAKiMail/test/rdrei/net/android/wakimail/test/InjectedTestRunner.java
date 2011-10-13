@@ -20,11 +20,7 @@ public class InjectedTestRunner extends RobolectricTestRunner {
     public void prepareTest(Object test) {
         Application application = Robolectric.application;
         
-        // Enter the project context scope in order to access it within
-        // the tests.
         Injector injector = RoboGuice.getInjector(application);
-        injector.getInstance(ContextScope.class).enter(application);
-
         injector.injectMembers(test);
     }
 }

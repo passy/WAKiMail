@@ -20,10 +20,11 @@ import net.rdrei.android.wakimail.URLConnectionFactory;
  */
 class FakeURLConnection extends HttpsURLConnection {
 	
-	private String streamFixture = "resources/test_nachrichten.html";
+	private String streamFixture;
 
-	protected FakeURLConnection(URL url) {
+	protected FakeURLConnection(URL url, String streamFixture) {
 		super(url);
+		this.streamFixture = streamFixture;
 	}
 
 	@Override
@@ -72,9 +73,21 @@ class FakeURLConnection extends HttpsURLConnection {
 
 
 public class FakeURLConnectionFactoryImpl implements URLConnectionFactory {
+	
+	String streamFixture;
+	
+	/**
+	 * Creates a new FakeURL factory that returns the given resource fixture
+	 * as stream instead of actually opening a network connection.
+	 * 
+	 * @param streamFixture
+	 */
+	public FakeURLConnectionFactoryImpl(String streamFixture) {
+		this.streamFixture = streamFixture;
+	}
 
 	@Override
 	public URLConnection createInstance(URL url) {
-		return new FakeURLConnection(url);
+		return new FakeURLConnection(url, streamFixture);
 	}
 }
