@@ -3,7 +3,6 @@ package rdrei.net.android.wakimail.test;
 import org.junit.runners.model.InitializationError;
 
 import roboguice.RoboGuice;
-import roboguice.inject.ContextScope;
 import android.app.Application;
 
 import com.google.inject.Injector;

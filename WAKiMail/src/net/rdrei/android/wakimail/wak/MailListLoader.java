@@ -17,8 +17,6 @@ import javax.net.ssl.HttpsURLConnection;
 import net.rdrei.android.wakimail.Constants;
 import net.rdrei.android.wakimail.ui.NetLoader;
 
-import android.location.Address;
-
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
