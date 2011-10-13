@@ -26,7 +26,7 @@ public class WAKDateParser {
 		// else is just as usual.
 		result.set(Calendar.MONTH, Integer.valueOf(datePart[1]) - 1);
 		result.set(Calendar.YEAR, Integer.valueOf(datePart[2]));
-		result.set(Calendar.HOUR, Integer.valueOf(timePart[0]));
+		result.set(Calendar.HOUR_OF_DAY, Integer.valueOf(timePart[0]));
 		result.set(Calendar.MINUTE, Integer.valueOf(timePart[1]));
 		
 		return result;
