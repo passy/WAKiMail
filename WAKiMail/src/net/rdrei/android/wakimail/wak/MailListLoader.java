@@ -41,7 +41,6 @@ public class MailListLoader extends NetLoader {
 	}
 
 	public ArrayList<Mail> fetchAllMails() throws IOException {
-		// TODO: Setting cookie from user here!!
 		HttpsURLConnection connection = 
 				(HttpsURLConnection) this.openWAKConnection(
 						this.messagesPath);

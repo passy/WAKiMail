@@ -75,6 +75,7 @@ class FakeURLConnection extends HttpsURLConnection {
 public class FakeURLConnectionFactoryImpl implements URLConnectionFactory {
 	
 	String streamFixture;
+	protected URL url;
 	
 	/**
 	 * Creates a new FakeURL factory that returns the given resource fixture
@@ -88,6 +89,11 @@ public class FakeURLConnectionFactoryImpl implements URLConnectionFactory {
 
 	@Override
 	public URLConnection createInstance(URL url) {
+		this.url = url;
 		return new FakeURLConnection(url, streamFixture);
+	}
+	
+	public URL getURL() {
+		return url;
 	}
 }
