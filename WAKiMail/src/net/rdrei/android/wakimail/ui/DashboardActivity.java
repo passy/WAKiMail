@@ -17,6 +17,7 @@ public class DashboardActivity extends RoboActivity {
 	@InjectView(R.id.dashboard_hello_text) TextView helloText;
 	
 	static final int LOGIN_REQUEST = 1;
+	private User user;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,8 @@ public class DashboardActivity extends RoboActivity {
 		
 		if (requestCode == LOGIN_REQUEST && resultCode == RoboActivity.RESULT_OK) {
 			Bundle extras = data.getExtras();
-			User user = (User) extras.getSerializable("net.rdrei.android.wakimail.User");
+			this.user = (User) extras.getSerializable(
+					"net.rdrei.android.wakimail.User");
 			
 			helloText.setText("You were logged in. Hello, " + user.getName() + "!");
 			signInButton.setEnabled(false);
@@ -58,7 +60,10 @@ public class DashboardActivity extends RoboActivity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(DashboardActivity.this,
-						MailListView.class);
+						MailListActivity.class);
+				intent.putExtra(MailListActivity.USER_EXTRA,
+						DashboardActivity.this.user);
+				
 				startActivity(intent);
 			}
 		});
