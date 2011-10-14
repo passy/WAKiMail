@@ -133,7 +133,7 @@ public class LoginManager {
 			Map<String, String> values)
 			throws UnsupportedEncodingException {
 		
-		Iterable<Entry<String,String>> set = values.entrySet();
+		Iterable<Entry<String, String>> set = values.entrySet();
 		StringBuilder builder = new StringBuilder();
 		int count = 0;
 		
