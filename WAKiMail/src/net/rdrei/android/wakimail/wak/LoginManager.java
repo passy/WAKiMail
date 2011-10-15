@@ -139,7 +139,7 @@ public class LoginManager {
 		
 		for (Entry<String, String> entry : set) {
 			if (count > 0) {
-				builder.append("&");
+				builder.append('&');
 			}
 			builder.append(URLEncoder.encode(entry.getKey(), URL_ENCODING)
 					+ "=");
