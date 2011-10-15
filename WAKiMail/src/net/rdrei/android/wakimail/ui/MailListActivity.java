@@ -1,27 +1,26 @@
 package net.rdrei.android.wakimail.ui;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import com.google.inject.Inject;
 
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.wak.Mail;
 import net.rdrei.android.wakimail.wak.MailListLoader;
 import net.rdrei.android.wakimail.wak.MailListLoaderFactory;
 import net.rdrei.android.wakimail.wak.User;
+import roboguice.activity.RoboListActivity;
+import roboguice.inject.InjectExtra;
+import roboguice.util.Ln;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.View;
-import roboguice.activity.RoboListActivity;
-import roboguice.inject.InjectExtra;
-import roboguice.util.Ln;
+
+import com.google.inject.Inject;
 
 public class MailListActivity extends RoboListActivity {
 
