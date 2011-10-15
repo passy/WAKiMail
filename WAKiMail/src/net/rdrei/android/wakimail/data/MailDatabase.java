@@ -5,6 +5,7 @@ import roboguice.util.Ln;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -61,5 +62,32 @@ public class MailDatabase extends SQLiteOpenHelper {
 		}
 		
 		return this.getWritableDatabase().insert(DB_TABLE_NAME, null, values);
+	}
+	
+	/**
+	 * Return a cursor to the mails, restricted by the limit and offset.
+	 * @return
+	 */
+	public Cursor getMails(int limit, int offset) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		String[] columns = new String[] {
+			FIELD_ID,
+			FIELD_BODY,
+			FIELD_SENDER,
+			FIELD_DATE,
+			FIELD_BODY,
+			FIELD_EXTERNAL_ID
+		};
+		String limitStr = null;
+		if (limit > -1 && offset > -1) {
+			limitStr = String.format("LIMIT %d OFFSET %d", limit, offset);
+		}
+		return db.query(DB_TABLE_NAME, columns, null, null, null, null,
+				limitStr);
+	}
+	
+	public Cursor getAllMails() {
+		return getMails(-1, -1);
 	}
 }
