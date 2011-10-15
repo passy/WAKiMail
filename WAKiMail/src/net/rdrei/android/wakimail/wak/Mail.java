@@ -62,7 +62,7 @@ public class Mail {
 	 * web site.
 	 * @param date
 	 */
-	public void setDate(String date) {
+	public void setDateFromString(String date) {
 		this.date = WAKDateParser.parse(date);
 	}
 

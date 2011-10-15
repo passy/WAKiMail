@@ -40,7 +40,7 @@ public class NetLoader {
 	}
 	
 	protected void enableUserCookie() {
-		CookieStore store = this.cookieManager.getCookieStore();
+		final CookieStore store = this.cookieManager.getCookieStore();
 		URI cookieURI = null;
 		try {
 			cookieURI = new URI(Constants.URL_BASE);
@@ -48,9 +48,9 @@ public class NetLoader {
 			e.printStackTrace();
 			return;
 		}
-		List<HttpCookie> cookies = store.get(cookieURI);
+		final List<HttpCookie> cookies = store.get(cookieURI);
 		// The cookie we would like to have in it.
-		HttpCookie cookie = new HttpCookie(Constants.SESSION_COOKIE_NAME,
+		final HttpCookie cookie = new HttpCookie(Constants.SESSION_COOKIE_NAME,
 				this.user.getSessionId());
 		if (!cookies.contains(cookie)) {
 			store.add(cookieURI, cookie);
@@ -59,10 +59,10 @@ public class NetLoader {
 	
 	protected String readResponseIntoString(HttpsURLConnection connection)
 			throws IOException {
-		InputStream inputStream = connection.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				inputStream), 2 << 11);
-		StringBuffer buf = new StringBuffer();
+		final InputStream inputStream = connection.getInputStream();
+		final BufferedReader reader = new BufferedReader(
+				new InputStreamReader(inputStream), 2 << 11);
+		final StringBuffer buf = new StringBuffer(2 << 11);
 		
 		String line = reader.readLine();
 		while (line != null) {
@@ -76,11 +76,13 @@ public class NetLoader {
 	/**
 	 * Injects the user session cookie into the cookie manager.
 	 */
-	protected synchronized void setDefaultCookieManager() {
-		this.cookieManager = (CookieManager) CookieHandler.getDefault();
-		if (this.cookieManager == null) {
-			this.cookieManager = new CookieManager();
-			CookieHandler.setDefault(this.cookieManager);
+	protected void setDefaultCookieManager() {
+		synchronized (this) {
+			this.cookieManager = (CookieManager) CookieHandler.getDefault();
+			if (this.cookieManager == null) {
+				this.cookieManager = new CookieManager();
+				CookieHandler.setDefault(this.cookieManager);
+			}
 		}
 	}
 }

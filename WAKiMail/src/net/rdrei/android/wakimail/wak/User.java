@@ -5,9 +5,9 @@ import java.io.Serializable;
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	String email;
-	String name;
-	String sessionId;
+	private String email;
+	private String name;
+	private String sessionId;
 
 	public User(String email, String name, String sessionId) {
 		super();

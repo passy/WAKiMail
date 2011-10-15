@@ -2,6 +2,7 @@ package net.rdrei.android.wakimail.wak;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,7 +32,7 @@ public class MailListLoader extends NetLoader {
 			// Group 3: Sender
 			"<td>([^&]+)&nbsp;</td>", Pattern.MULTILINE | Pattern.DOTALL);
 	
-	private final String messagesPath = "c_email.html";
+	private static final String MESSAGES_PATH = "c_email.html";
 
 	@Inject
 	public MailListLoader(@Assisted User user) {
@@ -40,20 +41,19 @@ public class MailListLoader extends NetLoader {
 		this.enableUserCookie();
 	}
 
-	public ArrayList<Mail> fetchAllMails() throws IOException {
+	public List<Mail> fetchAllMails() throws IOException {
 		HttpsURLConnection connection = 
-				(HttpsURLConnection) this.openWAKConnection(
-						this.messagesPath);
+				(HttpsURLConnection) this.openWAKConnection(MESSAGES_PATH);
 		
 		String response = readResponseIntoString(connection);
 		Matcher matcher = MAIL_PATTERN.matcher(response);
 		
-		ArrayList<Mail> result = new ArrayList<Mail>();
+		List<Mail> result = new ArrayList<Mail>();
 		while (matcher.find()) {
 			Mail mail = new Mail();
 			mail.setId(matcher.group(1));
 			mail.setTitle(matcher.group(2));
-			mail.setDate(matcher.group(3));
+			mail.setDateFromString(matcher.group(3));
 			mail.setSender(matcher.group(4));
 			result.add(mail);
 		}

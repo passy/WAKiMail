@@ -12,11 +12,11 @@ import android.widget.TextView;
 
 public class DashboardActivity extends RoboActivity {
 	
-	@InjectView(R.id.dashboard_sign_btn) Button signInButton;
-	@InjectView(R.id.dashboard_show_mail_btn) Button showMailButton;
-	@InjectView(R.id.dashboard_hello_text) TextView helloText;
+	@InjectView(R.id.dashboard_sign_btn) private Button signInButton;
+	@InjectView(R.id.dashboard_show_mail_btn) private Button showMailButton;
+	@InjectView(R.id.dashboard_hello_text) private TextView helloText;
 	
-	static final int LOGIN_REQUEST = 1;
+	private static final int LOGIN_REQUEST = 1;
 	private User user;
 	
 	@Override
@@ -33,7 +33,7 @@ public class DashboardActivity extends RoboActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		if (requestCode == LOGIN_REQUEST && resultCode == RoboActivity.RESULT_OK) {
-			Bundle extras = data.getExtras();
+			final Bundle extras = data.getExtras();
 			this.user = (User) extras.getSerializable(
 					"net.rdrei.android.wakimail.User");
 			
@@ -47,7 +47,7 @@ public class DashboardActivity extends RoboActivity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(DashboardActivity.this,
+				final Intent intent = new Intent(DashboardActivity.this,
 						LoginActivity.class);
 				startActivityForResult(intent, LOGIN_REQUEST);
 			}
@@ -59,7 +59,7 @@ public class DashboardActivity extends RoboActivity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(DashboardActivity.this,
+				final Intent intent = new Intent(DashboardActivity.this,
 						MailListActivity.class);
 				intent.putExtra(MailListActivity.USER_EXTRA,
 						DashboardActivity.this.user);

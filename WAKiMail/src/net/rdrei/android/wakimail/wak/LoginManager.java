@@ -30,7 +30,7 @@ import roboguice.util.Ln;
 
 public class LoginManager {
 	
-	public class ChallengeException extends Exception {
+	public static class ChallengeException extends Exception {
 		private static final long serialVersionUID = 1L;
 
 		public ChallengeException(String detailMessage) {
@@ -38,7 +38,7 @@ public class LoginManager {
 		}
 	}
 	
-	public class LoginException extends Exception {
+	public static class LoginException extends Exception {
 		private static final long serialVersionUID = 1L;
 
 		public LoginException(String detailMessage) {
@@ -59,7 +59,7 @@ public class LoginManager {
 	
 	private String password;
 	
-	private final String URL_ENCODING = "UTF8";
+	private static final String URL_ENCODING = "UTF8";
 	
 	public LoginManager(String email, String password) {
 		this.email = email;
@@ -134,7 +134,7 @@ public class LoginManager {
 			throws UnsupportedEncodingException {
 		
 		Iterable<Entry<String, String>> set = values.entrySet();
-		StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder(2 << 11);
 		int count = 0;
 		
 		for (Entry<String, String> entry : set) {
@@ -161,7 +161,7 @@ public class LoginManager {
 			String challenge) throws UnsupportedEncodingException {
 		// The order might matter, so we use the linked hash map 
 		// implementation here.
-		LinkedHashMap<String, String> values = 
+		Map<String, String> values = 
 				new LinkedHashMap<String, String>();
 		
 		values.put("user", this.email);
@@ -203,9 +203,10 @@ public class LoginManager {
 				throw new LoginException(
 						"Your account was banned for an hour.");
 			}
+		default:
+			// Throw exception below.
 		}
 		
-		// Cannot happen, just to make the compiler happy.
 		Ln.e("Login failed with code " + responseCode);
 		throw new LoginException("The login failed for an " +
 				" unknown reason.");

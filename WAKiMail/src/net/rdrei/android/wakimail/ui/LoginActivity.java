@@ -24,8 +24,8 @@ public class LoginActivity extends RoboActivity {
 		@Override
 		public boolean handleMessage(Message msg) {
 			if (msg.what == LoginTask.LOGIN_SUCCESSFUL_MESSAGE) {
-				Bundle data = msg.getData();
-				User user = (User) data.getSerializable("user");
+				final Bundle data = msg.getData();
+				final User user = (User) data.getSerializable("user");
 				
 				finishWithUser(user);
 				
@@ -72,14 +72,15 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	private void login() {
-    	String email = this.emailEdit.getText().toString();
-    	String password = this.passwordEdit.getText().toString();
+    	final String email = this.emailEdit.getText().toString();
+    	final String password = this.passwordEdit.getText().toString();
     	
-    	LoginManager manager = new LoginManager(email, password);
+    	final LoginManager manager = new LoginManager(email, password);
 		Ln.d("Starting login operation.");
 		
-		Handler handler = new Handler(new LoginTaskResultHandlerCallback());
-		LoginTask loginTask = new LoginTask(this, handler, manager);
+		final Handler handler = new Handler(
+				new LoginTaskResultHandlerCallback());
+		final LoginTask loginTask = new LoginTask(this, handler, manager);
 		loginTask.execute();
     }
     
@@ -91,7 +92,7 @@ public class LoginActivity extends RoboActivity {
     
     private void finishWithUser(User user) {
     	Ln.d("Finishing login action with user.");
-    	Intent intent = new Intent();
+    	final Intent intent = new Intent();
     	intent.putExtra("net.rdrei.android.wakimail.User", user);
     	this.setResult(RESULT_OK, intent);
     	this.finish();
@@ -103,7 +104,7 @@ public class LoginActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         
-        SignInButtonWatcher watcher = new SignInButtonWatcher();
+        final SignInButtonWatcher watcher = new SignInButtonWatcher();
         
         this.emailEdit.addTextChangedListener(watcher);
         this.passwordEdit.addTextChangedListener(watcher);

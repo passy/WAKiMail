@@ -10,11 +10,11 @@ import java.util.Calendar;
  */
 public class WAKDateParser {
 	public static Calendar parse(String date) {
-		Calendar result = Calendar.getInstance();
+		final Calendar result = Calendar.getInstance();
 		
-		String[] parts = date.split(", ");
-		String[] datePart = parts[0].split("\\.");
-		String[] timePart = parts[1].split(":");
+		final String[] parts = date.split(", ");
+		final String[] datePart = parts[0].split("\\.");
+		final String[] timePart = parts[1].split(":");
 		
 		// Holy freaking shit. I always thought Python's datetime library
 		// got some serious issues, but this is just pure insanity. Who

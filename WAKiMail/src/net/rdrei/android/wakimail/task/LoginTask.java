@@ -19,11 +19,11 @@ import com.google.inject.Inject;
 
 public class LoginTask extends RdreiAsyncTask<User> {
 	
-	@Inject protected ProgressDialog dialog;
+	@Inject private ProgressDialog dialog;
 	
 	public static final int LOGIN_SUCCESSFUL_MESSAGE = 0;
 
-	private LoginManager manager;
+	private final LoginManager manager;
 	
 	public LoginTask(Context context, Handler handler, LoginManager manager) {
 		super(context, handler);
@@ -36,7 +36,7 @@ public class LoginTask extends RdreiAsyncTask<User> {
 		LoginManager.ChallengeException, LoginManager.LoginException,
 		NoSuchAlgorithmException {
 		
-		String challenge = this.manager.retrieveChallenge();
+		final String challenge = this.manager.retrieveChallenge();
 		// Would be a good point to push back some progress information to the
 		// UI thread. This is, however, not supported yet by this interface.
 		return this.manager.login(challenge);
@@ -49,10 +49,12 @@ public class LoginTask extends RdreiAsyncTask<User> {
 	protected void onException(Exception err) {
 		Ln.w(err);
 		
-		String errorMessage = this.formatResourceString(R.string.login_error,
+		final String errorMessage = this.formatResourceString(
+				R.string.login_error,
 				err.getMessage());
 		Ln.d("Error message: " + errorMessage);
-		Toast toast = Toast.makeText(this.context, errorMessage, Toast.LENGTH_LONG);
+		final Toast toast = Toast.makeText(this.context, errorMessage,
+				Toast.LENGTH_LONG);
 		toast.show();
 	}
 	
@@ -77,18 +79,19 @@ public class LoginTask extends RdreiAsyncTask<User> {
 	protected void onSuccess(User user) throws Exception {
 		super.onSuccess(user);
 		
-		String messageStr = this.formatResourceString(R.string.login_success);
+		final String messageStr = this.formatResourceString(
+				R.string.login_success);
 		Ln.d("Login successful for User " + user.toString());
-		Toast toast = Toast.makeText(this.context, messageStr,
+		final Toast toast = Toast.makeText(this.context, messageStr,
 				Toast.LENGTH_SHORT);
 		toast.show();
 		
 		// Tell the parent activity to finish by sending a message containing
 		// the user object back to the UI thread over the handler.
-		Bundle data = new Bundle();
+		final Bundle data = new Bundle();
 		data.putSerializable("user", user);
 		
-		Message message = new Message();
+		final Message message = new Message();
 		message.what = LoginTask.LOGIN_SUCCESSFUL_MESSAGE;
 		message.setData(data);
 		

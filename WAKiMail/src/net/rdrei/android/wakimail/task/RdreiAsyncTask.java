@@ -14,19 +14,19 @@ import android.os.Handler;
  */
 public abstract class RdreiAsyncTask<ResultT> extends RoboAsyncTask<ResultT> {
 
-	public RdreiAsyncTask(Context context, Executor executor) {
+	protected RdreiAsyncTask(Context context, Executor executor) {
 		super(context, executor);
 	}
 
-	public RdreiAsyncTask(Context context, Handler handler, Executor executor) {
+	protected RdreiAsyncTask(Context context, Handler handler, Executor executor) {
 		super(context, handler, executor);
 	}
 
-	public RdreiAsyncTask(Context context, Handler handler) {
+	protected RdreiAsyncTask(Context context, Handler handler) {
 		super(context, handler);
 	}
 
-	public RdreiAsyncTask(Context context) {
+	protected RdreiAsyncTask(Context context) {
 		super(context);
 	}
 

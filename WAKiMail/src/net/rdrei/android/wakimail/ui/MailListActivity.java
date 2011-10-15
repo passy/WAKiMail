@@ -2,6 +2,7 @@ package net.rdrei.android.wakimail.ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.inject.Inject;
 
@@ -26,20 +27,22 @@ public class MailListActivity extends RoboListActivity {
 
 	public static final String USER_EXTRA = "user";
 	
-	@InjectExtra(value=USER_EXTRA) User user;
-	@Inject MailListLoaderFactory mailListLoaderFactory;
+	@InjectExtra(value=USER_EXTRA) private User user;
+	@Inject private MailListLoaderFactory mailListLoaderFactory;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.mail_list_item,
+		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+				this,
+				R.layout.mail_list_item,
 				new String[]{"Hello"});
 		setListAdapter(adapter);
 		
 		this.loadMailsTheStupidWay(adapter);
 		
-		ListView listView = getListView();
+		final ListView listView = getListView();
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -59,8 +62,8 @@ public class MailListActivity extends RoboListActivity {
 	 * @param adapter
 	 */
 	private void loadMailsTheStupidWay(ArrayAdapter<String> adapter) {
-		MailListLoader loader = mailListLoaderFactory.create(this.user);
-		ArrayList<Mail> fetchAllMails = null;
+		final MailListLoader loader = mailListLoaderFactory.create(this.user);
+		List<Mail> fetchAllMails = null;
 		
 		Ln.d("Starting mail download.");
 		try {

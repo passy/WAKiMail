@@ -2,6 +2,7 @@ package rdrei.net.android.wakimail.test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import net.rdrei.android.wakimail.URLConnectionFactory;
 import net.rdrei.android.wakimail.guice.WAKiMailModule;
@@ -70,7 +71,7 @@ public class MailListLoaderTest {
 	
 	@Test
 	public void fetchAllMails() throws IOException {
-		ArrayList<Mail> mails = this.loader.fetchAllMails();
+		List<Mail> mails = this.loader.fetchAllMails();
 		Assert.assertEquals(112, mails.size());
 		
 		// Test a control sample

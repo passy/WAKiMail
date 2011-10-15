@@ -11,9 +11,9 @@ import java.security.NoSuchAlgorithmException;
  *
  */
 public class PassphraseGenerator {
-	private String email;
-	private String password;
-	private String challenge;
+	final private String email;
+	final private String password;
+	final private String challenge;
 	
 	public PassphraseGenerator(String email, String password, String challenge) {
 		super();
@@ -23,22 +23,22 @@ public class PassphraseGenerator {
 	}
 	
 	public String generate() throws NoSuchAlgorithmException {
-		MessageDigest md5 = MessageDigest.getInstance("MD5");
+		final MessageDigest md5 = MessageDigest.getInstance("MD5");
 		
 		String hashedPassword = this.hashToHex(md5.digest(
 				this.password.getBytes()));
 		// Reusing the same instance.
 		md5.reset();
 		
-		String toHash = this.email + ":" + hashedPassword + ":" +
+		final String toHash = this.email + ":" + hashedPassword + ":" +
 			this.challenge;
 		return this.hashToHex(md5.digest(toHash.getBytes()));
 	}
 	
 	private String hashToHex(byte[] hash) {
 		// This way ensures that the zero-padding is correct.
-		BigInteger bi = new BigInteger(1, hash);
-        return String.format("%0" + (hash.length << 1) + "x",
-        		bi);
+		final BigInteger bi = new BigInteger(1, hash);
+		return String.format("%0" + (hash.length << 1) + "x",
+				bi);
 	}
 }
