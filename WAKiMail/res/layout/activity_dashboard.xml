@@ -17,5 +17,5 @@
 		android:text="Show me teh mail!1" style="@style/Button"
 		android:layout_height="wrap_content"
 		android:layout_alignLeft="@id/dashboard_hello_text"
-		android:layout_below="@id/dashboard_hello_text" />
+		android:layout_below="@id/dashboard_hello_text" android:enabled="false"/>
 </RelativeLayout>

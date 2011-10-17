@@ -17,14 +17,6 @@ public class MailDatabase extends SQLiteOpenHelper {
 	private static final int DB_VERSION = 1;
 	
 	private static final String DB_NAME = "wakimail";
-	private static final String DB_TABLE_NAME = "mail";
-	
-	private static final String FIELD_ID = "_id";
-	private static final String FIELD_EXTERNAL_ID = "external_id";
-	private static final String FIELD_TITLE = "title";
-	private static final String FIELD_DATE = "date";
-	private static final String FIELD_SENDER = "sender";
-	private static final String FIELD_BODY = "body";
 	
 	public MailDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
@@ -34,12 +26,12 @@ public class MailDatabase extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		Ln.d("Creating new database.");
 		
-		db.execSQL("CREATE TABLE " + DB_TABLE_NAME + " (" +
-			FIELD_ID + " INTEGER PRIMARY KEY, " +
-			FIELD_EXTERNAL_ID + " TEXT NOT NULL, " +
-			FIELD_DATE + " INTEGER NOT NULL, " +
-			FIELD_SENDER + " TEXT NOT NULL, " +
-			FIELD_BODY + " TEXT" +
+		db.execSQL("CREATE TABLE " + MailTable.TABLE_NAME + " (" +
+			MailTable.Columns._ID + " INTEGER PRIMARY KEY, " +
+			MailTable.Columns.EXTERNAL_ID + " TEXT NOT NULL, " +
+			MailTable.Columns.DATE + " INTEGER NOT NULL, " +
+			MailTable.Columns.SENDER + " TEXT NOT NULL, " +
+			MailTable.Columns.BODY + " TEXT" +
 			")"
 		);
 	}
@@ -51,17 +43,19 @@ public class MailDatabase extends SQLiteOpenHelper {
 	
 	public long insertMail(Mail mail) {
 		ContentValues values = new ContentValues();
-		values.put(FIELD_EXTERNAL_ID, mail.getId());
-		values.put(FIELD_TITLE, mail.getTitle());
-		values.put(FIELD_DATE, mail.getDate().getTimeInMillis());
-		values.put(FIELD_SENDER, mail.getSender());
+		values.put(MailTable.Columns.EXTERNAL_ID, mail.getId());
+		values.put(MailTable.Columns.TITLE, mail.getTitle());
+		values.put(MailTable.Columns.DATE, mail.getDate().getTimeInMillis());
+		values.put(MailTable.Columns.SENDER, mail.getSender());
 		
+		// Optional field
 		String body = mail.getBody();
 		if (body != null) {
-			values.put(FIELD_BODY, body);
+			values.put(MailTable.Columns.BODY, body);
 		}
 		
-		return this.getWritableDatabase().insert(DB_TABLE_NAME, null, values);
+		return this.getWritableDatabase().insert(MailTable.TABLE_NAME,
+				null, values);
 	}
 	
 	/**
@@ -72,18 +66,18 @@ public class MailDatabase extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		
 		String[] columns = new String[] {
-			FIELD_ID,
-			FIELD_BODY,
-			FIELD_SENDER,
-			FIELD_DATE,
-			FIELD_BODY,
-			FIELD_EXTERNAL_ID
+			MailTable.Columns._ID,
+			MailTable.Columns.TITLE,
+			MailTable.Columns.SENDER,
+			MailTable.Columns.DATE,
+			MailTable.Columns.BODY,
+			MailTable.Columns.EXTERNAL_ID
 		};
 		String limitStr = null;
 		if (limit > -1 && offset > -1) {
 			limitStr = String.format("LIMIT %d OFFSET %d", limit, offset);
 		}
-		return db.query(DB_TABLE_NAME, columns, null, null, null, null,
+		return db.query(MailTable.TABLE_NAME, columns, null, null, null, null,
 				limitStr);
 	}
 	

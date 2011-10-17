@@ -34,11 +34,13 @@ public class DashboardActivity extends RoboActivity {
 		
 		if (requestCode == LOGIN_REQUEST && resultCode == RoboActivity.RESULT_OK) {
 			final Bundle extras = data.getExtras();
+			// TODO: Use constant.
 			this.user = (User) extras.getSerializable(
 					"net.rdrei.android.wakimail.User");
 			
 			helloText.setText("You were logged in. Hello, " + user.getName() + "!");
 			signInButton.setEnabled(false);
+			showMailButton.setEnabled(true);
 		}
 	}
 
