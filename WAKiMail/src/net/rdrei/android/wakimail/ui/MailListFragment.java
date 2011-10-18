@@ -4,7 +4,6 @@ import net.rdrei.android.wakimail.R;
 import roboguice.fragment.RoboListFragment;
 import roboguice.inject.InjectResource;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;

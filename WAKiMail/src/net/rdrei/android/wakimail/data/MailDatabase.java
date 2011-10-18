@@ -1,8 +1,5 @@
 package net.rdrei.android.wakimail.data;
 
-import java.util.Calendar;
-import java.util.HashMap;
-
 import net.rdrei.android.wakimail.wak.Mail;
 import roboguice.util.Ln;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
