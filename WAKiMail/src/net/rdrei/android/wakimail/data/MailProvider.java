@@ -1,5 +1,8 @@
 package net.rdrei.android.wakimail.data;
 
+import java.util.HashMap;
+
+import roboguice.util.Ln;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -11,15 +14,28 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 public class MailProvider extends ContentProvider {
-
-	public static final Uri CONTENT_URI = Uri
-			.parse("content://net.rdrei.net.android.wakimail.data.Mail");
-
-	private MailDatabase database;
-	private static final UriMatcher URI_MATCHER;
-
 	private static final int MAILS = 1;
 	private static final int MAIL_ID = 2;
+
+	private static final UriMatcher URI_MATCHER;
+	private static HashMap<String, String> mailProjectionMap;
+	static {
+		URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
+		URI_MATCHER.addURI(MailTable.AUTHORITY, "mails", MAILS);
+		URI_MATCHER.addURI(MailTable.AUTHORITY, "mails/*", MAIL_ID);
+
+		mailProjectionMap = new HashMap<String, String>();
+		mailProjectionMap.put(MailTable.Columns._ID, MailTable.Columns._ID);
+		mailProjectionMap.put(MailTable.Columns.TITLE, MailTable.Columns.TITLE);
+		mailProjectionMap.put(MailTable.Columns.SENDER,
+				MailTable.Columns.SENDER);
+		mailProjectionMap.put(MailTable.Columns.DATE, MailTable.Columns.DATE);
+		mailProjectionMap.put(MailTable.Columns.EXTERNAL_ID,
+				MailTable.Columns.EXTERNAL_ID);
+		mailProjectionMap.put(MailTable.Columns.BODY, MailTable.Columns.BODY);
+	}
+
+	private MailDatabase database;
 
 	@Override
 	public int delete(Uri uri, String where, String[] whereArgs) {
@@ -41,11 +57,11 @@ public class MailProvider extends ContentProvider {
 			count = db.delete(MailTable.TABLE_NAME, MailTable.Columns._ID
 					+ "=?", new String[] { rowId });
 			break;
-			
+
 		default:
 			throw new IllegalArgumentException("Unknown URL " + uri);
 		}
-		
+
 		return count;
 	}
 
@@ -64,6 +80,10 @@ public class MailProvider extends ContentProvider {
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		long rowId;
+		
+		if (URI_MATCHER.match(uri) != MAILS) {
+			throw new IllegalArgumentException("Invalid insert URI " + uri);
+		}
 
 		if (values == null) {
 			throw new NullPointerException("values must not be null!");
@@ -75,6 +95,7 @@ public class MailProvider extends ContentProvider {
 		if (rowId > 0) {
 			Uri newUri = ContentUris.withAppendedId(
 					MailTable.Columns.ALL_MAILS_URI, rowId);
+			getContext().getContentResolver().notifyChange(newUri, null);
 			return newUri;
 		}
 
@@ -83,6 +104,7 @@ public class MailProvider extends ContentProvider {
 
 	@Override
 	public boolean onCreate() {
+		Ln.d("Creating new MailProvider instance.");
 		// Open the database.
 		this.database = new MailDatabase(getContext());
 		return true;
@@ -92,9 +114,12 @@ public class MailProvider extends ContentProvider {
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sort) {
 
+		Ln.d("Received query from URI " + uri);
+
 		// Use the query builder for orm-like access.
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 		queryBuilder.setTables(MailTable.TABLE_NAME);
+		queryBuilder.setProjectionMap(mailProjectionMap);
 		String[] whereArgs = null;
 
 		switch (URI_MATCHER.match(uri)) {
@@ -122,12 +147,11 @@ public class MailProvider extends ContentProvider {
 		}
 
 		SQLiteDatabase db = database.getReadableDatabase();
-		Cursor cursor = queryBuilder.query(db, null, null, whereArgs, null,
-				null, orderBy);
+		Cursor cursor = queryBuilder.query(db, projection, selection,
+				whereArgs, null, null, orderBy);
 
-		// We could change this if we ever considered making changes to the
-		// mails.
-		// cursor.setNotificationUri(getContext().getContentResolver(), uri);
+		// Tell the requester where to watch for changes.
+		cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
 		return cursor;
 	}
@@ -136,12 +160,6 @@ public class MailProvider extends ContentProvider {
 	public int update(Uri arg0, ContentValues arg1, String arg2, String[] arg3) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	static {
-		URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
-		URI_MATCHER.addURI(MailTable.MAILS_AUTHORITY, "mails", MAILS);
-		URI_MATCHER.addURI(MailTable.MAILS_AUTHORITY, "mails/*", MAIL_ID);
 	}
 
 }

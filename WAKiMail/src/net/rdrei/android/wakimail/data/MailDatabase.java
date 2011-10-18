@@ -1,5 +1,8 @@
 package net.rdrei.android.wakimail.data;
 
+import java.util.Calendar;
+import java.util.HashMap;
+
 import net.rdrei.android.wakimail.wak.Mail;
 import roboguice.util.Ln;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -16,7 +19,10 @@ public class MailDatabase extends SQLiteOpenHelper {
 	 */
 	private static final int DB_VERSION = 1;
 	
-	private static final String DB_NAME = "wakimail";
+	/**
+	 * Name the database is saved as.
+	 */
+	private static final String DB_NAME = "wakimail.db";
 	
 	public MailDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
@@ -30,6 +36,7 @@ public class MailDatabase extends SQLiteOpenHelper {
 			MailTable.Columns._ID + " INTEGER PRIMARY KEY, " +
 			MailTable.Columns.EXTERNAL_ID + " TEXT NOT NULL, " +
 			MailTable.Columns.DATE + " INTEGER NOT NULL, " +
+			MailTable.Columns.TITLE + " TEXT NOT NULL, " +
 			MailTable.Columns.SENDER + " TEXT NOT NULL, " +
 			MailTable.Columns.BODY + " TEXT" +
 			")"
