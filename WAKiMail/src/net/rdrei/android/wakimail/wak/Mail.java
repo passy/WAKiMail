@@ -2,6 +2,10 @@ package net.rdrei.android.wakimail.wak;
 
 import java.util.Calendar;
 
+import net.rdrei.android.wakimail.data.MailTable;
+
+import android.content.ContentValues;
+
 /**
  * Represents a single mail. The content might need to be asynchronously
  * fetched.
@@ -77,5 +81,17 @@ public class Mail {
 		this.sender = sender;
 		this.body = body;
 		this.date = date;
+	}
+	
+	public ContentValues getValues() {
+		ContentValues values = new ContentValues();
+		
+		values.put(MailTable.Columns.EXTERNAL_ID, this.id);
+		values.put(MailTable.Columns.TITLE, this.title);
+		values.put(MailTable.Columns.SENDER, this.sender);
+		values.put(MailTable.Columns.BODY, this.body);
+		values.put(MailTable.Columns.DATE, this.date.getTimeInMillis());
+		
+		return values;
 	}
 }

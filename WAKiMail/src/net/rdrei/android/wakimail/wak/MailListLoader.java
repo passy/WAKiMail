@@ -30,15 +30,15 @@ public class MailListLoader extends NetLoader {
 			// Group 2: Date
 			"<td>(.+?)</td>.*?" +
 			// Group 3: Sender
-			"<td>([^&]+)&nbsp;</td>", Pattern.MULTILINE | Pattern.DOTALL);
+			"<td>([^&]+)&nbsp;</td>");
 	
 	private static final String MESSAGES_PATH = "c_email.html";
 
 	@Inject
 	public MailListLoader(@Assisted User user) {
 		super(user);
-		this.setDefaultCookieManager();
-		this.enableUserCookie();
+		// this.setDefaultCookieManager();
+		// this.enableUserCookie();
 	}
 
 	public List<Mail> fetchAllMails() throws IOException {
