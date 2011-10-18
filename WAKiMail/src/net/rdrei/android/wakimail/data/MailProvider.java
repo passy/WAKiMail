@@ -94,7 +94,7 @@ public class MailProvider extends ContentProvider {
 
 		if (rowId > 0) {
 			Uri newUri = ContentUris.withAppendedId(
-					MailTable.Columns.ALL_MAILS_URI, rowId);
+					MailTable.ALL_MAILS_URI, rowId);
 			getContext().getContentResolver().notifyChange(newUri, null);
 			return newUri;
 		}
