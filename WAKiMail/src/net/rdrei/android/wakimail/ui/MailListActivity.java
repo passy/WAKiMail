@@ -42,6 +42,8 @@ public class MailListActivity extends RoboListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_mail_list);
+		
 		// TODO: Do it right.
 		this.loadMailsTheStupidWay();
 		
@@ -58,12 +60,12 @@ public class MailListActivity extends RoboListActivity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// When clicked, show a toast with the TextView text
-				Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
+				CharSequence text = ((TextView) view).getText();
+				Ln.d("Showing toast: " + text);
+				Toast.makeText(getApplicationContext(), text,
 					Toast.LENGTH_SHORT).show();
 			}
 		});
-		
-		setContentView(R.layout.activity_mail_list);
 	}
 
 	/**
