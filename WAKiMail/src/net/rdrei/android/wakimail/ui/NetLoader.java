@@ -62,12 +62,12 @@ public class NetLoader {
 		final InputStream inputStream = connection.getInputStream();
 		final BufferedReader reader = new BufferedReader(
 				new InputStreamReader(inputStream), 2 << 11);
-		final StringBuffer buf = new StringBuffer(2 << 11);
+		final StringBuffer buf = new StringBuffer(2 << 12);
 		
-		String line = reader.readLine();
-		while (line != null) {
-			buf.append(line);
-			line = reader.readLine();
+		int c = reader.read();
+		while (c != -1) {
+			buf.append((char) c);
+			c = reader.read();
 		}
 		
 		return buf.toString();

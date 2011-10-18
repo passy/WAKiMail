@@ -30,7 +30,7 @@ public class MailListLoader extends NetLoader {
 			// Group 2: Date
 			"<td>(.+?)</td>.*?" +
 			// Group 3: Sender
-			"<td>([^&]+)&nbsp;</td>");
+			"<td>([^&]+)&nbsp;</td>", Pattern.DOTALL);
 	
 	private static final String MESSAGES_PATH = "c_email.html";
 
