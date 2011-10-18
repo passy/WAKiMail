@@ -1,5 +1,6 @@
 package rdrei.net.android.wakimail.test;
 
+import java.io.IOException;
 import java.net.URL;
 
 import net.rdrei.android.wakimail.Constants;
@@ -57,7 +58,7 @@ public class MailLoaderTest {
 	}
 	
 	@Test
-	public void shouldLoadCorrectMail() {
+	public void shouldLoadCorrectMail() throws IOException {
 		String id = "1234567";
 		MailLoader loader = loaderFactory.create(user, id);
 		
@@ -65,18 +66,18 @@ public class MailLoaderTest {
 		URL url = urlConnectionFactory.getURL();
 		Assert.assertEquals(
 				Constants.URL_BASE +
-				"?action=getviewmessagessingle&msg_uid=" + id,
-				url);
+				"c_email.html?action=getviewmessagessingle&msg_uid=" + id,
+				url.toString());
 	}
 	
 	@Test
-	public void shouldExtractBody() {
+	public void shouldExtractBody() throws IOException {
 		MailLoader loader = loaderFactory.create(user, "123456");
 		String body = loader.load();
 		
 		Assert.assertEquals("Ich würde vorschlagen wir treffen uns nächste " +
 				"Woche Montag (17.10.2011) um 15:15 Uhr vor der Aula und " +
-				"besprechen wie alles Ablaufen soll.<br />",
+				"besprechen wie alles Ablaufen soll.<br>",
 				body.split("\n")[1]);
 	}
 }
