@@ -24,13 +24,13 @@ public class MailListLoader extends NetLoader {
 			// support named groups.
 			// Group 0: Message ID
 			"c_email.html\\?&action=getviewmessagessingle" +
-			"&msg_uid=([0-9]+)&folder=[0-9]*\">.*?" + 
+			"&msg_uid=([0-9]+)&folder=[0-9]*\">" + 
 			// Group 1: Title
-			"(.+?)</a></td>.*?" +
+			"([^<]+)</a></td>[^<]*" +
 			// Group 2: Date
-			"<td>(.+?)</td>.*?" +
+			"<td>(.+?)</td>[^<]*" +
 			// Group 3: Sender
-			"<td>([^&]+)&nbsp;</td>", Pattern.DOTALL);
+			"<td>([^&]+)&nbsp;", Pattern.DOTALL);
 	
 	private static final String MESSAGES_PATH = "c_email.html";
 
