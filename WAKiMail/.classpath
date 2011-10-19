@@ -9,5 +9,5 @@
 	<classpathentry kind="lib" path="libs/roboguice-1.2-20111006.142313-28.jar" sourcepath="/home/pascal/Projects/java/wakimail/WAKiMail/libs/roboguice-1.2-20111006.142313-28-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="libs/javax.inject-1.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
