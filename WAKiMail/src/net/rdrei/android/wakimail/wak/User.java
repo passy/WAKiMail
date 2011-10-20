@@ -6,6 +6,7 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String email;
+	private String password;
 	private String name;
 	private String sessionId;
 
@@ -15,8 +16,10 @@ public class User implements Serializable {
 		this.name = name;
 		this.sessionId = sessionId;
 	}
-
 	
+	public User() {
+	}
+
 	@Override
 	public String toString() {
 		return "User [email=" + email + ", name=" + name + ", sessionId="
@@ -45,6 +48,21 @@ public class User implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+	public boolean hasCredentials() {
+		return this.email != null && this.password != null;
 	}
 
 }

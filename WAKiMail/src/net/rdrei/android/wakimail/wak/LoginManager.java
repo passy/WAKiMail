@@ -68,6 +68,17 @@ public class LoginManager {
 		this.cookieManager = new CookieManager();
 		CookieHandler.setDefault(this.cookieManager);
 	}
+	
+	public LoginManager(User user) {
+		this(user.getEmail(), user.getPassword());
+		
+		// I have no idea in which state the object is after this exception
+		// is thrown. It really shouldn't happen, I guess.
+		if (!user.hasCredentials()) {
+			throw new IllegalArgumentException("Provided user object did not" +
+					" provide credentials!");
+		}
+	}
 
 	private HttpsURLConnection buildConnection(String path) throws IOException {
 		URL url = new URL(Constants.URL_BASE + path);

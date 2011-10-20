@@ -1,7 +1,10 @@
 package net.rdrei.android.wakimail.ui;
+import com.google.inject.Inject;
+
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.task.LoginTask;
 import net.rdrei.android.wakimail.wak.LoginManager;
+import net.rdrei.android.wakimail.wak.SessionManager;
 import net.rdrei.android.wakimail.wak.User;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
@@ -17,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class LoginActivity extends RoboActivity {
+	@Inject private SessionManager sessionManager;
 	
 	private class LoginTaskResultHandlerCallback implements
 			Handler.Callback {
@@ -75,13 +79,8 @@ public class LoginActivity extends RoboActivity {
     	final String email = this.emailEdit.getText().toString();
     	final String password = this.passwordEdit.getText().toString();
     	
-    	final LoginManager manager = new LoginManager(email, password);
-		Ln.d("Starting login operation.");
-		
-		final Handler handler = new Handler(
-				new LoginTaskResultHandlerCallback());
-		final LoginTask loginTask = new LoginTask(this, handler, manager);
-		loginTask.execute();
+    	sessionManager.setUserCredentials(email, password);
+		sessionManager.login(new LoginTaskResultHandlerCallback());
     }
     
     public void onCancel(View v) {
