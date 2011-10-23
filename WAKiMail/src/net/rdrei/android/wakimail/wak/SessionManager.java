@@ -2,11 +2,6 @@ package net.rdrei.android.wakimail.wak;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
-
-import org.apache.http.HttpConnection;
 
 import net.rdrei.android.wakimail.Constants;
 import net.rdrei.android.wakimail.task.LoginTask;
