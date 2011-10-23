@@ -13,8 +13,6 @@ import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.util.List;
 
-import javax.net.ssl.HttpsURLConnection;
-
 import net.rdrei.android.wakimail.Constants;
 import net.rdrei.android.wakimail.URLWrapper;
 import net.rdrei.android.wakimail.URLWrapperFactory;
@@ -57,7 +55,7 @@ public class NetLoader {
 		}
 	}
 	
-	protected String readResponseIntoString(HttpsURLConnection connection)
+	public static String readResponseIntoString(URLConnection connection)
 			throws IOException {
 		final InputStream inputStream = connection.getInputStream();
 		final BufferedReader reader = new BufferedReader(

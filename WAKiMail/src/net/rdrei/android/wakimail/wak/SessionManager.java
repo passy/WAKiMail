@@ -1,8 +1,10 @@
 package net.rdrei.android.wakimail.wak;
 
+import java.net.HttpURLConnection;
+
+import net.rdrei.android.wakimail.Constants;
 import net.rdrei.android.wakimail.task.LoginTask;
 import roboguice.util.Ln;
-
 import android.content.Context;
 import android.os.Handler;
 
@@ -40,5 +42,25 @@ public class SessionManager {
     	
     	task.execute();
     	Ln.d("Login task executed.");
+	}
+	
+	
+	/**
+	 * Check whether a response looks like it would not be part of a valid
+	 * user session. This is indicated by the portal trying to re-set the 
+	 * session cookie again despite it being set already.
+	 * 
+	 * @param connection
+	 * @return boolean indicating whether the session is valid
+	 */
+	public static boolean connectionHasSessionError(
+			HttpURLConnection connection) {
+		String header = connection.getHeaderField("Set-Cookie");
+		
+		if (header != null) {
+			return header.contains(Constants.SESSION_COOKIE_NAME + "=");
+		}
+		
+		return false;
 	}
 }
