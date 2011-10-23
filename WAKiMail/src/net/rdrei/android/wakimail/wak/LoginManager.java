@@ -232,10 +232,15 @@ public class LoginManager {
 	 * @throws NoSuchAlgorithmException 
 	 * @throws IOException 
 	 */
-	public User login(String challenge) throws NoSuchAlgorithmException,
+	public User login(String challenge) throws
 		IOException, LoginException {
 		
-		String passphrase = this.generatePassphrase(challenge);
+		String passphrase = null;
+		try {
+			passphrase = this.generatePassphrase(challenge);
+		} catch (NoSuchAlgorithmException e) {
+			Ln.e(e);
+		}
 		Ln.d("Passphrase: " + passphrase);
 		
 		HttpsURLConnection connection = this.buildConnection(

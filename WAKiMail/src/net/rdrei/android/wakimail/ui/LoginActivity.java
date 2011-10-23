@@ -1,9 +1,6 @@
 package net.rdrei.android.wakimail.ui;
-import com.google.inject.Inject;
-
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.task.LoginTask;
-import net.rdrei.android.wakimail.wak.LoginManager;
 import net.rdrei.android.wakimail.wak.SessionManager;
 import net.rdrei.android.wakimail.wak.User;
 import roboguice.activity.RoboActivity;
@@ -18,6 +15,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.google.inject.Inject;
 
 public class LoginActivity extends RoboActivity {
 	@Inject private SessionManager sessionManager;

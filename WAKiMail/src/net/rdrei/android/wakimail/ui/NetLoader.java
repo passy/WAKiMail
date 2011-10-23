@@ -10,6 +10,7 @@ import java.net.CookieStore;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
@@ -29,12 +30,15 @@ public class NetLoader {
 		super();
 		this.user = user;
 	}
+	
+	protected URLWrapper makeWAKUrl(String path) {
+		return this.urlWrapperFactory.create(
+			Constants.URL_BASE + path
+		);
+	}
 
 	protected URLConnection openWAKConnection(String path) throws IOException {
-		URLWrapper url = this.urlWrapperFactory.create(
-				Constants.URL_BASE + path);
-		
-		return url.openConnection();
+		return this.makeWAKUrl(path).openConnection();
 	}
 	
 	protected void enableUserCookie() {
