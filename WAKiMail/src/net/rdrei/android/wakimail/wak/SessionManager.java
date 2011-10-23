@@ -12,14 +12,10 @@ import roboguice.util.Ln;
 import android.content.Context;
 import android.os.Handler;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 @Singleton
 public class SessionManager {
-	@Inject
-	private Provider<Context> contextProvider;
 	private User user = new User();
 
 	private static final int AUTH_RETRIES = 5;
@@ -37,7 +33,7 @@ public class SessionManager {
 		this.user.setPassword(password);
 	}
 
-	public void login(Handler.Callback callback) {
+	public void login(Context context, Handler.Callback callback) {
 		if (this.user == null || !this.user.hasCredentials()) {
 			throw new NullPointerException("The user credentials have "
 					+ "not been set up properly.");
@@ -46,7 +42,7 @@ public class SessionManager {
 		Ln.d("Starting login operation.");
 		final LoginManager manager = new LoginManager(this.user);
 		final Handler handler = new Handler(callback);
-		final LoginTask task = new LoginTask(contextProvider.get(), handler,
+		final LoginTask task = new LoginTask(context, handler,
 				manager);
 
 		task.execute();

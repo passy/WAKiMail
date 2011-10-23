@@ -9,8 +9,9 @@ import com.google.inject.Inject;
 
 @RunWith(InjectedTestRunner.class)
 public class SessionManagerTest {
-	@Inject private SessionManager sessionManager;
-	
+	@Inject
+	private SessionManager sessionManager;
+
 	@Test
 	public void shouldInitialize() {
 		assert this.sessionManager.getUser() == null;

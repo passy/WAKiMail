@@ -79,7 +79,7 @@ public class LoginActivity extends RoboActivity {
     	final String password = this.passwordEdit.getText().toString();
     	
     	sessionManager.setUserCredentials(email, password);
-		sessionManager.login(new LoginTaskResultHandlerCallback());
+		sessionManager.login(this, new LoginTaskResultHandlerCallback());
     }
     
     public void onCancel(View v) {
