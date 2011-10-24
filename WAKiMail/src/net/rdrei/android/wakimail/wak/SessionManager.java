@@ -2,6 +2,7 @@ package net.rdrei.android.wakimail.wak;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URL;
 
 import net.rdrei.android.wakimail.Constants;
 import net.rdrei.android.wakimail.task.LoginTask;
@@ -42,15 +43,15 @@ public class SessionManager {
 		Ln.d("Starting login operation.");
 		final LoginManager manager = new LoginManager(this.user);
 		final Handler handler = new Handler(callback);
-		final LoginTask task = new LoginTask(context, handler,
-				manager);
+		final LoginTask task = new LoginTask(context, handler, manager);
 
 		task.execute();
 		Ln.d("Login task executed.");
 	}
 
-	private void retrySessionConnect(HttpURLConnection connection, int tryCount)
-			throws LoginException, IOException, ChallengeException {
+	private HttpURLConnection retrySessionConnect(HttpURLConnection connection,
+			int tryCount) throws LoginException, IOException,
+			ChallengeException {
 		if (tryCount >= SessionManager.AUTH_RETRIES) {
 			Ln.w("Too many authentification tries failed, giving up.");
 			throw new LoginManager.LoginException(
@@ -65,9 +66,34 @@ public class SessionManager {
 			final User newUser = manager.login(challenge);
 			this.user.setSessionId(newUser.getSessionId());
 
+			// Open a new connection and copy the required attributes.
+			HttpURLConnection newConnection = SessionManager
+					.copyConnection(connection);
+
 			// Recursively call this method again.
-			this.retrySessionConnect(connection, tryCount + 1);
+			return this.retrySessionConnect(newConnection, tryCount + 1);
 		}
+		
+		return connection;
+	}
+
+	/**
+	 * Copies a pre-defined list of attributes over to to a new URL connection.
+	 * Only works for GET requests right now, obviously.
+	 * 
+	 * @param connection
+	 * @return new {@link HttpURLConnection}
+	 * @throws IOException
+	 */
+	public static HttpURLConnection copyConnection(HttpURLConnection connection)
+			throws IOException {
+		URL url = connection.getURL();
+		HttpURLConnection newConnection = (HttpURLConnection) url
+				.openConnection();
+		newConnection.setDoInput(connection.getDoInput());
+		newConnection.setDoOutput(connection.getDoOutput());
+
+		return newConnection;
 	}
 
 	/**
@@ -85,7 +111,7 @@ public class SessionManager {
 			throws IOException, LoginException, ChallengeException {
 
 		// This might block for as long as it takes to renew the session.
-		this.retrySessionConnect(connection, 0);
+		connection = this.retrySessionConnect(connection, 0);
 		return NetLoader.readResponseIntoString(connection);
 	}
 
