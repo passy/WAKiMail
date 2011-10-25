@@ -28,14 +28,14 @@ public class MailListLoader extends NetLoader {
 	// I think it's pretty unbelievable that Java < 7 doesn't
 	// support named groups.
 	// Group 0: Message ID
-			"c_email.html\\?&action=getviewmessagessingle"
-					+ "&msg_uid=([0-9]+)&folder=[0-9]*\">" +
-					// Group 1: Title
-					"([^<]+)</a></td>[^<]*" +
-					// Group 2: Date
-					"<td>(.+?)</td>[^<]*" +
-					// Group 3: Sender
-					"<td>([^&]+)&nbsp;", Pattern.DOTALL);
+	"c_email.html\\?&action=getviewmessagessingle"
+	+ "&msg_uid=([0-9]+)&folder=[0-9]*\">" +
+	// Group 1: Title
+	"([^<]+)</a></td>[^<]*" +
+	// Group 2: Date
+	"<td>(.+?)</td>[^<]*" +
+	// Group 3: Sender
+	"<td>([^&]+)&nbsp;", Pattern.DOTALL);
 
 	private static final String MESSAGES_PATH = "c_email.html";
 
@@ -49,7 +49,7 @@ public class MailListLoader extends NetLoader {
 		// this.enableUserCookie();
 	}
 
-	public List<Mail> fetchAllMails() throws IOException {
+	public List<Mail> fetchAllMails() throws IOException, LoginException {
 		HttpsURLConnection connection = (HttpsURLConnection) this
 				.openWAKConnection(MESSAGES_PATH);
 
@@ -57,14 +57,10 @@ public class MailListLoader extends NetLoader {
 		try {
 			response = sessionManager
 					.readConnectionWithSessionCheck(connection);
-		} catch (LoginException e) {
-			// TODO Auto-generated catch block
-			Ln.e(e);
-			e.printStackTrace();
 		} catch (ChallengeException e) {
-			// TODO Auto-generated catch block
 			Ln.e(e);
-			e.printStackTrace();
+			// Return an empty list.
+			return new ArrayList<Mail>();
 		}
 		Matcher matcher = MAIL_PATTERN.matcher(response);
 

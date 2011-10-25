@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
+import net.rdrei.android.wakimail.wak.LoginManager.LoginException;
 import net.rdrei.android.wakimail.wak.Mail;
 import net.rdrei.android.wakimail.wak.MailListLoader;
 import net.rdrei.android.wakimail.wak.MailListLoaderFactory;
@@ -81,6 +82,10 @@ public class MailListActivity extends RoboListActivity {
 		try {
 			fetchAllMails = loader.fetchAllMails();
 		} catch (IOException e) {
+			Ln.e(e);
+			e.printStackTrace();
+			return;
+		} catch (LoginException e) {
 			Ln.e(e);
 			e.printStackTrace();
 			return;
