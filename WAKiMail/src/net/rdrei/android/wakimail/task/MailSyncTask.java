@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 /**
  * This task syncs the online mails with the local data store. The
  * {@link SessionManager} is used for authentication. The resulting integer
- * indicates the number of new elements added to the data store and can be used
+ * indicates the number of new elements added to the data store and is used
  * to inform the user and is communicated via the handler to the UI thread.
  * 
  * @author pascal

@@ -1,21 +1,13 @@
 package net.rdrei.android.wakimail.ui;
 
-import java.io.IOException;
-import java.util.List;
-
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.task.MailSyncTask;
-import net.rdrei.android.wakimail.wak.LoginManager.LoginException;
-import net.rdrei.android.wakimail.wak.Mail;
-import net.rdrei.android.wakimail.wak.MailListLoader;
-import net.rdrei.android.wakimail.wak.MailListLoaderFactory;
 import net.rdrei.android.wakimail.wak.User;
 import roboguice.activity.RoboListActivity;
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
-import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,16 +20,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.inject.Inject;
-
 public class MailListActivity extends RoboListActivity {
 
-	@InjectExtra(value = USER_EXTRA)
-	private User user;
-	@InjectView(R.id.refresh_btn)
-	Button refreshButton;
-	@Inject
-	private MailListLoaderFactory mailListLoaderFactory;
+	@InjectExtra(value = USER_EXTRA) private User user;
+	
+	@InjectView(R.id.refresh_btn) Button refreshButton;
 
 	public static final String USER_EXTRA = "user";
 	private static final String[] PROJECTION = { MailTable.Columns._ID,
@@ -65,6 +52,7 @@ public class MailListActivity extends RoboListActivity {
 		setListAdapter(adapter);
 
 		final ListView listView = getListView();
+		// XXX: This is broken right now, but will be replaced anyway.
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -80,44 +68,12 @@ public class MailListActivity extends RoboListActivity {
 
 	private void bindRefreshButton() {
 		refreshButton.setOnClickListener(new OnRefreshClickListener());
-		// TODO: Add a spinner or some stuff like that.
-	}
-
-	/**
-	 * <b>Synchronous</b> way to fetch the mails and put them into the adapter.
-	 * This is obviously only a proof-of-concept solution and must be put into a
-	 * task, service or whatever else.
-	 * 
-	 * @param adapter
-	 */
-	private void loadMailsTheStupidWay() {
-		final MailListLoader loader = mailListLoaderFactory.create(this.user);
-		List<Mail> fetchAllMails = null;
-
-		Ln.d("Starting mail download.");
-		try {
-			fetchAllMails = loader.fetchAllMails();
-		} catch (IOException e) {
-			Ln.e(e);
-			e.printStackTrace();
-			return;
-		} catch (LoginException e) {
-			Ln.e(e);
-			e.printStackTrace();
-			return;
-		}
-
-		Ln.d(String.format("Fetched a total of %d mails.", fetchAllMails.size()));
-
-		ContentResolver resolver = getContentResolver();
-		for (Mail mail : fetchAllMails) {
-			resolver.insert(MailTable.ALL_MAILS_URI, mail.getValues());
-		}
 	}
 
 	private final class OnRefreshClickListener implements View.OnClickListener {
 		public void onClick(View v) {
-			// TODO: Supply handler!
+			// TODO: Supply handler
+			// TODO: Add loading spinner instead of button.
 			MailSyncTask task = new MailSyncTask(MailListActivity.this, null,
 					MailListActivity.this.user);
 			
