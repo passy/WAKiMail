@@ -80,4 +80,24 @@ public class MailListLoaderTest {
 		Assert.assertEquals("Dirk Marx-Stölting", mail.getSender());
 		Assert.assertEquals("Unterrichtstausch", mail.getTitle());
 	}
+	
+	@Test
+	public void fetchMailIterator() throws IOException, LoginException {
+		int count = 0;
+		
+		MailListLoader loader = this.loader;
+		for (Mail mail : loader) {
+			System.out.println("LOL " + count);
+			// Test the same as above to make sure that the APIs are 
+			// equivalent.
+			if (count == 5) {
+				Assert.assertEquals("392797", mail.getId());
+				Assert.assertEquals("Dirk Marx-Stölting", mail.getSender());
+				Assert.assertEquals("Unterrichtstausch", mail.getTitle());
+			}
+			count += 1;
+		}
+		
+		Assert.assertEquals(112, count);
+	}
 }
