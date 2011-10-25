@@ -28,14 +28,14 @@ public class MailListLoader extends NetLoader implements Iterable<Mail> {
 	// I think it's pretty unbelievable that Java < 7 doesn't
 	// support named groups.
 	// Group 0: Message ID
-			"c_email.html\\?&action=getviewmessagessingle"
-					+ "&msg_uid=([0-9]+)&folder=[0-9]*\">" +
-					// Group 1: Title
-					"([^<]+)</a></td>[^<]*" +
-					// Group 2: Date
-					"<td>(.+?)</td>[^<]*" +
-					// Group 3: Sender
-					"<td>([^&]+)&nbsp;", Pattern.DOTALL);
+	"c_email.html\\?&action=getviewmessagessingle"
+	+ "&msg_uid=([0-9]+)&folder=[0-9]*\">" +
+	// Group 1: Title
+	"([^<]+)</a></td>[^<]*" +
+	// Group 2: Date
+	"<td>(.+?)</td>[^<]*" +
+	// Group 3: Sender
+	"<td>([^&]+)&nbsp;", Pattern.DOTALL);
 
 	private static final String MESSAGES_PATH = "c_email.html";
 
