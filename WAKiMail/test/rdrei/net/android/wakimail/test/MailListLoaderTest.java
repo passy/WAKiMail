@@ -87,7 +87,6 @@ public class MailListLoaderTest {
 		
 		MailListLoader loader = this.loader;
 		for (Mail mail : loader) {
-			System.out.println("LOL " + count);
 			// Test the same as above to make sure that the APIs are 
 			// equivalent.
 			if (count == 5) {

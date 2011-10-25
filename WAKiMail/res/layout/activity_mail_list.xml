@@ -1,17 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="match_parent"
-	android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-	<net.rdrei.android.wakimail.widget.Navbar
-		android:id="@+id/navbar" style="?attr/navbarStyle">
-		<TextView android:id="@+id/title" android:text="@string/mail"
-			style="@style/NavbarTitle.Text" />
-		<Button android:id="@+id/button1" android:layout_width="wrap_content"
-			android:text="@string/refresh" android:layout_height="wrap_content"
-			android:layout_alignParentRight="true" style="@style/NavbarTextBtn.Dark"></Button>
-	</net.rdrei.android.wakimail.widget.Navbar>
-	<ListView android:id="@android:id/list"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"></ListView>
+    <net.rdrei.android.wakimail.widget.Navbar
+        android:id="@+id/navbar"
+        style="?attr/navbarStyle" >
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/NavbarTitle.Text"
+            android:text="@string/mail" />
+
+        <Button
+            android:id="@+id/refresh_btn"
+            style="@style/NavbarTextBtn.Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/refresh" >
+        </Button>
+    </net.rdrei.android.wakimail.widget.Navbar>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ListView>
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FF0000"
+        android:text="@string/loading" />
 </LinearLayout>
