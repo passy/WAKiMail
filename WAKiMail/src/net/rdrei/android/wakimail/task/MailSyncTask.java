@@ -28,12 +28,6 @@ import com.google.inject.Inject;
  */
 public class MailSyncTask extends RdreiAsyncTask<Integer> {
 
-	private static final String[] PROJECTION_ALL = {
-		MailTable.Columns._ID,
-		MailTable.Columns.TITLE,
-		MailTable.Columns.SENDER
-	};
-	
 	private static final String[] PROJECTION_EXTERNAL_ID = {
 		MailTable.Columns.EXTERNAL_ID
 	};
