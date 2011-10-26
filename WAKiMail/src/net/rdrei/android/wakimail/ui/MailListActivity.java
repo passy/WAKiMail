@@ -8,6 +8,7 @@ import roboguice.activity.RoboListActivity;
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -92,9 +93,9 @@ public class MailListActivity extends RoboListActivity {
 					int position, long id) {
 				
 				// When clicked, open the detail view.
-				Intent intent = new Intent(MailListActivity.this,
-						MailDetailActivity.class);
-				intent.putExtra(MailDetailActivity.ID_EXTRA, id);
+				Uri uri = ContentUris.withAppendedId(MailTable.ALL_MAILS_URI,
+						id);
+				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 				MailListActivity.this.startActivity(intent);
 			}
 		});
