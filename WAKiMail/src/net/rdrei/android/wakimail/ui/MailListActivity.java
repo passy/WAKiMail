@@ -11,6 +11,8 @@ import roboguice.util.Ln;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,14 +24,47 @@ import android.widget.Toast;
 
 public class MailListActivity extends RoboListActivity {
 
-	@InjectExtra(value = USER_EXTRA) private User user;
+	private class MailSyncTaskHandlerCallback implements Handler.Callback {
+
+		@Override
+		public boolean handleMessage(Message msg) {
+			if (msg.what == MailSyncTask.SYNC_SUCCESS_MESSAGE) {
+				Ln.d("UI thread received sync success message.");
+				refreshList();
+			}
+			return true;
+		}
+		
+	}
 	
-	@InjectView(R.id.refresh_btn) Button refreshButton;
+	private final class OnRefreshClickListener implements View.OnClickListener {
+		public void onClick(View v) {
+			// TODO: Add loading spinner instead of button.
+			Handler handler = new Handler(new MailSyncTaskHandlerCallback());
+			MailSyncTask task = new MailSyncTask(
+					MailListActivity.this,
+					handler,
+					MailListActivity.this.user);
+			
+			Ln.d("Starting mail sync task.");
+			task.execute();
+		}
+	}
 
 	public static final String USER_EXTRA = "user";
 	private static final String[] PROJECTION = { MailTable.Columns._ID,
 			MailTable.Columns.TITLE, MailTable.Columns.SENDER, };
+	private SimpleCursorAdapter adapter;
+	private Cursor listCursor;
 
+	@InjectView(R.id.refresh_btn) Button refreshButton;
+
+	@InjectExtra(value = USER_EXTRA) private User user;
+
+	private void bindRefreshButton() {
+		refreshButton.setOnClickListener(new OnRefreshClickListener());
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,12 +79,12 @@ public class MailListActivity extends RoboListActivity {
 		
 		// Set up the mail display using a SimpleCursorAdapter.
 		final Uri uri = MailTable.ALL_MAILS_URI;
-		final Cursor cursor = managedQuery(uri, PROJECTION, null, null, null);
-		final SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-				android.R.layout.two_line_list_item, cursor, new String[] {
+		this.listCursor = managedQuery(uri, PROJECTION, null, null, null);
+		this.adapter = new SimpleCursorAdapter(this,
+				android.R.layout.two_line_list_item, this.listCursor, new String[] {
 						MailTable.Columns.TITLE, MailTable.Columns.SENDER },
 				new int[] { android.R.id.text1, android.R.id.text2 }, 0);
-		setListAdapter(adapter);
+		setListAdapter(this.adapter);
 
 		final ListView listView = getListView();
 		// XXX: This is broken right now, but will be replaced anyway.
@@ -65,20 +100,13 @@ public class MailListActivity extends RoboListActivity {
 			}
 		});
 	}
-
-	private void bindRefreshButton() {
-		refreshButton.setOnClickListener(new OnRefreshClickListener());
-	}
-
-	private final class OnRefreshClickListener implements View.OnClickListener {
-		public void onClick(View v) {
-			// TODO: Supply handler
-			// TODO: Add loading spinner instead of button.
-			MailSyncTask task = new MailSyncTask(MailListActivity.this, null,
-					MailListActivity.this.user);
-			
-			Ln.d("Starting mail sync task.");
-			task.execute();
-		}
+	
+	private void refreshList() {
+		Ln.d("Refreshing list.");
+		// XXX: Once again, this is a synchronous operation on the UI thread
+		// and should be moved to a seperate async query that reloads
+		// afterwards.
+		this.listCursor.requery();
+		this.adapter.notifyDataSetChanged();
 	}
 }
