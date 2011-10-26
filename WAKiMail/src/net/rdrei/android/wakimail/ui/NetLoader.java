@@ -29,12 +29,15 @@ public class NetLoader {
 		super();
 		this.user = user;
 	}
+	
+	protected URLWrapper makeWAKUrl(String path) {
+		return this.urlWrapperFactory.create(
+			Constants.URL_BASE + path
+		);
+	}
 
 	protected URLConnection openWAKConnection(String path) throws IOException {
-		URLWrapper url = this.urlWrapperFactory.create(
-				Constants.URL_BASE + path);
-		
-		return url.openConnection();
+		return this.makeWAKUrl(path).openConnection();
 	}
 	
 	protected void enableUserCookie() {
