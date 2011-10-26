@@ -1,7 +1,5 @@
 package net.rdrei.android.wakimail.task;
 
-import java.util.Iterator;
-
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.wak.Mail;
@@ -30,12 +28,6 @@ import com.google.inject.Inject;
  */
 public class MailSyncTask extends RdreiAsyncTask<Integer> {
 
-	private static final String[] PROJECTION_ALL = {
-		MailTable.Columns._ID,
-		MailTable.Columns.TITLE,
-		MailTable.Columns.SENDER
-	};
-	
 	private static final String[] PROJECTION_EXTERNAL_ID = {
 		MailTable.Columns.EXTERNAL_ID
 	};
@@ -60,7 +52,7 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 	protected void onSuccess(Integer result) throws Exception {
 		super.onSuccess(result);
 		
-		if (result > 0) {
+		if (result.intValue() > 0) {
 			showResultToast(result);
 		}
 	}
