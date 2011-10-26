@@ -8,6 +8,7 @@ import roboguice.activity.RoboListActivity;
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,8 +20,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class MailListActivity extends RoboListActivity {
 
@@ -91,12 +90,12 @@ public class MailListActivity extends RoboListActivity {
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// When clicked, show a toast with the TextView text
-				// TODO: Open and load the mail content.
-				CharSequence text = ((TextView) view).getText();
-				Ln.d("Showing toast: " + text);
-				Toast.makeText(getApplicationContext(), text,
-						Toast.LENGTH_SHORT).show();
+				
+				// When clicked, open the detail view.
+				Intent intent = new Intent(MailListActivity.this,
+						MailDetailActivity.class);
+				intent.putExtra(MailDetailActivity.ID_EXTRA, id);
+				MailListActivity.this.startActivity(intent);
 			}
 		});
 	}
