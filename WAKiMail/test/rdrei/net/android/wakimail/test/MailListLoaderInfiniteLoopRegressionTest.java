@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.rdrei.android.wakimail.URLConnectionFactory;
 import net.rdrei.android.wakimail.guice.WAKiMailModule;
+import net.rdrei.android.wakimail.wak.LoginManager.LoginException;
 import net.rdrei.android.wakimail.wak.Mail;
 import net.rdrei.android.wakimail.wak.MailListLoader;
 import net.rdrei.android.wakimail.wak.MailListLoaderFactory;
@@ -62,7 +63,7 @@ public class MailListLoaderInfiniteLoopRegressionTest {
 	}
 	
 	@Test
-	public void fetchAllMails() throws IOException {
+	public void fetchAllMails() throws IOException, LoginException {
 		List<Mail> mails = this.loader.fetchAllMails();
 		Assert.assertEquals(118, mails.size());
 		

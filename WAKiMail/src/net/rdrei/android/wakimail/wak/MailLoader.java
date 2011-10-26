@@ -43,7 +43,7 @@ public class MailLoader extends NetLoader {
 				(HttpsURLConnection) this.openWAKConnection(
 						MESSAGE_URL + this.id);
 		
-		String response = this.readResponseIntoString(connection);
+		String response = NetLoader.readResponseIntoString(connection);
 		Matcher matcher = BODY_PATTERN.matcher(response);
 		
 		if (matcher.find()) {
