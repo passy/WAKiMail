@@ -2,11 +2,15 @@ package net.rdrei.android.wakimail.ui;
 
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
+import net.rdrei.android.wakimail.task.MailLoadTask;
 import roboguice.fragment.RoboListFragment;
+import roboguice.inject.InjectView;
 import roboguice.util.Ln;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -15,6 +19,7 @@ import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class MailDetailFragment extends RoboListFragment implements
@@ -89,12 +94,13 @@ public class MailDetailFragment extends RoboListFragment implements
 				// The cursor is loaded asynchronously and not available yet.
 				null,
 				// The map projection received.
-				new String[] { MailTable.Columns.BODY,
+				new String[] { MailTable.Columns.BODY, MailTable.Columns.BODY,
 						MailTable.Columns.SENDER, MailTable.Columns.DATE,
-						MailTable.Columns.TITLE},
+						MailTable.Columns.TITLE
+						},
 				// The map to display to.
-				new int[] { R.id.mail_body, R.id.mail_from,
-						R.id.mail_date, R.id.mail_title },
+				new int[] { R.id.mail_body, R.id.mail_loadingspinner,
+						R.id.mail_from, R.id.mail_date, R.id.mail_title },
 				// No flags.
 				0);
 
@@ -121,14 +127,17 @@ public class MailDetailFragment extends RoboListFragment implements
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		// No need to filter or select anything specific, the URL fetches only
 		// one entry.
+		Ln.d("Requesting a new loader for " + mUri);
 		return new CursorLoader(getActivity(), mUri,
 				MailTable.MAILS_PROJECTION, null, null, null);
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		Ln.d("Swapping cursor result.");
 		// Make the new cursor the used cursor.
 		mAdapter.swapCursor(cursor);
+		
 	}
 
 	@Override
@@ -151,12 +160,50 @@ public class MailDetailFragment extends RoboListFragment implements
 			return true;
 		case R.id.mail_body:
 			if (cursor.isNull(columnIndex)) {
-				Ln.i("Body isn't available yet. Sry.");
+				loadMailBody();
 			} else {
-				((TextView) view).setText(cursor.getString(columnIndex));
+				view.setVisibility(View.VISIBLE);
+			}
+			// Continue replacing the text.
+			return false;
+		case R.id.mail_loadingspinner:
+			if (cursor.isNull(columnIndex)) {
+				view.setVisibility(View.VISIBLE);
+			} else {
+				view.setVisibility(View.GONE);
 			}
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Start the task downloading the mail body.
+	 */
+	private void loadMailBody() {
+		Ln.d("Downloading mail body for URI " + mUri);
+		Handler handler = new Handler(new MailLoadTaskHandlerCallback());
+		MailLoadTask task = new MailLoadTask(getActivity(), handler, mUri);
+		task.execute();
+	}
+	
+	private class MailLoadTaskHandlerCallback implements Handler.Callback {
+		@Override
+		public boolean handleMessage(Message msg) {
+			switch (msg.what) {
+			case MailLoadTask.LOAD_SUCCESS_MESSAGE:
+				Ln.d("Mail body was loaded.");
+				// mAdapter.notifyDataSetChanged();
+				return true;
+			case MailLoadTask.LOAD_ERROR_MESSAGE:
+				// Stop the current activity. Actually this should be handled
+				// by the activity rather than the fragment, but we will just
+				// do it this way.
+				MailDetailFragment.this.getActivity().finish();
+				return true;
+			}
+			return false;
+		}
+		
 	}
 }

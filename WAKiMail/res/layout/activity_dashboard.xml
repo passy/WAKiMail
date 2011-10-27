@@ -1,21 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="match_parent"
-	android:layout_height="match_parent" android:gravity="center_horizontal">
-	<ImageView android:layout_width="wrap_content" android:src="@drawable/ic_waklogo_big"
-		android:id="@+id/dashboard_logo" android:layout_height="wrap_content"
-		android:layout_marginTop="20dp"></ImageView>
-	<Button android:layout_height="wrap_content" style="@style/Button"
-		android:id="@+id/dashboard_sign_btn" android:layout_below="@+id/dashboard_logo"
-		android:layout_width="260dp" android:layout_marginTop="20dp"
-		android:layout_centerHorizontal="true" android:text="@string/login_signin"></Button>
-	<TextView android:id="@+id/dashboard_hello_text"
-		android:layout_width="260dp" android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceLarge"
-		android:layout_centerVertical="true" android:layout_centerHorizontal="true"></TextView>
-	<Button android:id="@+id/dashboard_show_mail_btn" android:layout_width="260dp"
-		android:text="Show me teh mail!1" style="@style/Button"
-		android:layout_height="wrap_content"
-		android:layout_alignLeft="@id/dashboard_hello_text"
-		android:layout_below="@id/dashboard_hello_text" android:enabled="false"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/dashboard_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_waklogo_big" >
+    </ImageView>
+
+    <Button
+        android:id="@+id/dashboard_sign_btn"
+        style="@style/Button"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dashboard_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/login_signin" >
+    </Button>
+
+    <TextView
+        android:id="@+id/dashboard_hello_text"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textAppearance="?android:attr/textAppearanceLarge" >
+    </TextView>
+
+    <Button
+        android:id="@+id/dashboard_show_mail_btn"
+        style="@style/Button"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/dashboard_hello_text"
+        android:layout_below="@id/dashboard_hello_text"
+        android:enabled="false"
+        android:text="Show me teh mail!1" />
+
+    <Button
+        android:id="@+id/dashboard_iampassy_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/dashboard_show_mail_btn"
+        android:layout_alignRight="@+id/dashboard_show_mail_btn"
+        android:layout_below="@+id/dashboard_show_mail_btn"
+        android:layout_marginTop="26dp"
+        android:text="I am Passy" />
+
 </RelativeLayout>
