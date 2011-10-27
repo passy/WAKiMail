@@ -3,6 +3,7 @@ package net.rdrei.android.wakimail.ui;
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
 import roboguice.fragment.RoboListFragment;
+import roboguice.util.Ln;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,9 +11,12 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
+import android.view.View;
+import android.widget.TextView;
 
 public class MailDetailFragment extends RoboListFragment implements
-		LoaderCallbacks<Cursor> {
+		LoaderCallbacks<Cursor>, ViewBinder {
 
 	public final static String KEY_URI = "mailDetailURI";
 
@@ -74,14 +78,13 @@ public class MailDetailFragment extends RoboListFragment implements
 				null,
 				// The map projection received.
 				new String[] { MailTable.Columns.TITLE,
-						MailTable.Columns.SENDER, MailTable.Columns.DATE,
-						MailTable.Columns.BODY },
+						MailTable.Columns.SENDER, MailTable.Columns.DATE},
 				// The map to display to.
-				new int[] { R.id.mail_title, R.id.mail_from, R.id.mail_date,
-						R.id.mail_body },
+				new int[] { R.id.mail_title, R.id.mail_from, R.id.mail_date},
 				// No flags.
 				0);
 
+		mAdapter.setViewBinder(this);
 		setListAdapter(mAdapter);
 		// Poke the loader to retrieve an async cursor.
 		getLoaderManager().initLoader(0, null, this);
@@ -117,5 +120,21 @@ public class MailDetailFragment extends RoboListFragment implements
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		mAdapter.swapCursor(null);
+	}
+
+	@Override
+	public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+		int viewId = view.getId();
+		
+		switch (viewId) {
+		case R.id.mail_body:
+			if (cursor.isNull(columnIndex)) {
+				Ln.i("Body isn't available yet. Sry.");
+			} else {
+				((TextView)view).setText(cursor.getString(columnIndex));
+			}
+			break;
+		}
+		return false;
 	}
 }

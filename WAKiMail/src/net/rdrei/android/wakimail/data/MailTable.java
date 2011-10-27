@@ -57,7 +57,7 @@ public class MailTable {
 			"net.rdrei.android.wakimail.data.mail";
 	
 	public static final String[] MAILS_PROJECTION = {
-		Columns._ID, Columns.TITLE, Columns.DATE, Columns.SENDER
+		Columns._ID, Columns.TITLE, Columns.DATE, Columns.SENDER, Columns.BODY
 	};
 	
 	/**
