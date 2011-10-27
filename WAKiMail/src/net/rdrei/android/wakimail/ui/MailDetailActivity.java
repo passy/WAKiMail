@@ -21,7 +21,7 @@ public class MailDetailActivity extends RoboFragmentActivity {
 					.beginTransaction();
 			MailDetailFragment newFragment = MailDetailFragment
 					.newInstance(uri);
-			ft.add(R.id.root_container, newFragment);
+			ft.replace(R.id.root_container, newFragment);
 			ft.commit();
 		}
 	}

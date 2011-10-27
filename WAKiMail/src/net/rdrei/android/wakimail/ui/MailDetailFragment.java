@@ -12,7 +12,9 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class MailDetailFragment extends RoboListFragment implements
@@ -33,6 +35,19 @@ public class MailDetailFragment extends RoboListFragment implements
 		fragment.setArguments(args);
 
 		return fragment;
+	}
+
+	/**
+	 * Load our custom layout instead of the generic list view.
+	 * 
+	 * @see android.support.v4.app.ListFragment#onCreateView(android.view.LayoutInflater,
+	 *      android.view.ViewGroup, android.os.Bundle)
+	 */
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		return inflater
+				.inflate(R.layout.fragment_mail_detail, container, false);
 	}
 
 	/**
@@ -66,9 +81,6 @@ public class MailDetailFragment extends RoboListFragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		// Set the placeholder text when the list is empty.
-		setEmptyText(this.getText(R.string.loading));
-
 		mAdapter = new SimpleCursorAdapter(
 		// The activity the fragment is using.
 				getActivity(),
@@ -77,10 +89,12 @@ public class MailDetailFragment extends RoboListFragment implements
 				// The cursor is loaded asynchronously and not available yet.
 				null,
 				// The map projection received.
-				new String[] { MailTable.Columns.TITLE,
-						MailTable.Columns.SENDER, MailTable.Columns.DATE},
+				new String[] { MailTable.Columns.BODY,
+						MailTable.Columns.SENDER, MailTable.Columns.DATE,
+						MailTable.Columns.TITLE},
 				// The map to display to.
-				new int[] { R.id.mail_title, R.id.mail_from, R.id.mail_date},
+				new int[] { R.id.mail_body, R.id.mail_from,
+						R.id.mail_date, R.id.mail_title },
 				// No flags.
 				0);
 
@@ -125,15 +139,23 @@ public class MailDetailFragment extends RoboListFragment implements
 	@Override
 	public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 		int viewId = view.getId();
-		
+
 		switch (viewId) {
+		case R.id.mail_title:
+			String text = cursor.getString(columnIndex);
+			Ln.d("Replacing title navbar with " + text);
+			
+			TextView title = (TextView) getActivity().findViewById(
+					R.id.mail_title);
+			title.setText(text);
+			return true;
 		case R.id.mail_body:
 			if (cursor.isNull(columnIndex)) {
 				Ln.i("Body isn't available yet. Sry.");
 			} else {
-				((TextView)view).setText(cursor.getString(columnIndex));
+				((TextView) view).setText(cursor.getString(columnIndex));
 			}
-			break;
+			return true;
 		}
 		return false;
 	}
