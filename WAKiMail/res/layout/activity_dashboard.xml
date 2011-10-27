@@ -43,14 +43,4 @@
         android:enabled="false"
         android:text="Show me teh mail!1" />
 
-    <Button
-        android:id="@+id/dashboard_iampassy_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/dashboard_show_mail_btn"
-        android:layout_alignRight="@+id/dashboard_show_mail_btn"
-        android:layout_below="@+id/dashboard_show_mail_btn"
-        android:layout_marginTop="26dp"
-        android:text="I am Passy" />
-
 </RelativeLayout>

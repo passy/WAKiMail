@@ -4,7 +4,6 @@ import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.task.MailLoadTask;
 import roboguice.fragment.RoboListFragment;
-import roboguice.inject.InjectView;
 import roboguice.util.Ln;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,7 +18,6 @@ import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class MailDetailFragment extends RoboListFragment implements
