@@ -7,8 +7,8 @@
 	<classpathentry kind="lib" path="libs/guice-3.0-no_aop.jar"/>
 	<classpathentry kind="lib" path="libs/guice-assistedinject-3.0.jar"/>
 	<classpathentry kind="lib" path="libs/roboguice-1.2-20111006.142313-28.jar" sourcepath="/home/pascal/Projects/java/wakimail/WAKiMail/libs/roboguice-1.2-20111006.142313-28-sources.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="libs/javax.inject-1.jar"/>
 	<classpathentry kind="lib" path="libs/acra-4.2.3.jar"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

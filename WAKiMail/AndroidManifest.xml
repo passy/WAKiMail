@@ -1,27 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="net.rdrei.android.wakimail" android:versionCode="1"
-	android:versionName="0.1" android:installLocation="auto">
-	<uses-sdk android:minSdkVersion="10" />
-	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
-	<!-- XXX: Remove this from production. It's for better error logs, though. -->
-	<uses-permission android:name="android.permission.READ_LOGS"/>
+    android:installLocation="auto"
+    package="net.rdrei.android.wakimail"
+    android:versionCode="1"
+    android:versionName="0.1" >
 
-	<application android:icon="@drawable/icon" android:label="@string/app_name"
-		android:description="@string/app_description" android:theme="@style/Theme"
-		android:name="WAKiMailApplication">
-		<activity android:name=".ui.DashboardActivity">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
-		<activity android:label="@string/app_name" android:name=".ui.LoginActivity">
-		</activity>
-		<activity android:name=".ui.MailListActivity"></activity>
-		<provider android:name=".data.MailProvider"
-			android:authorities="net.rdrei.android.wakimail.data.mail"></provider>
+    <uses-sdk android:minSdkVersion="10" />
 
+    <uses-permission android:name="android.permission.INTERNET" >
+    </uses-permission>
+    <!-- XXX: Remove this from production. It's for better error logs, though. -->
+    <uses-permission android:name="android.permission.READ_LOGS" />
 
-	</application>
+    <application
+        android:description="@string/app_description"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:name="WAKiMailApplication"
+        android:theme="@style/Theme" >
+        <activity android:name=".ui.DashboardActivity" >
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:name=".ui.LoginActivity" >
+        </activity>
+        <activity android:name=".ui.MailListActivity" >
+        </activity>
+        <activity android:name=".ui.MailDetailActivity" >
+            <intent-filter >
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.item/vnd.rdrei.wakimail" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:authorities="net.rdrei.android.wakimail.data.mail"
+            android:name=".data.MailProvider" >
+        </provider>
+    </application>
+
 </manifest>

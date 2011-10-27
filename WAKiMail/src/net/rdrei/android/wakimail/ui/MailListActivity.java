@@ -3,11 +3,11 @@ package net.rdrei.android.wakimail.ui;
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.task.MailSyncTask;
-import net.rdrei.android.wakimail.wak.User;
 import roboguice.activity.RoboListActivity;
-import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
+import android.content.ContentUris;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,8 +19,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class MailListActivity extends RoboListActivity {
 
@@ -43,8 +41,7 @@ public class MailListActivity extends RoboListActivity {
 			Handler handler = new Handler(new MailSyncTaskHandlerCallback());
 			MailSyncTask task = new MailSyncTask(
 					MailListActivity.this,
-					handler,
-					MailListActivity.this.user);
+					handler);
 			
 			Ln.d("Starting mail sync task.");
 			task.execute();
@@ -58,8 +55,6 @@ public class MailListActivity extends RoboListActivity {
 	private Cursor listCursor;
 
 	@InjectView(R.id.refresh_btn) Button refreshButton;
-
-	@InjectExtra(value = USER_EXTRA) private User user;
 
 	private void bindRefreshButton() {
 		refreshButton.setOnClickListener(new OnRefreshClickListener());
@@ -91,12 +86,12 @@ public class MailListActivity extends RoboListActivity {
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// When clicked, show a toast with the TextView text
-				// TODO: Open and load the mail content.
-				CharSequence text = ((TextView) view).getText();
-				Ln.d("Showing toast: " + text);
-				Toast.makeText(getApplicationContext(), text,
-						Toast.LENGTH_SHORT).show();
+				
+				// When clicked, open the detail view.
+				Uri uri = ContentUris.withAppendedId(MailTable.ALL_MAILS_URI,
+						id);
+				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				MailListActivity.this.startActivity(intent);
 			}
 		});
 	}

@@ -15,7 +15,6 @@ import net.rdrei.android.wakimail.wak.LoginManager.LoginException;
 import roboguice.util.Ln;
 
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 /**
  * Loads the list of messages from the web.
@@ -41,13 +40,6 @@ public class MailListLoader extends NetLoader implements Iterable<Mail> {
 
 	@Inject
 	private SessionManager sessionManager;
-
-	@Inject
-	public MailListLoader(@Assisted User user) {
-		super(user);
-		// this.setDefaultCookieManager();
-		// this.enableUserCookie();
-	}
 
 	public List<Mail> fetchAllMails() throws IOException, LoginException {
 		String response;

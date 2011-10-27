@@ -35,12 +35,12 @@ public class MailProvider extends ContentProvider {
 		mailProjectionMap.put(MailTable.Columns.BODY, MailTable.Columns.BODY);
 	}
 
-	private MailDatabase database;
+	private MailDatabase mDatabase;
 
 	@Override
 	public int delete(Uri uri, String where, String[] whereArgs) {
 		int count;
-		SQLiteDatabase db = database.getWritableDatabase();
+		SQLiteDatabase db = mDatabase.getWritableDatabase();
 
 		switch (URI_MATCHER.match(uri)) {
 		case MAILS:
@@ -80,7 +80,7 @@ public class MailProvider extends ContentProvider {
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		long rowId;
-		
+
 		if (URI_MATCHER.match(uri) != MAILS) {
 			throw new IllegalArgumentException("Invalid insert URI " + uri);
 		}
@@ -89,12 +89,12 @@ public class MailProvider extends ContentProvider {
 			throw new NullPointerException("values must not be null!");
 		}
 
-		SQLiteDatabase db = database.getWritableDatabase();
+		SQLiteDatabase db = mDatabase.getWritableDatabase();
 		rowId = db.insert(MailTable.TABLE_NAME, null, values);
 
 		if (rowId > 0) {
-			Uri newUri = ContentUris.withAppendedId(
-					MailTable.ALL_MAILS_URI, rowId);
+			Uri newUri = ContentUris.withAppendedId(MailTable.ALL_MAILS_URI,
+					rowId);
 			getContext().getContentResolver().notifyChange(newUri, null);
 			return newUri;
 		}
@@ -106,7 +106,7 @@ public class MailProvider extends ContentProvider {
 	public boolean onCreate() {
 		Ln.d("Creating new MailProvider instance.");
 		// Open the database.
-		this.database = new MailDatabase(getContext());
+		this.mDatabase = new MailDatabase(getContext());
 		return true;
 	}
 
@@ -146,7 +146,7 @@ public class MailProvider extends ContentProvider {
 			orderBy = sort;
 		}
 
-		SQLiteDatabase db = database.getReadableDatabase();
+		SQLiteDatabase db = mDatabase.getReadableDatabase();
 		Cursor cursor = queryBuilder.query(db, projection, selection,
 				whereArgs, null, null, orderBy);
 
@@ -157,9 +157,26 @@ public class MailProvider extends ContentProvider {
 	}
 
 	@Override
-	public int update(Uri arg0, ContentValues arg1, String arg2, String[] arg3) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int update(Uri uri, ContentValues values, String where,
+			String[] selectionArgs) {
+		if (URI_MATCHER.match(uri) != MAIL_ID) {
+			// Actually, we could allow multiple as well, but as long as it's
+			// not necessary, I won't allow it.
+			throw new IllegalArgumentException(
+					"Can only update a single mail at a time.");
+		}
+		
+		if (where == null) {
+			where = MailTable.Columns._ID + " = ? ";
+			selectionArgs = new String[] { uri.getLastPathSegment() };
+		}
+
+		SQLiteDatabase db = mDatabase.getWritableDatabase();
+		int count = db.update(MailTable.TABLE_NAME, values, where,
+				selectionArgs);
+		
+		getContext().getContentResolver().notifyChange(uri, null);
+		return count;
 	}
 
 }

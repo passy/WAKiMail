@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="/WAKiMail/libs/guice-assistedinject-3.0.jar"/>
 	<classpathentry kind="lib" path="/WAKiMail/libs/javax.inject-1.jar"/>
 	<classpathentry kind="lib" path="/WAKiMail/libs/roboguice-1.2-20111006.142313-28.jar"/>
+	<classpathentry kind="lib" path="/home/pascal/Projects/java/wakimail/WAKiMail/libs/android-support-v4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

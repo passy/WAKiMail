@@ -6,6 +6,8 @@ import java.net.URL;
 import net.rdrei.android.wakimail.Constants;
 import net.rdrei.android.wakimail.URLConnectionFactory;
 import net.rdrei.android.wakimail.guice.WAKiMailModule;
+import net.rdrei.android.wakimail.wak.LoginManager.ChallengeException;
+import net.rdrei.android.wakimail.wak.LoginManager.LoginException;
 import net.rdrei.android.wakimail.wak.MailLoader;
 import net.rdrei.android.wakimail.wak.MailLoaderFactory;
 import net.rdrei.android.wakimail.wak.User;
@@ -58,9 +60,9 @@ public class MailLoaderTest {
 	}
 	
 	@Test
-	public void shouldLoadCorrectMail() throws IOException {
+	public void shouldLoadCorrectMail() throws IOException, LoginException, ChallengeException {
 		String id = "1234567";
-		MailLoader loader = loaderFactory.create(user, id);
+		MailLoader loader = loaderFactory.create(id);
 		
 		loader.load();
 		URL url = urlConnectionFactory.getURL();
@@ -71,8 +73,8 @@ public class MailLoaderTest {
 	}
 	
 	@Test
-	public void shouldExtractBody() throws IOException {
-		MailLoader loader = loaderFactory.create(user, "123456");
+	public void shouldExtractBody() throws IOException, LoginException, ChallengeException {
+		MailLoader loader = loaderFactory.create("123456");
 		String body = loader.load();
 		
 		Assert.assertEquals("Ich würde vorschlagen wir treffen uns nächste " +

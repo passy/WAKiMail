@@ -6,7 +6,6 @@ import net.rdrei.android.wakimail.wak.Mail;
 import net.rdrei.android.wakimail.wak.MailListLoader;
 import net.rdrei.android.wakimail.wak.MailListLoaderFactory;
 import net.rdrei.android.wakimail.wak.SessionManager;
-import net.rdrei.android.wakimail.wak.User;
 import roboguice.util.Ln;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -42,16 +41,13 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 	@Inject
 	private MailListLoaderFactory mailListLoaderFactory;
 
-	private User user;
-
-	public MailSyncTask(Context context, Handler handler, User user) {
+	public MailSyncTask(Context context, Handler handler) {
 		super(context, handler);
-		this.user = user;
 	}
 
 	@Override
 	public Integer call() throws Exception {
-		final MailListLoader loader = mailListLoaderFactory.create(this.user);
+		final MailListLoader loader = mailListLoaderFactory.create();
 		return this.syncMail(loader);
 	}
 	

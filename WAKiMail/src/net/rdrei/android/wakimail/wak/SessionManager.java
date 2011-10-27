@@ -1,8 +1,15 @@
 package net.rdrei.android.wakimail.wak;
 
 import java.io.IOException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookieStore;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 
 import net.rdrei.android.wakimail.Constants;
 import net.rdrei.android.wakimail.task.LoginTask;
@@ -20,6 +27,7 @@ public class SessionManager {
 	private User user = new User();
 
 	private static final int AUTH_RETRIES = 5;
+	private CookieManager cookieManager;
 
 	public SessionManager() {
 		super();
@@ -131,5 +139,36 @@ public class SessionManager {
 		}
 
 		return false;
+	}
+	
+	public void enableUserCookie() {
+		final CookieStore store = this.cookieManager.getCookieStore();
+		URI cookieURI = null;
+		try {
+			cookieURI = new URI(Constants.URL_BASE);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return;
+		}
+		final List<HttpCookie> cookies = store.get(cookieURI);
+		// The cookie we would like to have in it.
+		final HttpCookie cookie = new HttpCookie(Constants.SESSION_COOKIE_NAME,
+				this.user.getSessionId());
+		if (!cookies.contains(cookie)) {
+			store.add(cookieURI, cookie);
+		}
+	}
+	
+	/**
+	 * Injects the user session cookie into the cookie manager.
+	 */
+	protected void setDefaultCookieManager() {
+		synchronized (this) {
+			this.cookieManager = (CookieManager) CookieHandler.getDefault();
+			if (this.cookieManager == null) {
+				this.cookieManager = new CookieManager();
+				CookieHandler.setDefault(this.cookieManager);
+			}
+		}
 	}
 }
