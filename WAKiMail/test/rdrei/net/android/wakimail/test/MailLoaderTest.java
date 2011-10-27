@@ -60,7 +60,7 @@ public class MailLoaderTest {
 	@Test
 	public void shouldLoadCorrectMail() throws IOException {
 		String id = "1234567";
-		MailLoader loader = loaderFactory.create(user, id);
+		MailLoader loader = loaderFactory.create(id);
 		
 		loader.load();
 		URL url = urlConnectionFactory.getURL();
@@ -72,7 +72,7 @@ public class MailLoaderTest {
 	
 	@Test
 	public void shouldExtractBody() throws IOException {
-		MailLoader loader = loaderFactory.create(user, "123456");
+		MailLoader loader = loaderFactory.create("123456");
 		String body = loader.load();
 		
 		Assert.assertEquals("Ich würde vorschlagen wir treffen uns nächste " +

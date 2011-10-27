@@ -3,9 +3,7 @@ package net.rdrei.android.wakimail.ui;
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.task.MailSyncTask;
-import net.rdrei.android.wakimail.wak.User;
 import roboguice.activity.RoboListActivity;
-import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
 import android.content.ContentUris;
@@ -43,8 +41,7 @@ public class MailListActivity extends RoboListActivity {
 			Handler handler = new Handler(new MailSyncTaskHandlerCallback());
 			MailSyncTask task = new MailSyncTask(
 					MailListActivity.this,
-					handler,
-					MailListActivity.this.user);
+					handler);
 			
 			Ln.d("Starting mail sync task.");
 			task.execute();
@@ -58,8 +55,6 @@ public class MailListActivity extends RoboListActivity {
 	private Cursor listCursor;
 
 	@InjectView(R.id.refresh_btn) Button refreshButton;
-
-	@InjectExtra(value = USER_EXTRA) private User user;
 
 	private void bindRefreshButton() {
 		refreshButton.setOnClickListener(new OnRefreshClickListener());

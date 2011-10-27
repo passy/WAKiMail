@@ -9,7 +9,6 @@ import net.rdrei.android.wakimail.wak.LoginManager.LoginException;
 import net.rdrei.android.wakimail.wak.Mail;
 import net.rdrei.android.wakimail.wak.MailListLoader;
 import net.rdrei.android.wakimail.wak.MailListLoaderFactory;
-import net.rdrei.android.wakimail.wak.User;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -31,7 +30,6 @@ import com.xtremelabs.robolectric.RobolectricTestRunner;
 
 @RunWith(RobolectricTestRunner.class)
 public class MailListLoaderTest {
-	private User user;
 	@Inject private MailListLoaderFactory factory;
 	@Inject protected URLConnectionFactory urlConnectionFactory;
 	@Inject Application application;
@@ -57,9 +55,7 @@ public class MailListLoaderTest {
 		RoboInjector injector = RoboGuice.getInjector(app);
 		injector.injectMembers(this);
 		
-		this.user = new User("pascal.hartig@berufsakademie-sh.de",
-				"Pascal Hartig", "12345");
-		this.loader = factory.create(user);
+		this.loader = factory.create();
 	}
 	
 	@Test

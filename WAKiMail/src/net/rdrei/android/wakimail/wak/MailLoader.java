@@ -28,8 +28,7 @@ public class MailLoader extends NetLoader {
 	);
 	
 	@Inject
-	public MailLoader(@Assisted User user, @Assisted String id) {
-		super(user);
+	public MailLoader(@Assisted String id) {
 		this.id = id;
 	}
 	
