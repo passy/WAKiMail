@@ -1,5 +1,6 @@
 package net.rdrei.android.wakimail.ui;
 
+import net.rdrei.android.wakimail.R;
 import roboguice.fragment.RoboListFragment;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,7 +46,7 @@ public class MailDetailFragment extends RoboListFragment {
 		this.mUri = Uri.parse(uri);
 	}
 
-	/**
+	/**resId
 	 * When the fragment is loaded, rendered and embedded into the activity.
 	 * 
 	 * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
@@ -53,6 +54,9 @@ public class MailDetailFragment extends RoboListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		
+		// Set the placeholder text when the list is empty.
+		this.setEmptyText(this.getText(R.string.loading));
 	}
 
 	/**

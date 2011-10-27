@@ -24,4 +24,6 @@
 	<string name="mail_list_empty">There are no mails.</string>
 	<string name="loading">Loading …</string>
 	<string name="refresh_success">There were %d new messages downloaded.</string>
+	<string name="mail_sender_label">From:</string>
+	<string name="mail_date_label">Date:</string>
 </resources>
