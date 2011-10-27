@@ -1,0 +1,71 @@
+package net.rdrei.android.wakimail.task;
+
+import net.rdrei.android.wakimail.data.MailTable;
+import net.rdrei.android.wakimail.wak.MailLoader;
+import net.rdrei.android.wakimail.wak.MailLoaderFactory;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Handler;
+
+import com.google.inject.Inject;
+
+public class MailLoadTask extends RdreiAsyncTask<Void> {
+
+	@Inject
+	private MailLoaderFactory mailLoaderFactory;
+	private Uri mUri;
+	
+	public static final int LOAD_SUCCESS_MESSAGE = 0;
+
+	public MailLoadTask(Context context, Handler handler, Uri uri) {
+		super(context, handler);
+		this.mUri = uri;
+	}
+
+	@Override
+	public Void call() throws Exception {
+		ContentResolver resolver = getContext().getContentResolver();
+		String externalId = getExternalId(resolver);
+		
+		MailLoader loader = mailLoaderFactory.create(externalId);
+		String body = loader.load();
+		saveMailBody(resolver, body);
+		
+		return null;
+	}
+	
+	/**
+	 * Sends the result back to the main thread.
+	 * @see roboguice.util.SafeAsyncTask#onSuccess(java.lang.Object)
+	 */
+	@Override
+	protected void onSuccess(Void t) throws Exception {
+		super.onSuccess(t);
+		
+		handler.sendEmptyMessage(LOAD_SUCCESS_MESSAGE);
+	}
+
+	private int saveMailBody(ContentResolver resolver, String body) {
+		ContentValues values = new ContentValues(1);
+		values.put(MailTable.Columns.BODY, body);
+		return resolver.update(mUri, values, null, null);
+	}
+
+	/**
+	 * Blocking method to retrieve the external ID based on the URL provided.
+	 * @return External ID
+	 */
+	private String getExternalId(ContentResolver resolver) {
+		// Query the most recent version of the mail.
+		// We don't need transactional management, though. Even if there would
+		// be conflicting queries, the worst result would be to save the same
+		// result twice.
+		Cursor cursor = resolver.query(mUri,
+				new String[] { MailTable.Columns.EXTERNAL_ID }, null, null,
+				null);
+		return cursor.getString(0);
+	}
+}
