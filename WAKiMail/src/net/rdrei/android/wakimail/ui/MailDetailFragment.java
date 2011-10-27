@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 
@@ -100,20 +101,21 @@ public class MailDetailFragment extends RoboListFragment implements
 	}
 
 	@Override
-	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		// TODO Auto-generated method stub
-		return null;
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		// No need to filter or select anything specific, the URL fetches only
+		// one entry.
+		return new CursorLoader(getActivity(), mUri,
+				MailTable.MAILS_PROJECTION, null, null, null);
 	}
 
 	@Override
-	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
-		// TODO Auto-generated method stub
-		
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		// Make the new cursor the used cursor.
+		mAdapter.swapCursor(cursor);
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Cursor> arg0) {
-		// TODO Auto-generated method stub
-		
+	public void onLoaderReset(Loader<Cursor> loader) {
+		mAdapter.swapCursor(null);
 	}
 }
