@@ -22,7 +22,6 @@ import android.app.Application;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import com.google.inject.Stage;
 import com.google.inject.util.Modules;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
@@ -49,8 +48,8 @@ public class MailListLoaderInfiniteLoopRegressionTest {
 		
 		Module moduleOverride = Modules.override(new WAKiMailModule()).with(module);
 		Application app = Robolectric.application;
-		RoboGuice.setApplicationInjector(app, Stage.DEVELOPMENT,
-				RoboGuice.createNewDefaultRoboModule(app), moduleOverride);
+		RoboGuice.setBaseApplicationInjector(app, RoboGuice.DEFAULT_STAGE,
+				RoboGuice.newDefaultRoboModule(app), moduleOverride);
 		
 		RoboInjector injector = RoboGuice.getInjector(app);
 		injector.injectMembers(this);
