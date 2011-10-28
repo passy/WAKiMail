@@ -1,4 +1,4 @@
-package rdrei.net.android.wakimail.test;
+package net.rdrei.android.wakimail.test;
 
 import net.rdrei.android.wakimail.wak.SessionManager;
 

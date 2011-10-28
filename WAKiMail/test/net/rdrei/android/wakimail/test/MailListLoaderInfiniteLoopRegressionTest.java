@@ -1,4 +1,4 @@
-package rdrei.net.android.wakimail.test;
+package net.rdrei.android.wakimail.test;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,7 +28,7 @@ import com.xtremelabs.robolectric.RobolectricTestRunner;
 
 
 @RunWith(RobolectricTestRunner.class)
-public class MailListLoaderTest {
+public class MailListLoaderInfiniteLoopRegressionTest {
 	@Inject private MailListLoaderFactory factory;
 	@Inject protected URLConnectionFactory urlConnectionFactory;
 	@Inject Application application;
@@ -41,7 +41,7 @@ public class MailListLoaderTest {
 			@Override
 			protected void configure() {
 				FakeURLConnectionFactoryImpl urlConnectionFactory = 
-						new FakeURLConnectionFactoryImpl("resources/test_nachrichten.html");
+						new FakeURLConnectionFactoryImpl("resources/test_nachrichten2.html");
 				bind(URLConnectionFactory.class).toInstance(urlConnectionFactory);
 			}
 		};
@@ -58,40 +58,14 @@ public class MailListLoaderTest {
 	}
 	
 	@Test
-	public void injectMeWithYourPoison() {
-		Assert.assertNotNull(urlConnectionFactory);
-		Assert.assertNotNull(loader);
-		Assert.assertTrue(urlConnectionFactory instanceof FakeURLConnectionFactoryImpl);
-	}
-	
-	@Test
 	public void fetchAllMails() throws IOException, LoginException {
 		List<Mail> mails = this.loader.fetchAllMails();
-		Assert.assertEquals(112, mails.size());
+		Assert.assertEquals(118, mails.size());
 		
 		// Test a control sample
-		Mail mail = mails.get(5);
-		Assert.assertEquals("392797", mail.getId());
-		Assert.assertEquals("Dirk Marx-Stölting", mail.getSender());
-		Assert.assertEquals("Unterrichtstausch", mail.getTitle());
-	}
-	
-	@Test
-	public void fetchMailIterator() throws IOException, LoginException {
-		int count = 0;
-		
-		MailListLoader loader = this.loader;
-		for (Mail mail : loader) {
-			// Test the same as above to make sure that the APIs are 
-			// equivalent.
-			if (count == 5) {
-				Assert.assertEquals("392797", mail.getId());
-				Assert.assertEquals("Dirk Marx-Stölting", mail.getSender());
-				Assert.assertEquals("Unterrichtstausch", mail.getTitle());
-			}
-			count += 1;
-		}
-		
-		Assert.assertEquals(112, count);
+		Mail mail = mails.get(0);
+		Assert.assertEquals("402020", mail.getId());
+		Assert.assertEquals("Elmar Wiechers", mail.getSender());
+		Assert.assertEquals("Nachschreibklausur ReWe", mail.getTitle());
 	}
 }
