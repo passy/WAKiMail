@@ -48,9 +48,9 @@ public class MailListActivity extends RoboListActivity {
 		}
 	}
 
-	public static final String USER_EXTRA = "user";
 	private static final String[] PROJECTION = { MailTable.Columns._ID,
 			MailTable.Columns.TITLE, MailTable.Columns.SENDER, };
+	public static final String USER_EXTRA = "user";
 	private SimpleCursorAdapter adapter;
 	private Cursor listCursor;
 
@@ -82,7 +82,6 @@ public class MailListActivity extends RoboListActivity {
 		setListAdapter(this.adapter);
 
 		final ListView listView = getListView();
-		// XXX: This is broken right now, but will be replaced anyway.
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
