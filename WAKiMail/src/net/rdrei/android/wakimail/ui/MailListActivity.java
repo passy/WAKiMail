@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 public class MailListActivity extends RoboListActivity {
 
@@ -29,22 +30,25 @@ public class MailListActivity extends RoboListActivity {
 			if (msg.what == MailSyncTask.SYNC_SUCCESS_MESSAGE) {
 				Ln.d("UI thread received sync success message.");
 				refreshList();
+				hideLoadingSpinner();
+			} else if (msg.what == MailSyncTask.SYNC_ERROR_MESSAGE) {
+				Ln.w("MailSyncTask threw an exception.");
+				hideLoadingSpinner();
 			}
 			return true;
 		}
-		
+
 	}
-	
+
 	private final class OnRefreshClickListener implements View.OnClickListener {
 		public void onClick(View v) {
 			// TODO: Add loading spinner instead of button.
 			Handler handler = new Handler(new MailSyncTaskHandlerCallback());
-			MailSyncTask task = new MailSyncTask(
-					MailListActivity.this,
-					handler);
-			
+			MailSyncTask task = new MailSyncTask(MailListActivity.this, handler);
+
 			Ln.d("Starting mail sync task.");
 			task.execute();
+			showLoadingSpinner();
 		}
 	}
 
@@ -54,12 +58,16 @@ public class MailListActivity extends RoboListActivity {
 	private SimpleCursorAdapter adapter;
 	private Cursor listCursor;
 
-	@InjectView(R.id.refresh_btn) Button refreshButton;
+	@InjectView(R.id.refresh_btn)
+	Button mRefreshButton;
+	
+	@InjectView(R.id.mail_loadingspinner)
+	ProgressBar mLoadingSpinner;
 
 	private void bindRefreshButton() {
-		refreshButton.setOnClickListener(new OnRefreshClickListener());
+		mRefreshButton.setOnClickListener(new OnRefreshClickListener());
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,21 +79,22 @@ public class MailListActivity extends RoboListActivity {
 		// definitely better be paginated and loaded on a different thread.
 		// There's actually a ListLoader-something adapter in Android >= 2.3
 		// which should be used.
-		
+
 		// Set up the mail display using a SimpleCursorAdapter.
 		final Uri uri = MailTable.ALL_MAILS_URI;
 		this.listCursor = managedQuery(uri, PROJECTION, null, null, null);
 		this.adapter = new SimpleCursorAdapter(this,
-				android.R.layout.two_line_list_item, this.listCursor, new String[] {
-						MailTable.Columns.TITLE, MailTable.Columns.SENDER },
-				new int[] { android.R.id.text1, android.R.id.text2 }, 0);
+				android.R.layout.two_line_list_item, this.listCursor,
+				new String[] { MailTable.Columns.TITLE,
+						MailTable.Columns.SENDER }, new int[] {
+						android.R.id.text1, android.R.id.text2 }, 0);
 		setListAdapter(this.adapter);
 
 		final ListView listView = getListView();
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				
+
 				// When clicked, open the detail view.
 				Uri uri = ContentUris.withAppendedId(MailTable.ALL_MAILS_URI,
 						id);
@@ -95,10 +104,20 @@ public class MailListActivity extends RoboListActivity {
 		});
 	}
 	
+	private void showLoadingSpinner() {
+		mRefreshButton.setVisibility(View.GONE);
+		mLoadingSpinner.setVisibility(View.VISIBLE);
+	}
+	
+	private void hideLoadingSpinner() {
+		mLoadingSpinner.setVisibility(View.GONE);
+		mRefreshButton.setVisibility(View.VISIBLE);
+	}
+
 	private void refreshList() {
 		Ln.d("Refreshing list.");
 		// XXX: Once again, this is a synchronous operation on the UI thread
-		// and should be moved to a seperate async query that reloads
+		// and should be moved to a separate async query that reloads
 		// afterwards.
 		this.listCursor.requery();
 		this.adapter.notifyDataSetChanged();

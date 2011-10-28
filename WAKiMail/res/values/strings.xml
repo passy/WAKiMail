@@ -26,5 +26,5 @@
 	<string name="refresh_success">There were %d new messages downloaded.</string>
 	<string name="mail_sender_label">From:</string>
 	<string name="mail_date_label">Date:</string>
-	<string name="passy_password">notmypassword</string>
+	<string name="mail_fetch_error">Something went wrong while requesting new mails: %s</string>
 </resources>

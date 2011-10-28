@@ -112,6 +112,13 @@
         <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_alignWithParentIfMissing">true</item>
     </style>
+    <style name="NavbarSpinner">
+        <item name="android:layout_width">30.0dip</item>
+        <item name="android:layout_height">30.0dip</item>
+        <item name="android:layout_marginLeft">6.0dip</item>
+        <item name="android:layout_marginRight">6.0dip</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
     <style name="NavbarTextBtn">
         <item name="android:textSize">15.0sp</item>
         <item name="android:textStyle">bold</item>

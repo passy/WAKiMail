@@ -20,24 +20,26 @@ import com.google.inject.Inject;
 /**
  * This task syncs the online mails with the local data store. The
  * {@link SessionManager} is used for authentication. The resulting integer
- * indicates the number of new elements added to the data store and is used
- * to inform the user and is communicated via the handler to the UI thread.
+ * indicates the number of new elements added to the data store and is used to
+ * inform the user and is communicated via the handler to the UI thread.
  * 
  * @author pascal
  * 
  */
 public class MailSyncTask extends RdreiAsyncTask<Integer> {
 
-	private static final String[] PROJECTION_EXTERNAL_ID = {
-		MailTable.Columns.EXTERNAL_ID
-	};
+	private static final String[] PROJECTION_EXTERNAL_ID = { MailTable.Columns.EXTERNAL_ID };
 
 	/**
-	 * Returned as {@link Message#what} through the handler if the task
-	 * ended successfully.
+	 * Returned as {@link Message#what} through the handler if the task ended
+	 * successfully.
 	 */
 	public static final int SYNC_SUCCESS_MESSAGE = 0;
-	
+	/**
+	 * Returned when an error occurred.
+	 */
+	public static final int SYNC_ERROR_MESSAGE = -1;
+
 	@Inject
 	private MailListLoaderFactory mailListLoaderFactory;
 
@@ -50,25 +52,43 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 		final MailListLoader loader = mailListLoaderFactory.create();
 		return this.syncMail(loader);
 	}
-	
+
 	@Override
 	protected void onSuccess(Integer result) throws Exception {
 		super.onSuccess(result);
-		
+
 		if (result.intValue() > 0) {
-			showResultToast(result);
+			showSuccessToast(result);
 		}
-		
+
 		if (this.handler != null) {
 			this.handler.sendEmptyMessage(SYNC_SUCCESS_MESSAGE);
 		}
 	}
 
-	private void showResultToast(Integer result) {
+	@Override
+	protected void onException(Exception e) throws RuntimeException {
+		Ln.i("Error during mail fetch: ", e);
+		showErrorToast(e.getMessage());
+		
+		if (this.handler != null) {
+			this.handler.sendEmptyMessage(SYNC_ERROR_MESSAGE);
+		}
+	}
+
+	private void showSuccessToast(Integer result) {
+		final String text = this.formatResourceString(R.string.refresh_success,
+				result);
+		final Toast toast = Toast.makeText(this.context, text,
+				Toast.LENGTH_SHORT);
+		toast.show();
+	}
+
+	private void showErrorToast(String message) {
 		final String text = this.formatResourceString(
-				R.string.refresh_success, result);
-		Toast toast = Toast
-				.makeText(this.context, text, Toast.LENGTH_SHORT);
+				R.string.mail_fetch_error, message);
+		final Toast toast = Toast.makeText(this.context, text,
+				Toast.LENGTH_SHORT);
 		toast.show();
 	}
 
