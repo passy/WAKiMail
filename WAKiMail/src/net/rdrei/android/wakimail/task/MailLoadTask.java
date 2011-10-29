@@ -33,7 +33,7 @@ public class MailLoadTask extends RdreiAsyncTask<Void> {
 		ContentResolver resolver = getContext().getContentResolver();
 		String externalId = getExternalId(resolver);
 
-		MailLoader loader = mailLoaderFactory.create(externalId);
+		MailLoader loader = this.mailLoaderFactory.create(externalId);
 		String body = loader.load();
 		saveMailBody(resolver, body);
 
@@ -49,7 +49,7 @@ public class MailLoadTask extends RdreiAsyncTask<Void> {
 	protected void onSuccess(Void t) throws Exception {
 		super.onSuccess(t);
 
-		handler.sendEmptyMessage(LOAD_SUCCESS_MESSAGE);
+		this.handler.sendEmptyMessage(LOAD_SUCCESS_MESSAGE);
 	}
 
 	@Override
@@ -61,13 +61,13 @@ public class MailLoadTask extends RdreiAsyncTask<Void> {
 		Toast toast = Toast.makeText(this.context, text, Toast.LENGTH_SHORT);
 		toast.show();
 		
-		handler.sendEmptyMessage(LOAD_ERROR_MESSAGE);
+		this.handler.sendEmptyMessage(LOAD_ERROR_MESSAGE);
 	}
 
 	private int saveMailBody(ContentResolver resolver, String body) {
 		ContentValues values = new ContentValues(1);
 		values.put(MailTable.Columns.BODY, body);
-		return resolver.update(mUri, values, null, null);
+		return resolver.update(this.mUri, values, null, null);
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class MailLoadTask extends RdreiAsyncTask<Void> {
 		// We don't need transactional management, though. Even if there would
 		// be conflicting queries, the worst result would be to save the same
 		// result twice.
-		Cursor cursor = resolver.query(mUri,
+		Cursor cursor = resolver.query(this.mUri,
 				new String[] { MailTable.Columns.EXTERNAL_ID }, null, null,
 				null);
 		cursor.moveToFirst();

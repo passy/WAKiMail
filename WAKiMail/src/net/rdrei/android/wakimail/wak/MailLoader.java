@@ -46,7 +46,7 @@ public class MailLoader extends NetLoader {
 	public String load() throws IOException, LoginException, ChallengeException {
 		final HttpsURLConnection connection = (HttpsURLConnection) this
 				.openWAKConnection(MESSAGE_URL + this.mId);
-		final String response = mSessionManager
+		final String response = this.mSessionManager
 				.readConnectionWithSessionCheck(connection);
 		Matcher matcher = BODY_PATTERN.matcher(response);
 

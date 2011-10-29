@@ -31,6 +31,6 @@ public abstract class RdreiAsyncTask<ResultT> extends RoboAsyncTask<ResultT> {
 	}
 
 	protected String formatResourceString(int resId, java.lang.Object... formatArgs) {
-		return context.getString(resId, formatArgs);
+		return this.context.getString(resId, formatArgs);
 	}
 }

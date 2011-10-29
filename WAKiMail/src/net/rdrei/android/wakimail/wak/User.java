@@ -22,12 +22,12 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [email=" + email + ", name=" + name + ", sessionId="
-				+ sessionId + "]";
+		return "User [email=" + this.email + ", name=" + this.name + ", sessionId="
+				+ this.sessionId + "]";
 	}
 
 	public String getSessionId() {
-		return sessionId;
+		return this.sessionId;
 	}
 
 	public void setSessionId(String sessionId) {
@@ -35,7 +35,7 @@ public class User implements Serializable {
 	}
 
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	public void setEmail(String email) {
@@ -43,7 +43,7 @@ public class User implements Serializable {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -52,7 +52,7 @@ public class User implements Serializable {
 
 
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 

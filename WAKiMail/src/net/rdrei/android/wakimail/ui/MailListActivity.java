@@ -59,10 +59,10 @@ public class MailListActivity extends RoboListActivity {
 	private Cursor listCursor;
 
 	@InjectView(R.id.refresh_btn)
-	Button mRefreshButton;
+	private Button mRefreshButton;
 	
 	@InjectView(R.id.mail_loadingspinner)
-	ProgressBar mLoadingSpinner;
+	private ProgressBar mLoadingSpinner;
 
 	private void bindRefreshButton() {
 		mRefreshButton.setOnClickListener(new OnRefreshClickListener());

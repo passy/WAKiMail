@@ -46,7 +46,7 @@ public class LoginActivity extends RoboActivity {
 		
 		@Override
 		public void afterTextChanged(Editable s) {
-			signInButton.setEnabled(areRequiredValuesProvided());
+			LoginActivity.this.signInButton.setEnabled(areRequiredValuesProvided());
 		}
 
 		@Override
@@ -78,8 +78,8 @@ public class LoginActivity extends RoboActivity {
     	final String email = this.emailEdit.getText().toString();
     	final String password = this.passwordEdit.getText().toString();
     	
-    	sessionManager.setUserCredentials(email, password);
-		sessionManager.login(this, new LoginTaskResultHandlerCallback());
+    	this.sessionManager.setUserCredentials(email, password);
+		this.sessionManager.login(this, new LoginTaskResultHandlerCallback());
     }
     
     public void onCancel(View v) {

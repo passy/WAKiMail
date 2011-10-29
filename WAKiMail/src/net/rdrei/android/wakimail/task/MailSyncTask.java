@@ -12,7 +12,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
-import android.os.Message;
 import android.widget.Toast;
 
 import com.google.inject.Inject;
@@ -31,7 +30,7 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 	private static final String[] PROJECTION_EXTERNAL_ID = { MailTable.Columns.EXTERNAL_ID };
 
 	/**
-	 * Returned as {@link Message#what} through the handler if the task ended
+	 * Returned as {@link Message#Message.this.what} through the handler if the task ended
 	 * successfully.
 	 */
 	public static final int SYNC_SUCCESS_MESSAGE = 0;
@@ -49,7 +48,7 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 
 	@Override
 	public Integer call() throws Exception {
-		final MailListLoader loader = mailListLoaderFactory.create();
+		final MailListLoader loader = this.mailListLoaderFactory.create();
 		return this.syncMail(loader);
 	}
 

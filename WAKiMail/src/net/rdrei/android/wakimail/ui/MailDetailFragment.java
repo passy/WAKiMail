@@ -84,7 +84,7 @@ public class MailDetailFragment extends RoboListFragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		mAdapter = new SimpleCursorAdapter(
+		this.mAdapter = new SimpleCursorAdapter(
 		// The activity the fragment is using.
 				getActivity(),
 				// The layout built to display the mail.
@@ -102,8 +102,8 @@ public class MailDetailFragment extends RoboListFragment implements
 				// No flags.
 				0);
 
-		mAdapter.setViewBinder(this);
-		setListAdapter(mAdapter);
+		this.mAdapter.setViewBinder(this);
+		setListAdapter(this.mAdapter);
 		// Poke the loader to retrieve an async cursor.
 		getLoaderManager().initLoader(0, null, this);
 	}
@@ -125,8 +125,8 @@ public class MailDetailFragment extends RoboListFragment implements
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		// No need to filter or select anything specific, the URL fetches only
 		// one entry.
-		Ln.d("Requesting a new loader for " + mUri);
-		return new CursorLoader(getActivity(), mUri,
+		Ln.d("Requesting a new loader for " + this.mUri);
+		return new CursorLoader(getActivity(), this.mUri,
 				MailTable.MAILS_PROJECTION, null, null, null);
 	}
 
@@ -134,13 +134,13 @@ public class MailDetailFragment extends RoboListFragment implements
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 		Ln.d("Swapping cursor result.");
 		// Make the new cursor the used cursor.
-		mAdapter.swapCursor(cursor);
+		this.mAdapter.swapCursor(cursor);
 		
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		mAdapter.swapCursor(null);
+		this.mAdapter.swapCursor(null);
 	}
 
 	@Override
@@ -179,9 +179,9 @@ public class MailDetailFragment extends RoboListFragment implements
 	 * Start the task downloading the mail body.
 	 */
 	private void loadMailBody() {
-		Ln.d("Downloading mail body for URI " + mUri);
+		Ln.d("Downloading mail body for URI " + this.mUri);
 		Handler handler = new Handler(new MailLoadTaskHandlerCallback());
-		MailLoadTask task = new MailLoadTask(getActivity(), handler, mUri);
+		MailLoadTask task = new MailLoadTask(getActivity(), handler, this.mUri);
 		task.execute();
 	}
 	

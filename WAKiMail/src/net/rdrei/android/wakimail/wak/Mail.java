@@ -22,7 +22,7 @@ public class Mail {
 	private Calendar date;
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -30,7 +30,7 @@ public class Mail {
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public void setTitle(String title) {
@@ -38,7 +38,7 @@ public class Mail {
 	}
 
 	public String getSender() {
-		return sender;
+		return this.sender;
 	}
 
 	public void setSender(String sender) {
@@ -46,7 +46,7 @@ public class Mail {
 	}
 
 	public String getBody() {
-		return body;
+		return this.body;
 	}
 
 	public void setBody(String body) {
@@ -54,7 +54,7 @@ public class Mail {
 	}
 
 	public Calendar getDate() {
-		return date;
+		return this.date;
 	}
 
 	public void setDate(Calendar date) {

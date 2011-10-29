@@ -13,7 +13,7 @@ import net.rdrei.android.wakimail.URLWrapperFactory;
 import com.google.inject.Inject;
 
 public class NetLoader {
-	@Inject protected URLWrapperFactory urlWrapperFactory;
+	@Inject private URLWrapperFactory urlWrapperFactory;
 	
 	protected URLWrapper makeWAKUrl(String path) {
 		return this.urlWrapperFactory.create(
@@ -32,10 +32,10 @@ public class NetLoader {
 				new InputStreamReader(inputStream), 2 << 11);
 		final StringBuffer buf = new StringBuffer(2 << 12);
 		
-		int c = reader.read();
-		while (c != -1) {
-			buf.append((char) c);
-			c = reader.read();
+		int character = reader.read();
+		while (character != -1) {
+			buf.append((char) character);
+			character = reader.read();
 		}
 		
 		return buf.toString();

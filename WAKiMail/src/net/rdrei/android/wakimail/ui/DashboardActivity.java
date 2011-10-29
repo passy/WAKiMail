@@ -47,15 +47,15 @@ public class DashboardActivity extends RoboActivity {
 			this.user = (User) extras
 					.getSerializable("net.rdrei.android.wakimail.User");
 
-			helloText.setText("You were logged in. Hello, " + user.getName()
+			this.helloText.setText("You were logged in. Hello, " + this.user.getName()
 					+ "!");
-			signInButton.setEnabled(false);
-			showMailButton.setEnabled(true);
+			this.signInButton.setEnabled(false);
+			this.showMailButton.setEnabled(true);
 		}
 	}
 
 	protected void bindSignInButton() {
-		signInButton.setOnClickListener(new View.OnClickListener() {
+		this.signInButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -67,13 +67,13 @@ public class DashboardActivity extends RoboActivity {
 	}
 
 	protected void bindShowMailButton() {
-		showMailButton.setOnClickListener(new View.OnClickListener() {
+		this.showMailButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// XXX: Is this a good idea?
-				mSessionManager.setUserCredentials(user.getEmail(),
-						user.getPassword());
+				DashboardActivity.this.mSessionManager.setUserCredentials(DashboardActivity.this.user.getEmail(),
+						DashboardActivity.this.user.getPassword());
 
 				final Intent intent = new Intent(DashboardActivity.this,
 						MailListActivity.class);
