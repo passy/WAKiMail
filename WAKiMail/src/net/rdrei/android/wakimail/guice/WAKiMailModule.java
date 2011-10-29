@@ -2,7 +2,9 @@ package net.rdrei.android.wakimail.guice;
 
 import net.rdrei.android.wakimail.URLConnectionFactory;
 import net.rdrei.android.wakimail.URLConnectionFactoryImpl;
+import net.rdrei.android.wakimail.URLWrapper;
 import net.rdrei.android.wakimail.URLWrapperFactory;
+import net.rdrei.android.wakimail.URLWrapperImpl;
 import net.rdrei.android.wakimail.wak.MailListLoaderFactory;
 import net.rdrei.android.wakimail.wak.MailLoaderFactory;
 import android.app.ProgressDialog;
@@ -21,6 +23,7 @@ public class WAKiMailModule extends AbstractModule {
 			.build(MailListLoaderFactory.class)
 		);
 		install(new FactoryModuleBuilder()
+			.implement(URLWrapper.class, URLWrapperImpl.class)
 			.build(URLWrapperFactory.class)
 		);
 		install(new FactoryModuleBuilder()
