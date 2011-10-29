@@ -6,5 +6,5 @@ import java.net.URLConnection;
 
 
 public interface URLConnectionFactory {
-	public URLConnection createInstance(URL url) throws IOException;
+	public URLConnection create(URL url) throws IOException;
 }

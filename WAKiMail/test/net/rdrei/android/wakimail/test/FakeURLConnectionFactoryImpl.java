@@ -88,7 +88,7 @@ public class FakeURLConnectionFactoryImpl implements URLConnectionFactory {
 	}
 
 	@Override
-	public URLConnection createInstance(URL url) {
+	public URLConnection create(URL url) {
 		this.url = url;
 		return new FakeURLConnection(url, streamFixture);
 	}
