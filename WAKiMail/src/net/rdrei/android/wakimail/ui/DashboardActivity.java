@@ -16,16 +16,16 @@ import android.widget.TextView;
 public class DashboardActivity extends RoboActivity {
 
 	@InjectView(R.id.dashboard_sign_btn)
-	private Button signInButton;
+	private Button mSignInButton;
 	@InjectView(R.id.dashboard_show_mail_btn)
-	private Button showMailButton;
+	private Button mShowMailButton;
 	@InjectView(R.id.dashboard_hello_text)
-	private TextView helloText;
+	private TextView mHelloText;
 	@Inject
 	private SessionManager mSessionManager;
 
 	private static final int LOGIN_REQUEST = 1;
-	private User user;
+	private User mUser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +43,18 @@ public class DashboardActivity extends RoboActivity {
 		if (requestCode == LOGIN_REQUEST
 				&& resultCode == RoboActivity.RESULT_OK) {
 			final Bundle extras = data.getExtras();
-			// TODO: Use constant.
-			this.user = (User) extras
-					.getSerializable("net.rdrei.android.wakimail.User");
+			this.mUser = (User) extras
+					.getSerializable(LoginActivity.USER_EXTRA_KEY);
 
-			this.helloText.setText("You were logged in. Hello, " + this.user.getName()
-					+ "!");
-			this.signInButton.setEnabled(false);
-			this.showMailButton.setEnabled(true);
+			this.mHelloText.setText("You were logged in. Hello, "
+					+ this.mUser.getName() + "!");
+			this.mSignInButton.setEnabled(false);
+			this.mShowMailButton.setEnabled(true);
 		}
 	}
 
 	protected void bindSignInButton() {
-		this.signInButton.setOnClickListener(new View.OnClickListener() {
+		this.mSignInButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -67,13 +66,14 @@ public class DashboardActivity extends RoboActivity {
 	}
 
 	protected void bindShowMailButton() {
-		this.showMailButton.setOnClickListener(new View.OnClickListener() {
+		this.mShowMailButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// XXX: Is this a good idea?
-				DashboardActivity.this.mSessionManager.setUserCredentials(DashboardActivity.this.user.getEmail(),
-						DashboardActivity.this.user.getPassword());
+				DashboardActivity.this.mSessionManager.setUserCredentials(
+						DashboardActivity.this.mUser.getEmail(),
+						DashboardActivity.this.mUser.getPassword());
 
 				final Intent intent = new Intent(DashboardActivity.this,
 						MailListActivity.class);
