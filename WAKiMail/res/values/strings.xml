@@ -27,5 +27,7 @@
     <string name="mail_date_label">Date:</string>
     <string name="mail_fetch_error">Something went wrong while requesting new mails: %s</string>
     <string name="dashboard_text">Welcome to WAKiMail. This app allows you to read your WAK mail without accessing the lovely platform. You need a user@berufsakademie-sh.de mail address to get started.</string>
+    <string name="menu_about">About</string>
+    <string name="menu_logout">Logout</string>
 
 </resources>
