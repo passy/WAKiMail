@@ -9,7 +9,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 public class URLWrapperImpl implements URLWrapper {
-	@Inject protected URLConnectionFactory urlConnectionFactory;
+	@Inject private URLConnectionFactory mUrlConnectionFactory;
 	private URL url;
 	
 	@Inject
@@ -22,7 +22,7 @@ public class URLWrapperImpl implements URLWrapper {
 	 */
 	@Override
 	public URLConnection openConnection() throws IOException {
-		return this.urlConnectionFactory.create(this.url);
+		return this.mUrlConnectionFactory.create(this.url);
 	}
 
 }
