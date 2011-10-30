@@ -2,6 +2,7 @@ package net.rdrei.android.wakimail.ui;
 
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailDatabase;
+import net.rdrei.android.wakimail.data.MailPreferences;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.task.MailSyncTask;
 import roboguice.activity.RoboListActivity;
@@ -92,10 +93,13 @@ public class MailListActivity extends RoboListActivity {
 	 */
 	private void logoutUser() {
 		// Clear the preferences.
-		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+		SharedPreferences preferences = getSharedPreferences(
+				MailPreferences.KEY, MODE_PRIVATE);
 		preferences.edit().clear().commit();
 		// Drop the database.
-		this.deleteDatabase(MailDatabase.DB_NAME);
+		if (!this.deleteDatabase(MailDatabase.DB_NAME)) {
+			Ln.e("Could not delete sqlite database!");
+		}
 	}
 
 	private final class OnRefreshClickListener implements View.OnClickListener {

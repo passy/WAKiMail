@@ -30,9 +30,9 @@
     <string name="dashboard_text">Welcome to WAKiMail. This app allows you to read your WAK mail without accessing the lovely platform. You need a user@berufsakademie-sh.de mail address to get started.</string>
     <string name="menu_about">About</string>
     <string name="menu_logout">Logout</string>
-    <string name="about_message">http://wakimail.android.rdrei.net/\n\n
+    <string name="about_message">http://wakimail.android.rdrei.net\n\n
         Developed by Pascal Hartig.\n\n
-        Report bugs at http://github.com/passy/WAKiMail/
+        Report bugs at http://github.com/passy/WAKiMail
     </string>
 
 </resources>

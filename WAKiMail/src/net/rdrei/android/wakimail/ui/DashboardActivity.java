@@ -40,42 +40,38 @@ public class DashboardActivity extends RoboActivity {
 	/**
 	 * Loads user credentials and sets the singleton accordingly. Returns null
 	 * if the data hasn't been saved yet.
+	 * 
 	 * @return User object or null.
 	 */
 	private User loadUserCredentials() {
-		SharedPreferences preferences = this.getPreferences(MODE_PRIVATE);
-		
+		SharedPreferences preferences = this.getSharedPreferences(
+				MailPreferences.KEY, MODE_PRIVATE);
+
 		// If the preferences can't be loaded, we obviously can't restore
 		// the user settings.
 		if (preferences == null) {
 			return null;
 		}
-		
+
 		// The three values are always committed all at once, so we don't
 		// need to check for all of them. If one is missing, the user
 		// manipulated the storage.
 		if (preferences.contains(MailPreferences.USER_EMAIL)) {
 			User user = new User();
-			user.setEmail(preferences.getString(
-					MailPreferences.USER_EMAIL,
-					""));
+			user.setEmail(preferences.getString(MailPreferences.USER_EMAIL, ""));
 			user.setPassword(preferences.getString(
-					MailPreferences.USER_PASSWORD,
-					""));
+					MailPreferences.USER_PASSWORD, ""));
 			user.setSessionId(preferences.getString(
-					MailPreferences.USER_SESSIONID,
-					""));
-			user.setName(preferences.getString(
-					MailPreferences.USER_NAME,
-					""));
-			
+					MailPreferences.USER_SESSIONID, ""));
+			user.setName(preferences.getString(MailPreferences.USER_NAME, ""));
+
 			this.mSessionManager.setUser(user);
 			return user;
 		}
-		
+
 		return null;
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -85,7 +81,7 @@ public class DashboardActivity extends RoboActivity {
 			final Bundle extras = data.getExtras();
 			final User user = (User) extras
 					.getSerializable(LoginActivity.USER_EXTRA_KEY);
-			
+
 			this.saveUserCredentials(user);
 			this.skipDashboard();
 		}
@@ -94,29 +90,29 @@ public class DashboardActivity extends RoboActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		User user = this.loadUserCredentials();
 		if (user != null) {
 			Ln.d("User credentials are saved. Skipping dashboard.");
 			this.skipDashboard();
 		}
 
-		
 		Ln.d("No user credentials saved.");
 		setContentView(R.layout.activity_dashboard);
 		this.bindSignInButton();
 	}
-	
+
 	private void saveUserCredentials(User user) {
 		this.mSessionManager.setUser(user);
-		SharedPreferences preferences = this.getPreferences(MODE_PRIVATE);
+		SharedPreferences preferences = this.getSharedPreferences(
+				MailPreferences.KEY, MODE_PRIVATE);
 		Editor editor = preferences.edit();
 		editor.putString(MailPreferences.USER_EMAIL, user.getEmail());
 		editor.putString(MailPreferences.USER_PASSWORD, user.getPassword());
 		editor.putString(MailPreferences.USER_SESSIONID, user.getSessionId());
 		editor.putString(MailPreferences.USER_NAME, user.getName());
 		editor.commit();
-		
+
 		Ln.d("Saved user credentials to preferences.");
 	}
 
@@ -125,7 +121,7 @@ public class DashboardActivity extends RoboActivity {
 	 */
 	private void skipDashboard() {
 		final Intent intent = new Intent(this, MailListActivity.class);
-		
+
 		// Replaces the current activity.
 		startActivity(intent);
 		finish();
