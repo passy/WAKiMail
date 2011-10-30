@@ -1,57 +1,29 @@
 package net.rdrei.android.wakimail.ui;
 
-import com.google.inject.Inject;
-
 import net.rdrei.android.wakimail.R;
+import net.rdrei.android.wakimail.data.MailPreferences;
 import net.rdrei.android.wakimail.wak.SessionManager;
 import net.rdrei.android.wakimail.wak.User;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
+import roboguice.util.Ln;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+
+import com.google.inject.Inject;
 
 public class DashboardActivity extends RoboActivity {
 
-	@InjectView(R.id.dashboard_sign_btn)
-	private Button mSignInButton;
-	@InjectView(R.id.dashboard_show_mail_btn)
-	private Button mShowMailButton;
-	@InjectView(R.id.dashboard_hello_text)
-	private TextView mHelloText;
+	private static final int LOGIN_REQUEST = 1;
 	@Inject
 	private SessionManager mSessionManager;
 
-	private static final int LOGIN_REQUEST = 1;
-	private User mUser;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		setContentView(R.layout.activity_dashboard);
-		this.bindSignInButton();
-		this.bindShowMailButton();
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		if (requestCode == LOGIN_REQUEST
-				&& resultCode == RoboActivity.RESULT_OK) {
-			final Bundle extras = data.getExtras();
-			this.mUser = (User) extras
-					.getSerializable(LoginActivity.USER_EXTRA_KEY);
-
-			this.mHelloText.setText("You were logged in. Hello, "
-					+ this.mUser.getName() + "!");
-			this.mSignInButton.setEnabled(false);
-			this.mShowMailButton.setEnabled(true);
-		}
-	}
+	@InjectView(R.id.dashboard_sign_btn)
+	private Button mSignInButton;
 
 	protected void bindSignInButton() {
 		this.mSignInButton.setOnClickListener(new View.OnClickListener() {
@@ -65,20 +37,93 @@ public class DashboardActivity extends RoboActivity {
 		});
 	}
 
-	protected void bindShowMailButton() {
-		this.mShowMailButton.setOnClickListener(new View.OnClickListener() {
+	/**
+	 * Loads user credentials and sets the singleton accordingly. Returns null
+	 * if the data hasn't been saved yet.
+	 * @return User object or null.
+	 */
+	private User loadUserCredentials() {
+		SharedPreferences preferences = this.getPreferences(MODE_PRIVATE);
+		
+		// If the preferences can't be loaded, we obviously can't restore
+		// the user settings.
+		if (preferences == null) {
+			return null;
+		}
+		
+		// The three values are always committed all at once, so we don't
+		// need to check for all of them. If one is missing, the user
+		// manipulated the storage.
+		if (preferences.contains(MailPreferences.USER_EMAIL)) {
+			User user = new User();
+			user.setEmail(preferences.getString(
+					MailPreferences.USER_EMAIL,
+					""));
+			user.setPassword(preferences.getString(
+					MailPreferences.USER_PASSWORD,
+					""));
+			user.setSessionId(preferences.getString(
+					MailPreferences.USER_SESSIONID,
+					""));
+			
+			this.mSessionManager.setUser(user);
+			return user;
+		}
+		
+		return null;
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 
-			@Override
-			public void onClick(View v) {
-				// XXX: Is this a good idea?
-				DashboardActivity.this.mSessionManager.setUserCredentials(
-						DashboardActivity.this.mUser.getEmail(),
-						DashboardActivity.this.mUser.getPassword());
+		if (requestCode == LOGIN_REQUEST
+				&& resultCode == RoboActivity.RESULT_OK) {
+			final Bundle extras = data.getExtras();
+			final User user = (User) extras
+					.getSerializable(LoginActivity.USER_EXTRA_KEY);
+			
+			this.saveUserCredentials(user);
+			this.skipDashboard();
+		}
+	}
 
-				final Intent intent = new Intent(DashboardActivity.this,
-						MailListActivity.class);
-				startActivity(intent);
-			}
-		});
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		User user = this.loadUserCredentials();
+		if (user != null) {
+			Ln.d("User credentials are saved. Skipping dashboard.");
+			this.skipDashboard();
+		}
+
+		
+		Ln.d("No user credentials saved.");
+		setContentView(R.layout.activity_dashboard);
+		this.bindSignInButton();
+	}
+	
+	private void saveUserCredentials(User user) {
+		this.mSessionManager.setUser(user);
+		SharedPreferences preferences = this.getPreferences(MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putString(MailPreferences.USER_EMAIL, user.getEmail());
+		editor.putString(MailPreferences.USER_PASSWORD, user.getPassword());
+		editor.putString(MailPreferences.USER_SESSIONID, user.getSessionId());
+		editor.commit();
+		
+		Ln.d("Saved user credentials to preferences.");
+	}
+
+	/**
+	 * User is logged in, skip to next activity.
+	 */
+	private void skipDashboard() {
+		final Intent intent = new Intent(this, MailListActivity.class);
+		
+		// Replaces the current activity.
+		startActivity(intent);
+		finish();
 	}
 }

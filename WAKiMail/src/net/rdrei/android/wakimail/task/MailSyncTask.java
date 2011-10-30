@@ -49,6 +49,7 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 	@Override
 	public Integer call() throws Exception {
 		final MailListLoader loader = this.mailListLoaderFactory.create();
+		loader.loadResponse();
 		return this.syncMail(loader);
 	}
 

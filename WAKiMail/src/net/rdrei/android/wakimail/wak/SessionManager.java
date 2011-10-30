@@ -36,6 +36,10 @@ public class SessionManager {
 	public User getUser() {
 		return this.user;
 	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	public void setUserCredentials(String email, String password) {
 		this.user.setEmail(email);
