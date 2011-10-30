@@ -331,7 +331,7 @@ public class LoginManager {
 	 * main page and verify that the login actually happened or raise an
 	 * exception.
 	 * 
-	 * @return
+	 * @return User objects, built from the response.
 	 * @throws LoginException
 	 * @throws IOException 
 	 */
@@ -361,6 +361,9 @@ public class LoginManager {
 			throw new LoginException("Could not retrieve user name.");
 		}
 		
-		return new User(this.email, userName, getSessionId());
+		User user = new User(this.email, userName, getSessionId());
+		user.setPassword(this.password);
+		
+		return user;
 	}
 }

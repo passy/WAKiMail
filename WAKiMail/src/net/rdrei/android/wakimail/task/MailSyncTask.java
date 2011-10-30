@@ -68,7 +68,7 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 
 	@Override
 	protected void onException(Exception e) throws RuntimeException {
-		Ln.i("Error during mail fetch: ", e);
+		Ln.w(e, "Error during mail fetch.");
 		showErrorToast(e.getMessage());
 		
 		if (this.handler != null) {

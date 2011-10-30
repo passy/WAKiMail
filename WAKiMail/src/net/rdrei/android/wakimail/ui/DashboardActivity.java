@@ -65,6 +65,9 @@ public class DashboardActivity extends RoboActivity {
 			user.setSessionId(preferences.getString(
 					MailPreferences.USER_SESSIONID,
 					""));
+			user.setName(preferences.getString(
+					MailPreferences.USER_NAME,
+					""));
 			
 			this.mSessionManager.setUser(user);
 			return user;
@@ -111,6 +114,7 @@ public class DashboardActivity extends RoboActivity {
 		editor.putString(MailPreferences.USER_EMAIL, user.getEmail());
 		editor.putString(MailPreferences.USER_PASSWORD, user.getPassword());
 		editor.putString(MailPreferences.USER_SESSIONID, user.getSessionId());
+		editor.putString(MailPreferences.USER_NAME, user.getName());
 		editor.commit();
 		
 		Ln.d("Saved user credentials to preferences.");
