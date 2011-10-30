@@ -13,34 +13,25 @@
         android:src="@drawable/ic_waklogo_big" >
     </ImageView>
 
+    <TextView
+        android:id="@+id/dashboard_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/dashboard_sign_btn"
+        android:layout_alignRight="@+id/dashboard_sign_btn"
+        android:layout_below="@+id/dashboard_logo"
+        android:layout_marginTop="23dp"
+        android:text="@string/dashboard_text" />
+    
     <Button
         android:id="@+id/dashboard_sign_btn"
         style="@style/Button"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dashboard_logo"
+        android:layout_below="@+id/dashboard_text"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="@string/login_signin" >
     </Button>
-
-    <TextView
-        android:id="@+id/dashboard_hello_text"
-        android:layout_width="260dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textAppearance="?android:attr/textAppearanceLarge" >
-    </TextView>
-
-    <Button
-        android:id="@+id/dashboard_show_mail_btn"
-        style="@style/Button"
-        android:layout_width="260dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/dashboard_hello_text"
-        android:layout_below="@id/dashboard_hello_text"
-        android:enabled="false"
-        android:text="Show me teh mail!1" />
 
 </RelativeLayout>

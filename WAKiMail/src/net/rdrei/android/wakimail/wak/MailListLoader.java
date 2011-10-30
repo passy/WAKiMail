@@ -27,16 +27,17 @@ public class MailListLoader extends NetLoader implements Iterable<Mail> {
 	// I think it's pretty unbelievable that Java < 7 doesn't
 	// support named groups.
 	// Group 0: Message ID
-	"c_email.html\\?&action=getviewmessagessingle"
-	+ "&msg_uid=([0-9]+)&folder=[0-9]*\">" +
-	// Group 1: Title
-	"([^<]+)</a></td>[^<]*" +
-	// Group 2: Date
-	"<td>(.+?)</td>[^<]*" +
-	// Group 3: Sender
-	"<td>([^&]+)&nbsp;", Pattern.DOTALL);
+			"c_email.html\\?&action=getviewmessagessingle"
+					+ "&msg_uid=([0-9]+)&folder=[0-9]*\">" +
+					// Group 1: Title
+					"([^<]+)</a></td>[^<]*" +
+					// Group 2: Date
+					"<td>(.+?)</td>[^<]*" +
+					// Group 3: Sender
+					"<td>([^&]+)&nbsp;", Pattern.DOTALL);
 
 	private static final String MESSAGES_PATH = "c_email.html";
+	private String mIteratorResponse = null;
 
 	@Inject
 	private SessionManager sessionManager;
@@ -65,25 +66,18 @@ public class MailListLoader extends NetLoader implements Iterable<Mail> {
 		return result;
 	}
 
+	public void loadResponse() throws IOException, LoginException,
+			ChallengeException {
+		this.mIteratorResponse = this.readMailResponse();
+	}
+
 	@Override
 	public Iterator<Mail> iterator() {
-		String response = null;
-		try {
-			response = this.readMailResponse();
-		} catch (IOException e) {
-			Ln.e(e);
-		} catch (LoginException e) {
-			Ln.e(e);
-		} catch (ChallengeException e) {
-			Ln.e(e);
+		if (mIteratorResponse == null) {
+			throw new RuntimeException("You need to call loadResponse first "
+					+ "in order to use the iterator.");
 		}
-		
-		if (response == null) {
-			// This won't hurt, it will just return no iterable items.
-			response = "";
-		}
-		
-		Matcher matcher = MAIL_PATTERN.matcher(response);
+		Matcher matcher = MAIL_PATTERN.matcher(mIteratorResponse);
 		return new MailIterator(matcher);
 	}
 
