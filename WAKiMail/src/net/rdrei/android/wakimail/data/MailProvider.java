@@ -40,7 +40,7 @@ public class MailProvider extends ContentProvider {
 	@Override
 	public int delete(Uri uri, String where, String[] whereArgs) {
 		int count;
-		SQLiteDatabase db = mDatabase.getWritableDatabase();
+		SQLiteDatabase db = this.mDatabase.getWritableDatabase();
 
 		switch (URI_MATCHER.match(uri)) {
 		case MAILS:
@@ -89,7 +89,7 @@ public class MailProvider extends ContentProvider {
 			throw new NullPointerException("values must not be null!");
 		}
 
-		SQLiteDatabase db = mDatabase.getWritableDatabase();
+		SQLiteDatabase db = this.mDatabase.getWritableDatabase();
 		rowId = db.insert(MailTable.TABLE_NAME, null, values);
 
 		if (rowId > 0) {
@@ -146,7 +146,7 @@ public class MailProvider extends ContentProvider {
 			orderBy = sort;
 		}
 
-		SQLiteDatabase db = mDatabase.getReadableDatabase();
+		SQLiteDatabase db = this.mDatabase.getReadableDatabase();
 		Cursor cursor = queryBuilder.query(db, projection, selection,
 				whereArgs, null, null, orderBy);
 
@@ -171,7 +171,7 @@ public class MailProvider extends ContentProvider {
 			selectionArgs = new String[] { uri.getLastPathSegment() };
 		}
 
-		SQLiteDatabase db = mDatabase.getWritableDatabase();
+		SQLiteDatabase db = this.mDatabase.getWritableDatabase();
 		int count = db.update(MailTable.TABLE_NAME, values, where,
 				selectionArgs);
 		

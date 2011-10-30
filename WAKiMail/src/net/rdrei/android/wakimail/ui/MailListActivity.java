@@ -121,7 +121,7 @@ public class MailListActivity extends RoboListActivity {
 	private ProgressBar mLoadingSpinner;
 
 	private void bindRefreshButton() {
-		mRefreshButton.setOnClickListener(new OnRefreshClickListener());
+		this.mRefreshButton.setOnClickListener(new OnRefreshClickListener());
 	}
 
 	@Override
@@ -166,13 +166,13 @@ public class MailListActivity extends RoboListActivity {
 	}
 
 	private void showLoadingSpinner() {
-		mRefreshButton.setVisibility(View.GONE);
-		mLoadingSpinner.setVisibility(View.VISIBLE);
+		this.mRefreshButton.setVisibility(View.GONE);
+		this.mLoadingSpinner.setVisibility(View.VISIBLE);
 	}
 
 	private void hideLoadingSpinner() {
-		mLoadingSpinner.setVisibility(View.GONE);
-		mRefreshButton.setVisibility(View.VISIBLE);
+		this.mLoadingSpinner.setVisibility(View.GONE);
+		this.mRefreshButton.setVisibility(View.VISIBLE);
 	}
 	
 	private void refresh() {

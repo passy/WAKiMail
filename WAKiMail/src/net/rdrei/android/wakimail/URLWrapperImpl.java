@@ -22,7 +22,7 @@ public class URLWrapperImpl implements URLWrapper {
 	 */
 	@Override
 	public URLConnection openConnection() throws IOException {
-		return this.urlConnectionFactory.create(url);
+		return this.urlConnectionFactory.create(this.url);
 	}
 
 }

@@ -73,11 +73,11 @@ public class MailListLoader extends NetLoader implements Iterable<Mail> {
 
 	@Override
 	public Iterator<Mail> iterator() {
-		if (mIteratorResponse == null) {
+		if (this.mIteratorResponse == null) {
 			throw new RuntimeException("You need to call loadResponse first "
 					+ "in order to use the iterator.");
 		}
-		Matcher matcher = MAIL_PATTERN.matcher(mIteratorResponse);
+		Matcher matcher = MAIL_PATTERN.matcher(this.mIteratorResponse);
 		return new MailIterator(matcher);
 	}
 
@@ -85,6 +85,6 @@ public class MailListLoader extends NetLoader implements Iterable<Mail> {
 			ChallengeException {
 		HttpsURLConnection connection = (HttpsURLConnection) this
 				.openWAKConnection(MESSAGES_PATH);
-		return sessionManager.readConnectionWithSessionCheck(connection);
+		return this.sessionManager.readConnectionWithSessionCheck(connection);
 	}
 }
