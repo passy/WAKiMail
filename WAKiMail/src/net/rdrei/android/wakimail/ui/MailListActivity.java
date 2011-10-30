@@ -40,7 +40,7 @@ public class MailListActivity extends RoboListActivity {
 		public boolean handleMessage(Message msg) {
 			if (msg.what == MailSyncTask.SYNC_SUCCESS_MESSAGE) {
 				Ln.d("UI thread received sync success message.");
-				refreshList();
+				refreshListCursor();
 				hideLoadingSpinner();
 			} else if (msg.what == MailSyncTask.SYNC_ERROR_MESSAGE) {
 				Ln.w("MailSyncTask threw an exception.");
@@ -104,13 +104,7 @@ public class MailListActivity extends RoboListActivity {
 
 	private final class OnRefreshClickListener implements View.OnClickListener {
 		public void onClick(View v) {
-			// TODO: Add loading spinner instead of button.
-			Handler handler = new Handler(new MailSyncTaskHandlerCallback());
-			MailSyncTask task = new MailSyncTask(MailListActivity.this, handler);
-
-			Ln.d("Starting mail sync task.");
-			task.execute();
-			showLoadingSpinner();
+			refresh();
 		}
 	}
 
@@ -151,6 +145,11 @@ public class MailListActivity extends RoboListActivity {
 						MailTable.Columns.SENDER }, new int[] {
 						android.R.id.text1, android.R.id.text2 }, 0);
 		setListAdapter(this.adapter);
+		
+		if (this.adapter.isEmpty()) {
+			Ln.d("List is empty. Triggering initial loading.");
+			refresh();
+		}
 
 		final ListView listView = getListView();
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -175,8 +174,17 @@ public class MailListActivity extends RoboListActivity {
 		mLoadingSpinner.setVisibility(View.GONE);
 		mRefreshButton.setVisibility(View.VISIBLE);
 	}
+	
+	private void refresh() {
+		Handler handler = new Handler(new MailSyncTaskHandlerCallback());
+		MailSyncTask task = new MailSyncTask(this, handler);
 
-	private void refreshList() {
+		Ln.d("Starting mail sync task.");
+		task.execute();
+		showLoadingSpinner();
+	}
+
+	private void refreshListCursor() {
 		Ln.d("Refreshing list.");
 		// XXX: Once again, this is a synchronous operation on the UI thread
 		// and should be moved to a separate async query that reloads
