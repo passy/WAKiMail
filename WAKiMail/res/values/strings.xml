@@ -21,7 +21,7 @@
     <string name="login_error">Woops, something went wrong during the login: %s
 	</string>
     <string name="login_success">Login successful.</string>
-    <string name="mail_list_empty">There are no mails.</string>
+    <string name="mail_list_empty">Loading mail inbox. This may take a while …</string>
     <string name="loading">Loading …</string>
     <string name="refresh_success">There were %d new messages downloaded.</string>
     <string name="mail_sender_label">From:</string>
