@@ -1,21 +1,27 @@
 package net.rdrei.android.wakimail.ui;
 
 import net.rdrei.android.wakimail.R;
+import net.rdrei.android.wakimail.data.MailDatabase;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.task.MailSyncTask;
 import roboguice.activity.RoboListActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -24,6 +30,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 public class MailListActivity extends RoboListActivity {
+
+	private static final int ABOUT_DIALOG = 0;
 
 	private class MailSyncTaskHandlerCallback implements Handler.Callback {
 
@@ -49,6 +57,47 @@ public class MailListActivity extends RoboListActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_about:
+			this.showDialog(ABOUT_DIALOG);
+			return true;
+		case R.id.menu_logout:
+			this.logoutUser();
+			this.finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case ABOUT_DIALOG:
+			View view = LayoutInflater.from(this).inflate(
+					R.layout.dialog_about, null);
+			String title = this.getString(R.string.about_title);
+			String positiveMessage = this.getString(android.R.string.ok);
+			return new AlertDialog.Builder(this).setTitle(title)
+					.setCancelable(true).setIcon(R.drawable.icon)
+					.setPositiveButton(positiveMessage, null).setView(view)
+					.create();
+		}
+		return super.onCreateDialog(id);
+	}
+
+	/**
+	 * Delete all user information from the storage and end
+	 */
+	private void logoutUser() {
+		// Clear the preferences.
+		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+		preferences.edit().clear().commit();
+		// Drop the database.
+		this.deleteDatabase(MailDatabase.DB_NAME);
+	}
+
 	private final class OnRefreshClickListener implements View.OnClickListener {
 		public void onClick(View v) {
 			// TODO: Add loading spinner instead of button.
@@ -69,7 +118,7 @@ public class MailListActivity extends RoboListActivity {
 
 	@InjectView(R.id.refresh_btn)
 	private Button mRefreshButton;
-	
+
 	@InjectView(R.id.mail_loadingspinner)
 	private ProgressBar mLoadingSpinner;
 
@@ -112,12 +161,12 @@ public class MailListActivity extends RoboListActivity {
 			}
 		});
 	}
-	
+
 	private void showLoadingSpinner() {
 		mRefreshButton.setVisibility(View.GONE);
 		mLoadingSpinner.setVisibility(View.VISIBLE);
 	}
-	
+
 	private void hideLoadingSpinner() {
 		mLoadingSpinner.setVisibility(View.GONE);
 		mRefreshButton.setVisibility(View.VISIBLE);

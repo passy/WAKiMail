@@ -18,7 +18,7 @@ public class MailDatabase extends SQLiteOpenHelper {
 	/**
 	 * Name the database is saved as.
 	 */
-	private static final String DB_NAME = "wakimail.db";
+	public static final String DB_NAME = "wakimail.db";
 
 	public MailDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
