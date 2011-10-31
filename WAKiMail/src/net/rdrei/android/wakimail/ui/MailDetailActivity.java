@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 
 public class MailDetailActivity extends RoboFragmentActivity {
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		Uri uri = this.getIntent().getData();
