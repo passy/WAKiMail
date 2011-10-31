@@ -2,25 +2,24 @@ package net.rdrei.android.wakimail.test;
 
 import java.util.Map;
 
+import net.rdrei.android.wakimail.data.MailPreferences;
+import net.rdrei.android.wakimail.ui.DashboardActivity;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import roboguice.RoboGuice;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.SharedPreferences;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.util.Modules;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.matchers.StartedMatcher;
-
-import roboguice.RoboGuice;
-
-import net.rdrei.android.wakimail.data.MailPreferences;
-import net.rdrei.android.wakimail.ui.DashboardActivity;
-import net.rdrei.android.wakimail.ui.MailListActivity;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.SharedPreferences;
 
 @RunWith(InjectedTestRunner.class)
 public class DashboardSavedActivityTest {
