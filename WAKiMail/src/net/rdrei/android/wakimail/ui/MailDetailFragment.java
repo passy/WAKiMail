@@ -1,5 +1,7 @@
 package net.rdrei.android.wakimail.ui;
 
+import java.text.SimpleDateFormat;
+
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.task.MailLoadTask;
@@ -30,6 +32,8 @@ public class MailDetailFragment extends RoboListFragment implements
 	 */
 	private SimpleCursorAdapter mAdapter;
 	private Uri mUri;
+	private static final SimpleDateFormat sDateFormatter = new SimpleDateFormat(
+			"dd. mm. yyyy HH:MM");
 
 	public static MailDetailFragment newInstance(Uri uri) {
 		MailDetailFragment fragment = new MailDetailFragment();
@@ -94,8 +98,7 @@ public class MailDetailFragment extends RoboListFragment implements
 				// The map projection received.
 				new String[] { MailTable.Columns.BODY, MailTable.Columns.BODY,
 						MailTable.Columns.SENDER, MailTable.Columns.DATE,
-						MailTable.Columns.TITLE
-						},
+						MailTable.Columns.TITLE },
 				// The map to display to.
 				new int[] { R.id.mail_body, R.id.mail_loadingspinner,
 						R.id.mail_from, R.id.mail_date, R.id.mail_title },
@@ -135,7 +138,7 @@ public class MailDetailFragment extends RoboListFragment implements
 		Ln.d("Swapping cursor result.");
 		// Make the new cursor the used cursor.
 		this.mAdapter.swapCursor(cursor);
-		
+
 	}
 
 	@Override
@@ -151,10 +154,15 @@ public class MailDetailFragment extends RoboListFragment implements
 		case R.id.mail_title:
 			String text = cursor.getString(columnIndex);
 			Ln.d("Replacing title navbar with " + text);
-			
+
 			TextView title = (TextView) getActivity().findViewById(
 					R.id.mail_title);
 			title.setText(text);
+			return true;
+		case R.id.mail_date:
+			int date = cursor.getInt(columnIndex);
+			TextView dateView = (TextView) view;
+			dateView.setText(sDateFormatter.format(date));
 			return true;
 		case R.id.mail_body:
 			if (cursor.isNull(columnIndex)) {
@@ -184,7 +192,7 @@ public class MailDetailFragment extends RoboListFragment implements
 		MailLoadTask task = new MailLoadTask(getActivity(), handler, this.mUri);
 		task.execute();
 	}
-	
+
 	private class MailLoadTaskHandlerCallback implements Handler.Callback {
 		@Override
 		public boolean handleMessage(Message msg) {
@@ -202,6 +210,6 @@ public class MailDetailFragment extends RoboListFragment implements
 			}
 			return false;
 		}
-		
+
 	}
 }
