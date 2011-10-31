@@ -1,3 +1,10 @@
+WAKiMail v0.5.1
+===============
+
+    * Fixed bug that caused the application to crash when rotating the screen
+      while fetching mails and clicking the refresh button again and the sencond
+      sync request finished before the first did.
+
 WAKiMail v0.5
 =============
 
