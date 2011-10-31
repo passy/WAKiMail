@@ -170,7 +170,7 @@ public class MailDetailFragment extends RoboListFragment implements
 			} else {
 				view.setVisibility(View.VISIBLE);
 				final String body = cursor.getString(columnIndex);
-				((TextView)view).setText(this.formatMailBody(body));
+				((TextView) view).setText(this.formatMailBody(body));
 			}
 			return true;
 		case R.id.mail_loadingspinner:
@@ -186,11 +186,14 @@ public class MailDetailFragment extends RoboListFragment implements
 
 	/**
 	 * Removes unnecessary HTML elements from the mail body.
+	 * 
 	 * @param text
 	 * @return Cleaned text.
 	 */
 	private CharSequence formatMailBody(String text) {
-		text.replaceAll("<br>", "");
+		text = text.replaceAll("<br>", "")
+				.replaceAll("<br/>", "")
+				.replaceAll("<br />", "");
 		return text;
 	}
 
