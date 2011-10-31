@@ -33,7 +33,7 @@ public class MailDetailFragment extends RoboListFragment implements
 	private SimpleCursorAdapter mAdapter;
 	private Uri mUri;
 	private static final SimpleDateFormat sDateFormatter = new SimpleDateFormat(
-			"dd. mm. yyyy HH:MM");
+			"dd. MM. yyyy HH:mm");
 
 	public static MailDetailFragment newInstance(Uri uri) {
 		MailDetailFragment fragment = new MailDetailFragment();
@@ -160,7 +160,7 @@ public class MailDetailFragment extends RoboListFragment implements
 			title.setText(text);
 			return true;
 		case R.id.mail_date:
-			int date = cursor.getInt(columnIndex);
+			long date = cursor.getLong(columnIndex);
 			TextView dateView = (TextView) view;
 			dateView.setText(sDateFormatter.format(date));
 			return true;
