@@ -8,6 +8,7 @@ import net.rdrei.android.wakimail.task.MailSyncTask;
 import roboguice.activity.RoboListActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
+import roboguice.util.RoboAsyncTask;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentUris;
@@ -16,8 +17,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,60 +31,33 @@ import android.widget.ProgressBar;
 
 public class MailListActivity extends RoboListActivity {
 
+	private final class OnRefreshClickListener implements View.OnClickListener {
+		public void onClick(View v) {
+			refresh();
+		}
+	}
+
 	private static final int ABOUT_DIALOG = 0;
 
-	private class MailSyncTaskHandlerCallback implements Handler.Callback {
+	private static final String[] PROJECTION = { MailTable.Columns._ID,
+			MailTable.Columns.TITLE, MailTable.Columns.SENDER, };
 
-		@Override
-		public boolean handleMessage(Message msg) {
-			if (msg.what == MailSyncTask.SYNC_SUCCESS_MESSAGE) {
-				Ln.d("UI thread received sync success message.");
-				refreshListCursor();
-				hideLoadingSpinner();
-			} else if (msg.what == MailSyncTask.SYNC_ERROR_MESSAGE) {
-				Ln.w("MailSyncTask threw an exception.");
-				hideLoadingSpinner();
-			}
-			return true;
-		}
+	public static final String USER_EXTRA = "user";
 
-	}
+	private SimpleCursorAdapter adapter;
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.mail_list_menu, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
+	private Cursor listCursor;
+	
+	private RoboAsyncTask<?> mSyncTask;
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_about:
-			this.showDialog(ABOUT_DIALOG);
-			return true;
-		case R.id.menu_logout:
-			this.logoutUser();
-			this.finish();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+	@InjectView(R.id.mail_loadingspinner)
+	private ProgressBar mLoadingSpinner;
+	
+	@InjectView(R.id.refresh_btn)
+	private Button mRefreshButton;
 
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		switch (id) {
-		case ABOUT_DIALOG:
-			View view = LayoutInflater.from(this).inflate(
-					R.layout.dialog_about, null);
-			String title = this.getString(R.string.about_title);
-			String positiveMessage = this.getString(android.R.string.ok);
-			return new AlertDialog.Builder(this).setTitle(title)
-					.setCancelable(true).setIcon(R.drawable.icon)
-					.setPositiveButton(positiveMessage, null).setView(view)
-					.create();
-		}
-		return super.onCreateDialog(id);
+	private void bindRefreshButton() {
+		this.mRefreshButton.setOnClickListener(new OnRefreshClickListener());
 	}
 
 	/**
@@ -93,35 +65,13 @@ public class MailListActivity extends RoboListActivity {
 	 */
 	private void logoutUser() {
 		// Clear the preferences.
-		SharedPreferences preferences = getSharedPreferences(
+		final SharedPreferences preferences = getSharedPreferences(
 				MailPreferences.KEY, MODE_PRIVATE);
 		preferences.edit().clear().commit();
 		// Drop the database.
 		if (!this.deleteDatabase(MailDatabase.DB_NAME)) {
 			Ln.e("Could not delete sqlite database!");
 		}
-	}
-
-	private final class OnRefreshClickListener implements View.OnClickListener {
-		public void onClick(View v) {
-			refresh();
-		}
-	}
-
-	private static final String[] PROJECTION = { MailTable.Columns._ID,
-			MailTable.Columns.TITLE, MailTable.Columns.SENDER, };
-	public static final String USER_EXTRA = "user";
-	private SimpleCursorAdapter adapter;
-	private Cursor listCursor;
-
-	@InjectView(R.id.refresh_btn)
-	private Button mRefreshButton;
-
-	@InjectView(R.id.mail_loadingspinner)
-	private ProgressBar mLoadingSpinner;
-
-	private void bindRefreshButton() {
-		this.mRefreshButton.setOnClickListener(new OnRefreshClickListener());
 	}
 
 	@Override
@@ -146,11 +96,20 @@ public class MailListActivity extends RoboListActivity {
 						android.R.id.text1, android.R.id.text2 }, 0);
 		setListAdapter(this.adapter);
 		
+		// If a previous sync is still running.
+		if (this.mSyncTask != null) {
+			this.showLoadingSpinner();
+		}
+
 		if (this.adapter.isEmpty()) {
 			Ln.d("List is empty. Triggering initial loading.");
 			refresh();
 		}
+		
+		bindListViewOnClick();
+	}
 
+	private void bindListViewOnClick() {
 		final ListView listView = getListView();
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -165,23 +124,86 @@ public class MailListActivity extends RoboListActivity {
 		});
 	}
 
-	private void showLoadingSpinner() {
-		this.mRefreshButton.setVisibility(View.GONE);
-		this.mLoadingSpinner.setVisibility(View.VISIBLE);
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case ABOUT_DIALOG:
+			View view = LayoutInflater.from(this).inflate(
+					R.layout.dialog_about, null);
+			String title = this.getString(R.string.about_title);
+			String positiveMessage = this.getString(android.R.string.ok);
+			return new AlertDialog.Builder(this).setTitle(title)
+					.setCancelable(true).setIcon(R.drawable.icon)
+					.setPositiveButton(positiveMessage, null).setView(view)
+					.create();
+		}
+		return super.onCreateDialog(id);
 	}
 
-	private void hideLoadingSpinner() {
-		this.mLoadingSpinner.setVisibility(View.GONE);
-		this.mRefreshButton.setVisibility(View.VISIBLE);
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		if (mSyncTask != null) {
+			Ln.d("Canceling old sync task.");
+			mSyncTask.cancel(true);
+		}
 	}
-	
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.mail_list_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	/**
+	 * Implements the action handlers for when an item in the options
+	 * menu is selected.
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_about:
+			this.showDialog(ABOUT_DIALOG);
+			return true;
+		case R.id.menu_logout:
+			this.logoutUser();
+			this.finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 	private void refresh() {
-		Handler handler = new Handler(new MailSyncTaskHandlerCallback());
-		MailSyncTask task = new MailSyncTask(this, handler);
+		MailSyncTask task = new MailSyncTask(this) {
+			@Override
+			protected void onSuccess(Integer result) throws Exception {
+				if (result > 0) {
+					refreshListCursor();
+				}
+				super.onSuccess(result);
+			}
+
+			@Override
+			protected void onFinally() throws RuntimeException {
+				hideLoadingSpinner();
+				mSyncTask = null;
+				super.onFinally();
+			}
+		};
 
 		Ln.d("Starting mail sync task.");
-		task.execute();
-		showLoadingSpinner();
+		synchronized (this) {
+			if (this.mSyncTask == null) {
+				mSyncTask = task;
+				task.execute();
+				showLoadingSpinner();
+			} else {
+				Ln.w("Refusing to start new sync task while old is still " +
+					 "running!");
+			}
+		}
 	}
 
 	private void refreshListCursor() {
@@ -191,5 +213,15 @@ public class MailListActivity extends RoboListActivity {
 		// afterwards.
 		this.listCursor.requery();
 		this.adapter.notifyDataSetChanged();
+	}
+
+	private void showLoadingSpinner() {
+		this.mRefreshButton.setVisibility(View.GONE);
+		this.mLoadingSpinner.setVisibility(View.VISIBLE);
+	}
+	
+	private void hideLoadingSpinner() {
+		this.mLoadingSpinner.setVisibility(View.GONE);
+		this.mRefreshButton.setVisibility(View.VISIBLE);
 	}
 }

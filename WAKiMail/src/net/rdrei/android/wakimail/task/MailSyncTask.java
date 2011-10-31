@@ -41,6 +41,11 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 
 	@Inject
 	private MailListLoaderFactory mailListLoaderFactory;
+	
+	public MailSyncTask(Context context) {
+		super(context);
+		// TODO Auto-generated constructor stub
+	}
 
 	public MailSyncTask(Context context, Handler handler) {
 		super(context, handler);
@@ -69,7 +74,9 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 	@Override
 	protected void onException(Exception e) throws RuntimeException {
 		Ln.w(e, "Error during mail fetch.");
-		showErrorToast(e.getMessage());
+		if (!(e instanceof InterruptedException)) {
+			showErrorToast(e.getMessage());
+		}
 		
 		if (this.handler != null) {
 			this.handler.sendEmptyMessage(SYNC_ERROR_MESSAGE);
