@@ -2,7 +2,6 @@ package net.rdrei.android.wakimail.test;
 
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.ui.DashboardActivity;
-import net.rdrei.android.wakimail.ui.LoginActivity;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,9 +19,9 @@ import com.xtremelabs.robolectric.matchers.StartedMatcher;
 public class DashboardActivityTest {
 	@Inject
 	DashboardActivity mActivity;
-
+	
 	@Before
-	public void setUpActivity() {
+	public void initializeActivity() {
 		mActivity.onCreate(null);
 	}
 

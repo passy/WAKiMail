@@ -22,6 +22,9 @@ public class DashboardActivity extends RoboActivity {
 	@Inject
 	private SessionManager mSessionManager;
 
+	@Inject
+	private SharedPreferences mPreferences;
+
 	@InjectView(R.id.dashboard_sign_btn)
 	private Button mSignInButton;
 
@@ -44,26 +47,25 @@ public class DashboardActivity extends RoboActivity {
 	 * @return User object or null.
 	 */
 	private User loadUserCredentials() {
-		SharedPreferences preferences = this.getSharedPreferences(
-				MailPreferences.KEY, MODE_PRIVATE);
-
 		// If the preferences can't be loaded, we obviously can't restore
 		// the user settings.
-		if (preferences == null) {
+		if (mPreferences == null) {
 			return null;
 		}
 
 		// The three values are always committed all at once, so we don't
 		// need to check for all of them. If one is missing, the user
 		// manipulated the storage.
-		if (preferences.contains(MailPreferences.USER_EMAIL)) {
+		if (mPreferences.contains(MailPreferences.USER_EMAIL)) {
 			User user = new User();
-			user.setEmail(preferences.getString(MailPreferences.USER_EMAIL, ""));
-			user.setPassword(preferences.getString(
+			user.setEmail(mPreferences.getString(
+					MailPreferences.USER_EMAIL, ""));
+			user.setPassword(mPreferences.getString(
 					MailPreferences.USER_PASSWORD, ""));
-			user.setSessionId(preferences.getString(
+			user.setSessionId(mPreferences.getString(
 					MailPreferences.USER_SESSIONID, ""));
-			user.setName(preferences.getString(MailPreferences.USER_NAME, ""));
+			user.setName(mPreferences.getString(
+					MailPreferences.USER_NAME, ""));
 
 			this.mSessionManager.setUser(user);
 			return user;
@@ -104,9 +106,8 @@ public class DashboardActivity extends RoboActivity {
 
 	private void saveUserCredentials(User user) {
 		this.mSessionManager.setUser(user);
-		SharedPreferences preferences = this.getSharedPreferences(
-				MailPreferences.KEY, MODE_PRIVATE);
-		Editor editor = preferences.edit();
+		
+		Editor editor = mPreferences.edit();
 		editor.putString(MailPreferences.USER_EMAIL, user.getEmail());
 		editor.putString(MailPreferences.USER_PASSWORD, user.getPassword());
 		editor.putString(MailPreferences.USER_SESSIONID, user.getSessionId());
