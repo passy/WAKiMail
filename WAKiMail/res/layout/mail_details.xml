@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/mail_title"
+        android:layout_width="0dip"
+        android:layout_height="0dip"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/mail_from_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="@string/mail_sender_label"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/mail_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/mail_from_label"
+        android:layout_alignBottom="@+id/mail_from_label"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/mail_from_label"
+        android:text="Sender"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/mail_date_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/mail_from_label"
+        android:text="@string/mail_date_label"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/mail_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/mail_date_label"
+        android:layout_alignBottom="@+id/mail_date_label"
+        android:layout_alignLeft="@+id/mail_from"
+        android:text="Date"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/mail_date"
+        android:layout_marginTop="43dp"
+        android:orientation="vertical" >
+
+        <ProgressBar
+            android:id="@+id/mail_loadingspinner"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/mail_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</RelativeLayout>

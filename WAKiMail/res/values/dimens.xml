@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="titlebar_height">44.0dip</dimen>
+    <dimen name="pill_side_padding">5.0dip</dimen>
+    <dimen name="map_height">150.0dip</dimen>
+    
+</resources>

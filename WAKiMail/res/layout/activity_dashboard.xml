@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/dashboard_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_waklogo_big" >
+    </ImageView>
+
+    <TextView
+        android:id="@+id/dashboard_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/dashboard_sign_btn"
+        android:layout_alignRight="@+id/dashboard_sign_btn"
+        android:layout_below="@+id/dashboard_logo"
+        android:layout_marginTop="23dp"
+        android:text="@string/dashboard_text" />
+    
+    <Button
+        android:id="@+id/dashboard_sign_btn"
+        style="@style/Button"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dashboard_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/login_signin" >
+    </Button>
+
+</RelativeLayout>
