@@ -1,5 +1,8 @@
 package net.rdrei.android.wakimail.task;
 
+import roboguice.activity.event.OnDestroyEvent;
+import roboguice.event.Observes;
+import roboguice.util.Ln;
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.wak.MailLoader;
@@ -56,12 +59,23 @@ public class MailLoadTask extends RdreiAsyncTask<Void> {
 	protected void onException(Exception e) throws RuntimeException {
 		super.onException(e);
 
+		if (e instanceof InterruptedException) {
+			// Don't handle interruptions as usual exceptions.
+			return;
+		}
 		String text = this.formatResourceString(R.string.login_error,
 				e.getMessage());
 		Toast toast = Toast.makeText(this.context, text, Toast.LENGTH_SHORT);
 		toast.show();
-		
+
 		this.handler.sendEmptyMessage(LOAD_ERROR_MESSAGE);
+	}
+
+	protected void onActivityDestroy(@Observes OnDestroyEvent event) {
+		// Cancel the task if the activity or fragment, respectively,
+		// was destroyed in the meantime.
+		Ln.d("Destroying task because activity is about to get destroyed.");
+		this.cancel(true);
 	}
 
 	private int saveMailBody(ContentResolver resolver, String body) {

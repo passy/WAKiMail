@@ -7,6 +7,7 @@ import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.task.MailLoadTask;
 import roboguice.fragment.RoboListFragment;
 import roboguice.util.Ln;
+import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -191,8 +192,7 @@ public class MailDetailFragment extends RoboListFragment implements
 	 * @return Cleaned text.
 	 */
 	private CharSequence formatMailBody(String text) {
-		text = text.replaceAll("<br>", "")
-				.replaceAll("<br/>", "")
+		text = text.replaceAll("<br>", "").replaceAll("<br/>", "")
 				.replaceAll("<br />", "");
 		return text;
 	}
@@ -219,7 +219,12 @@ public class MailDetailFragment extends RoboListFragment implements
 				// Stop the current activity. Actually this should be handled
 				// by the activity rather than the fragment, but we will just
 				// do it this way.
-				MailDetailFragment.this.getActivity().finish();
+				final Activity activity = MailDetailFragment.this.getActivity();
+				// The activity might have already been closed or be in a
+				// transitional state.
+				if (activity != null) {
+					activity.finish();
+				}
 				return true;
 			}
 			return false;
