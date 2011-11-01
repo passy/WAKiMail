@@ -11,11 +11,6 @@
 	<classpathentry kind="lib" path="/WAKiMail/libs/roboguice-2.0b2.jar" sourcepath="/home/pascal/Applications/android-sdk-linux_x86/roboguice-2.0b2-sources.jar"/>
 	<classpathentry kind="lib" path="/home/pascal/Projects/java/wakimail/WAKiMail/libs/android-support-v4.jar"/>
 	<classpathentry kind="lib" path="libs/robolectric-1.1-20111013.222126-3-jar-with-dependencies.jar" sourcepath="libs/robolectric-1.1-20111013.222126-3-sources.jar"/>
-	<classpathentry kind="lib" path="libs/powermock-mockito-1.4.10-full.jar"/>
-	<classpathentry kind="lib" path="libs/powermock-classloading-base-1.4.10.jar"/>
-	<classpathentry kind="lib" path="libs/powermock-classloading-objenesis-1.4.10.jar"/>
-	<classpathentry kind="lib" path="libs/powermock-classloading-xstream-1.4.10.jar"/>
-	<classpathentry kind="lib" path="libs/powermock-module-junit4-rule-1.4.10.jar"/>
-	<classpathentry kind="lib" path="libs/mockito-all-1.8.5.jar"/>
+	<classpathentry kind="lib" path="libs/mockito-all-1.9.0-rc1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
