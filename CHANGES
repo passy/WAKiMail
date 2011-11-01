@@ -1,3 +1,11 @@
+WAKiMail v0.5.2
+===============
+
+    * Fixed another race condition, this time in the mail detail view. Destroy
+      events were not properly handled and could cause a null pointer
+      dereference when the mail download task accessed the activity which has
+      already been destroyed.
+
 WAKiMail v0.5.1
 ===============
 
