@@ -45,8 +45,6 @@ public class MailListFragment extends RoboListFragment implements
 
 	private SimpleCursorAdapter adapter;
 
-	private Cursor listCursor;
-
 	private RoboAsyncTask<?> mSyncTask;
 
 	@InjectView(R.id.mail_loadingspinner)
@@ -185,14 +183,6 @@ public class MailListFragment extends RoboListFragment implements
 	private void refresh() {
 		MailSyncTask task = new MailSyncTask(this.getActivity()) {
 			@Override
-			protected void onSuccess(Integer result) throws Exception {
-				if (result > 0) {
-					refreshListCursor();
-				}
-				super.onSuccess(result);
-			}
-
-			@Override
 			protected void onFinally() throws RuntimeException {
 				hideLoadingSpinner();
 				mSyncTask = null;
@@ -211,12 +201,6 @@ public class MailListFragment extends RoboListFragment implements
 						+ "running!");
 			}
 		}
-	}
-
-	private void refreshListCursor() {
-		Ln.d("Refreshing list.");
-		this.listCursor.requery();
-		this.adapter.notifyDataSetChanged();
 	}
 
 	private void showLoadingSpinner() {
