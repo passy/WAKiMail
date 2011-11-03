@@ -18,6 +18,8 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,17 +76,16 @@ public class MailListFragment extends RoboListFragment implements
 			this.mLogoutListener = (OnLogoutRequestedListener) activity;
 		} catch (ClassCastException e) {
 			Ln.e(e);
-			throw new ClassCastException(
-					activity.toString()
-							+ " must implement OnLogoutRequestedListener " +
-							"to use MailListFragment.");
+			throw new ClassCastException(activity.toString()
+					+ " must implement OnLogoutRequestedListener "
+					+ "to use MailListFragment.");
 		}
 
 		super.onAttach(activity);
 	}
 
 	/**
-	 * /** Inflates the layout used for this fragment from XML.
+	 * Inflates the layout used for this fragment from XML.
 	 * 
 	 * @see android.support.v4.app.ListFragment#onCreateView(android.view.LayoutInflater,
 	 *      android.view.ViewGroup, android.os.Bundle)
@@ -92,13 +93,29 @@ public class MailListFragment extends RoboListFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.activity_mail_list, container, false);
+		return inflater.inflate(R.layout.fragment_mail_list, container, false);
+	}
+
+	/**
+	 * Bind views from the fragment.
+	 * 
+	 * @see roboguice.fragment.RoboListFragment#onViewCreated(android.view.View,
+	 *      android.os.Bundle)
+	 */
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		bindRefreshButton();
+		bindListViewOnClick();
+
+		// Trigger initial loading.
+		getLoaderManager().initLoader(0, null, this);
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.bindRefreshButton();
 
 		// Set up the mail display using a SimpleCursorAdapter.
 		this.adapter = new SimpleCursorAdapter(this.getActivity(),
@@ -106,15 +123,20 @@ public class MailListFragment extends RoboListFragment implements
 						MailTable.Columns.TITLE, MailTable.Columns.SENDER },
 				new int[] { android.R.id.text1, android.R.id.text2 }, 0);
 		setListAdapter(this.adapter);
+		setHasOptionsMenu(true);
+	}
 
-		// If a previous sync is still running.
-		if (this.mSyncTask != null) {
-			this.showLoadingSpinner();
-		}
-
-		// Trigger initial loading.
-		getLoaderManager().initLoader(0, null, this);
-		bindListViewOnClick();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.support.v4.app.Fragment#onCreateOptionsMenu(android.view.Menu,
+	 * android.view.MenuInflater)
+	 */
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.mail_list_menu, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	private void bindListViewOnClick() {
