@@ -10,11 +10,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 
-public class MailListActivity extends RoboFragmentActivity implements OnLogoutRequestedListener {
-	
+public class MailListActivity extends RoboFragmentActivity implements
+		OnLogoutRequestedListener {
+
 	/**
-	 * Delete all user information from the storage and ends
-	 * the current activity;
+	 * Delete all user information from the storage and ends the current
+	 * activity;
 	 */
 	public void onLogoutRequested() {
 		// Clear the preferences.
@@ -27,7 +28,7 @@ public class MailListActivity extends RoboFragmentActivity implements OnLogoutRe
 		}
 		this.finish();
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
