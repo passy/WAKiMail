@@ -1,22 +1,31 @@
+WAKiMail v0.6
+=============
+
+  * Load mail list asynchronously for better performance.
+  * Don't stop the mail fetching if the activity is closed. First of all, it 
+    doesn't make sense to abort it when it's almost through. Secondly, there is
+    a chance that the completed task tries to kill the already destroyed
+    activity, causing the app to crash.
+
 WAKiMail v0.5.2
 ===============
 
-    * Fixed another race condition, this time in the mail detail view. Destroy
-      events were not properly handled and could cause a null pointer
-      dereference when the mail download task accessed the activity which has
-      already been destroyed.
+  * Fixed another race condition, this time in the mail detail view. Destroy
+    events were not properly handled and could cause a null pointer
+    dereference when the mail download task accessed the activity which has
+    already been destroyed.
 
 WAKiMail v0.5.1
 ===============
 
-    * Fixed bug that caused the application to crash when rotating the screen
-      while fetching mails and clicking the refresh button again and the sencond
-      sync request finished before the first did.
+  * Fixed bug that caused the application to crash when rotating the screen
+    while fetching mails and clicking the refresh button again and the sencond
+    sync request finished before the first did.
 
 WAKiMail v0.5
 =============
 
-    * Links in the mail body are clickable.
-    * Some HTML tags in the mail get replaced.
-    * Date in the detail view is correctly displayed (instead of showing just a
-      timestamp)
+  * Links in the mail body are clickable.
+  * Some HTML tags in the mail get replaced.
+  * Date in the detail view is correctly displayed (instead of showing just a
+    timestamp)
