@@ -1,5 +1,7 @@
 package net.rdrei.android.wakimail.ui;
 
+import org.acra.ErrorReporter;
+
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.task.MailSyncTask;
@@ -182,6 +184,13 @@ public class MailListFragment extends RoboListFragment implements
 
 	private void refresh() {
 		MailSyncTask task = new MailSyncTask(this.getActivity()) {
+			@Override
+			protected void onException(Exception err) {
+				super.onException(err);
+
+				ErrorReporter.getInstance().handleException(err);
+			}
+
 			@Override
 			protected void onFinally() throws RuntimeException {
 				hideLoadingSpinner();
