@@ -34,7 +34,7 @@ public class MailDetailFragment extends RoboListFragment implements
 	private SimpleCursorAdapter mAdapter;
 	private Uri mUri;
 	private static final SimpleDateFormat sDateFormatter = new SimpleDateFormat(
-			"dd. MM. yyyy HH:mm");
+			"dd.MM.yyyy HH:mm");
 
 	public static MailDetailFragment newInstance(Uri uri) {
 		MailDetailFragment fragment = new MailDetailFragment();
