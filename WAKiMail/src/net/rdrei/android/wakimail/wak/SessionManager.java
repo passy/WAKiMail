@@ -13,7 +13,6 @@ import java.util.List;
 
 import net.rdrei.android.wakimail.Constants;
 import net.rdrei.android.wakimail.task.LoginTask;
-import net.rdrei.android.wakimail.ui.NetLoader;
 import net.rdrei.android.wakimail.wak.LoginManager.ChallengeException;
 import net.rdrei.android.wakimail.wak.LoginManager.LoginException;
 import roboguice.util.Ln;

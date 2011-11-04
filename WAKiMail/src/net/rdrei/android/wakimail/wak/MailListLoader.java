@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import net.rdrei.android.wakimail.ui.NetLoader;
 import net.rdrei.android.wakimail.wak.LoginManager.ChallengeException;
 import net.rdrei.android.wakimail.wak.LoginManager.LoginException;
 import roboguice.util.Ln;

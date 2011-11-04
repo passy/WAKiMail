@@ -1,4 +1,4 @@
-package net.rdrei.android.wakimail.ui;
+package net.rdrei.android.wakimail.wak;
 
 import java.io.BufferedReader;
 import java.io.IOException;
