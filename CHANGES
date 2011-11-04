@@ -1,8 +1,13 @@
+WAKiMail v0.6.1
+===============
+
+  * Removed READ_LOGS permission.
+
 WAKiMail v0.6
 =============
 
   * Load mail list asynchronously for better performance.
-  * Don't stop the mail fetching if the activity is closed. First of all, it 
+  * Don't stop the mail fetching if the activity is closed. First of all, it
     doesn't make sense to abort it when it's almost through. Secondly, there is
     a chance that the completed task tries to kill the already destroyed
     activity, causing the app to crash.
