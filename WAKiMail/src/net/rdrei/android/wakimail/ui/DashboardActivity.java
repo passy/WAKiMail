@@ -49,23 +49,23 @@ public class DashboardActivity extends RoboActivity {
 	private User loadUserCredentials() {
 		// If the preferences can't be loaded, we obviously can't restore
 		// the user settings.
-		if (mPreferences == null) {
+		if (this.mPreferences == null) {
 			return null;
 		}
 
 		// The three values are always committed all at once, so we don't
 		// need to check for all of them. If one is missing, the user
 		// manipulated the storage.
-		if (mPreferences.contains(MailPreferences.USER_EMAIL)) {
+		if (this.mPreferences.contains(MailPreferences.USER_EMAIL)) {
 			User user = new User();
-			user.setEmail(mPreferences.getString(
+			user.setEmail(this.mPreferences.getString(
 					MailPreferences.USER_EMAIL, ""));
-			user.setPassword(mPreferences.getString(
+			user.setPassword(this.mPreferences.getString(
 					MailPreferences.USER_PASSWORD, ""));
-			user.setSessionId(mPreferences.getString(
+			user.setSessionId(this.mPreferences.getString(
 					MailPreferences.USER_SESSIONID, ""));
-			user.setName(mPreferences.getString(
-					MailPreferences.USER_NAME, ""));
+			user.setName(this.mPreferences.getString(MailPreferences.USER_NAME,
+					""));
 
 			this.mSessionManager.setUser(user);
 			return user;
@@ -106,8 +106,8 @@ public class DashboardActivity extends RoboActivity {
 
 	private void saveUserCredentials(User user) {
 		this.mSessionManager.setUser(user);
-		
-		Editor editor = mPreferences.edit();
+
+		Editor editor = this.mPreferences.edit();
 		editor.putString(MailPreferences.USER_EMAIL, user.getEmail());
 		editor.putString(MailPreferences.USER_PASSWORD, user.getPassword());
 		editor.putString(MailPreferences.USER_SESSIONID, user.getSessionId());

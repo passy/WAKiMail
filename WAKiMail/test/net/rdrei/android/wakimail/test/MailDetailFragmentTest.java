@@ -1,9 +1,12 @@
 package net.rdrei.android.wakimail.test;
 
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
-
-import javax.management.RuntimeErrorException;
 
 import net.rdrei.android.wakimail.ui.MailDetailFragment;
 
@@ -16,8 +19,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 
 import com.google.inject.Inject;
-
-import static org.mockito.Mockito.*;
 
 @RunWith(InjectedTestRunner.class)
 public class MailDetailFragmentTest {

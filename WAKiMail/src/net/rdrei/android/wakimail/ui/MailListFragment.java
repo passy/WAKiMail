@@ -158,9 +158,9 @@ public class MailListFragment extends RoboListFragment implements
 	public void onDestroy() {
 		super.onDestroy();
 
-		if (mSyncTask != null) {
+		if (this.mSyncTask != null) {
 			Ln.d("Canceling old sync task.");
-			mSyncTask.cancel(true);
+			this.mSyncTask.cancel(true);
 		}
 	}
 
@@ -194,7 +194,7 @@ public class MailListFragment extends RoboListFragment implements
 			@Override
 			protected void onFinally() throws RuntimeException {
 				hideLoadingSpinner();
-				mSyncTask = null;
+				MailListFragment.this.mSyncTask = null;
 				super.onFinally();
 			}
 		};
@@ -202,7 +202,7 @@ public class MailListFragment extends RoboListFragment implements
 		Ln.d("Starting mail sync task.");
 		synchronized (this) {
 			if (this.mSyncTask == null) {
-				mSyncTask = task;
+				this.mSyncTask = task;
 				task.execute();
 				showLoadingSpinner();
 			} else {
