@@ -9,6 +9,11 @@ the WAK_ platform. You can install this app from the `Android Market`_.
 .. _RoboGuice: http://code.google.com/p/roboguice/
 .. _Android Market: https://market.android.com/details?id=net.rdrei.android.wakimail
 
+Licensing
+=========
+
+WAKiMail is licensed under the 3-clause BSD license.
+
 Building
 ========
 
