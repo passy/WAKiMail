@@ -7,10 +7,7 @@
 
     <uses-sdk android:minSdkVersion="10" />
 
-    <uses-permission android:name="android.permission.INTERNET" >
-    </uses-permission>
-    <!-- XXX: Remove this from production. It's for better error logs, though. -->
-    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:description="@string/app_description"
