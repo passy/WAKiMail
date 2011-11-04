@@ -9,20 +9,22 @@
         android:id="@+id/dashboard_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/ic_waklogo_big" >
-    </ImageView>
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:src="@drawable/ic_waklogo_big" />
 
     <TextView
         android:id="@+id/dashboard_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/dashboard_sign_btn"
-        android:layout_alignRight="@+id/dashboard_sign_btn"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/dashboard_logo"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="22dp"
         android:text="@string/dashboard_text" />
-    
+
     <Button
         android:id="@+id/dashboard_sign_btn"
         style="@style/Button"
@@ -30,8 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/dashboard_text"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="@string/login_signin" >
-    </Button>
+        android:layout_marginTop="22dp"
+        android:text="@string/login_signin" />
 
 </RelativeLayout>
