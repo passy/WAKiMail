@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/mail_from_label"
         android:layout_alignBottom="@+id/mail_from_label"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="30dp"
         android:layout_toRightOf="@+id/mail_from_label"
         android:text="Sender"
         android:textAppearance="?android:attr/textAppearanceMedium" />

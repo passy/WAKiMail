@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WAKiMail</string>
+    <string name="app_description">Lies deine WAK-Mails direkt von deinem Android-Gerät!</string>
+    <string name="title_login">Login</string>
+    <string name="about_title">Über WAKiMail</string>
+    <string name="login_email_hint">E-Mail-Adresse</string>
+    <string name="login_password_hint">Passwort</string>
+    <string name="dot">•</string>
+    <string name="mail">E-Mails</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="login_password">Passwort</string>
+    <string name="login_email">E-Mail-Adresse</string>
+    <string name="login_signin">Anmelden</string>
+    <string name="login_signing_in">Melde an …</string>
+    <string name="login_cancel">Abbrechen</string>
+    <string name="login_error">Ups, beim Login ist etwas schief gelaufen: %s
+	</string>
+    <string name="login_success">Anmeldung erfolgreich.</string>
+    <string name="mail_list_empty">Lade Posteingang. Das könnte etwas dauern …</string>
+    <string name="loading">Lade …</string>
+    <string name="refresh_success">Es wurden %d neue Nachrichten heruntergeladen.</string>
+    <string name="mail_sender_label">Von:</string>
+    <string name="mail_date_label">Datum:</string>
+    <string name="mail_fetch_error">Es lief etwas schief beim Herunterladen der E-Mail: %s</string>
+    <string name="dashboard_text">Willkommen bei WAKiMail. Diese App ermöglicht es dir deine WAK-Mails zu lesen, ohne dabei die schreckliche Plattform benutzen zu müssen. Du benötigst, offensichtlich, eine @berufsakademie-sh.de-Adresse um loszulegen.</string>
+    <string name="menu_about">Über</string>
+    <string name="menu_logout">Logout</string>
+    <string name="about_message">http://wakimail.android.rdrei.net\n\n
+        Entwickelt von Pascal Hartig.\n\n
+        Bug-Reports unter http://github.com/passy/WAKiMail
+    </string>
+
+</resources>

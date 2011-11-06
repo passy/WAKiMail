@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="hello">Hello World, WAKiMailActivity!</string>
     <string name="app_name">WAKiMail</string>
     <string name="app_description">Read your e-mails from the WAK platform on your
 		Android device.
