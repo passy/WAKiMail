@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     android:installLocation="auto"
     package="net.rdrei.android.wakimail"
-    android:versionCode="9"
-    android:versionName="0.6.1" >
+    android:versionCode="10"
+    android:versionName="0.7" >
 
     <uses-sdk android:minSdkVersion="10" />
 
