@@ -11,11 +11,10 @@ public class MailDetailActivity extends RoboFragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		Uri uri = this.getIntent().getData();
-
-		setContentView(R.layout.activity_singlepane_empty);
-
 		if (savedInstanceState == null) {
+			setContentView(R.layout.activity_singlepane_empty);
+			
+			Uri uri = this.getIntent().getData();
 			// First-time init; create fragment to embed in activity.
 			FragmentTransaction ft = getSupportFragmentManager()
 					.beginTransaction();
