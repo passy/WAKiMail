@@ -11,17 +11,16 @@ public class MailDetailActivity extends RoboFragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (savedInstanceState == null) {
-			setContentView(R.layout.activity_singlepane_empty);
-			
-			Uri uri = this.getIntent().getData();
-			// First-time init; create fragment to embed in activity.
-			FragmentTransaction ft = getSupportFragmentManager()
-					.beginTransaction();
-			MailDetailFragment newFragment = MailDetailFragment
-					.newInstance(uri);
-			ft.replace(R.id.root_container, newFragment);
-			ft.commit();
-		}
+		Uri uri = this.getIntent().getData();
+
+		setContentView(R.layout.activity_singlepane_empty);
+		
+		// First-time init; create fragment to embed in activity.
+		FragmentTransaction ft = getSupportFragmentManager()
+				.beginTransaction();
+		MailDetailFragment newFragment = MailDetailFragment
+				.newInstance(uri);
+		ft.replace(R.id.root_container, newFragment);
+		ft.commit();
 	}
 }
