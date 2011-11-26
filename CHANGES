@@ -1,3 +1,8 @@
+WAKiMail v0.7.2
+===============
+
+  * Always load fragments to avoid empty screen bug (#18).
+
 WAKiMail v0.7.1
 ===============
 
