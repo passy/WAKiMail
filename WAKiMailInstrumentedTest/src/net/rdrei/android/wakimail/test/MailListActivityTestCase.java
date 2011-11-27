@@ -2,7 +2,10 @@ package net.rdrei.android.wakimail.test;
 
 import junit.framework.Assert;
 import net.rdrei.android.wakimail.ui.MailListActivity;
+import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.UiThreadTest;
+import android.view.View;
 import android.widget.Button;
 
 public class MailListActivityTestCase extends
@@ -21,11 +24,27 @@ public class MailListActivityTestCase extends
 		mActivity = getActivity();
 	}
 
-	public void testSomething() {
-		Button refreshBtn = (Button) mActivity
-				.findViewById(net.rdrei.android.wakimail.R.id.refresh_btn);
-		
-		Assert.assertNotNull(refreshBtn);
-	}
+	@UiThreadTest
+	public void testStatePause() {
+		Instrumentation instrumentation = getInstrumentation();
+		instrumentation.callActivityOnPause(mActivity);
+		instrumentation.callActivityOnResume(mActivity);
 
+		View view = mActivity
+				.findViewById(net.rdrei.android.wakimail.R.id.mail_loadingspinner);
+		// Make sure the correct fragment was loaded.
+		Assert.assertNotNull(view);
+	}
+	
+	@UiThreadTest
+	public void testStateStopped() {
+		Instrumentation instrumentation = getInstrumentation();
+		instrumentation.callActivityOnStop(mActivity);
+		instrumentation.callActivityOnStart(mActivity);
+
+		View view = mActivity
+				.findViewById(net.rdrei.android.wakimail.R.id.mail_loadingspinner);
+		// Make sure the correct fragment was loaded.
+		Assert.assertNotNull(view);
+	}
 }
