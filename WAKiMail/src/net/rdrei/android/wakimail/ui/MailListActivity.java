@@ -32,7 +32,6 @@ public class MailListActivity extends RoboFragmentActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_singlepane_empty);
 
 		// First-time init; create fragment to embed in activity.
