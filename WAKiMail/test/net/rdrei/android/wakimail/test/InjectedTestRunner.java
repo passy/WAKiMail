@@ -16,7 +16,7 @@ public class InjectedTestRunner extends RobolectricTestRunner {
     }
 
     @Override
-    public void prepareTest(Object test) {
+    public void prepareTest(final Object test) {
         Application application = Robolectric.application;
         
         Injector injector = RoboGuice.getInjector(application);
