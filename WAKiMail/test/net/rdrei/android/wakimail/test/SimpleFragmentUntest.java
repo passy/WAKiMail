@@ -1,12 +1,5 @@
 package net.rdrei.android.wakimail.test;
 
-import net.rdrei.android.wakimail.ui.MailDetailActivity;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.google.inject.Inject;
 
 /**
  * This is not without massive work, as the authors of RoboGuice
@@ -17,6 +10,7 @@ import com.google.inject.Inject;
  * @author pascal
  *
  */
+/*
 @RunWith(InjectedTestRunner.class)
 public class SimpleFragmentUntest {
 	
@@ -27,3 +21,4 @@ public class SimpleFragmentUntest {
 		Assert.assertNotNull(mActivity.getSupportFragmentManager());
 	}
 }
+*/
