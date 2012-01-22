@@ -17,10 +17,18 @@ WAKiMail is licensed under the 3-clause BSD license.
 Building
 ========
 
-While it is planned to convert this to a Maven project, right now the easiest
-way to set this project up is to import both sub-projects into Eclipse. After
-that, you should be done as all dependencies are included for now, except for
-the Android SDK.
+WAKiMail is now a maven3 project, so building has been drastically simplified.
+However, you need to setup Android for maven first. Have a look at the
+`Maven Reference
+<http://www.sonatype.com/books/mvnref-book/reference/android-dev-sect-config-build.html>`_
+for a great tutorial on how to do this.
+
+After this is done, all you need to do in order to build this application is::
+
+    # Build the APKs.
+    mvn clean install
+    # Install on your emulator or connected device.
+    mvn android:deploy android:run
 
 Thanks
 ======
