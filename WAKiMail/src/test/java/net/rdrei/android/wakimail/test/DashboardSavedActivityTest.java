@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
 import com.google.inject.util.Modules;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.matchers.StartedMatcher;
