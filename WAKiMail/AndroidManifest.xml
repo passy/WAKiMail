@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" android:versionCode="13" android:versionName="1.0.0-SNAPSHOT" package="net.rdrei.android.wakimail">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" android:versionCode="14" android:versionName="1.0.0-SNAPSHOT" package="net.rdrei.android.wakimail">
 
     <uses-sdk android:minSdkVersion="10"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
-    <application android:debuggable="true" android:description="@string/app_description" android:icon="@drawable/icon" android:label="@string/app_name" android:name="WAKiMailApplication" android:theme="@style/Theme">
+    <application android:debuggable="false" android:description="@string/app_description" android:icon="@drawable/icon" android:label="@string/app_name" android:name="WAKiMailApplication" android:theme="@style/Theme">
         <activity android:name=".ui.DashboardActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -27,8 +27,10 @@
             </intent-filter>
         </activity>
 
-        <!-- We don't have touchscreen-specific features right now. Use could easily
-        use a trackball or keyboard navigation. -->
+        <!--
+        We don't have touchscreen-specific features right now. Use could easily
+        use a trackball or keyboard navigation.
+        -->
         <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
 
         <provider android:authorities="net.rdrei.android.wakimail.data.mail" android:name=".data.MailProvider">
