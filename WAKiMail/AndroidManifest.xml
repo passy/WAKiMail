@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" android:versionCode="12" android:versionName="1.0.0-SNAPSHOT" package="net.rdrei.android.wakimail">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" android:versionCode="13" android:versionName="1.0.0-SNAPSHOT" package="net.rdrei.android.wakimail">
 
     <uses-sdk android:minSdkVersion="10"/>
 
@@ -26,7 +26,7 @@
                 <data android:mimeType="vnd.android.cursor.item/vnd.rdrei.wakimail"/>
             </intent-filter>
         </activity>
-        
+
         <!-- We don't have touchscreen-specific features right now. Use could easily
         use a trackball or keyboard navigation. -->
         <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
