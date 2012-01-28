@@ -35,7 +35,7 @@ public class MailListActivityTestCase extends
 		// Make sure the correct fragment was loaded.
 		Assert.assertNotNull(view);
 	}
-	
+
 	@UiThreadTest
 	public void testStateStopped() {
 		Instrumentation instrumentation = getInstrumentation();
@@ -47,16 +47,19 @@ public class MailListActivityTestCase extends
 		// Make sure the correct fragment was loaded.
 		Assert.assertNotNull(view);
 	}
-	
+
 	@UiThreadTest
+	/**
+	 * Verify that recreating the activity
+	 * (as it may happen on rotating the screen) does not
+	 * inject a Null value.
+	 */
 	public void testRecreate() {
-		// Instrumentation instrumentation = getInstrumentation();
-		mActivity.setRequestedOrientation(
-				ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		mActivity
+				.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 		View view = mActivity
 				.findViewById(net.rdrei.android.wakimail.R.id.mail_loadingspinner);
-		// Make sure the correct fragment was loaded.
 		Assert.assertNotNull(view);
 	}
 }
