@@ -153,4 +153,10 @@
         </profile>
     </profiles>
 
+    <scm>
+        <connection>scm:git:git@github.com:passy/wakimail.git</connection>
+        <developerConnection>scm:git:git@github.com:passy/wakimail.git</developerConnection>
+        <url>git@github.com:passy/wakimail.git</url>
+    </scm>
+
 </project>
