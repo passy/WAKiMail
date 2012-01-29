@@ -1,3 +1,8 @@
+WAKiMail v0.7.3
+===============
+
+  * Updated Roboguice to fix orientation change crash on Fragments (#21).
+
 WAKiMail v0.7.2
 ===============
 
