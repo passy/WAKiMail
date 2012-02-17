@@ -5,3 +5,5 @@ tmp/
 .settings
 target/
 .classpath
+build.xml
+libs/
