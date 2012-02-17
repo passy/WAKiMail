@@ -5,6 +5,7 @@ import net.rdrei.android.wakimail.data.MailPreferences;
 import net.rdrei.android.wakimail.wak.SessionManager;
 import net.rdrei.android.wakimail.wak.User;
 import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
 import android.content.Intent;
@@ -16,7 +17,7 @@ import android.widget.Button;
 
 import com.google.inject.Inject;
 
-public class DashboardActivity extends RoboActivity {
+public class DashboardActivity extends RoboFragmentActivity {
 
 	private static final int LOGIN_REQUEST = 1;
 	@Inject

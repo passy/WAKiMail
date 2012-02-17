@@ -1,40 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" android:versionCode="13" android:versionName="1.0.0-SNAPSHOT" package="net.rdrei.android.wakimail">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:installLocation="auto"
+    package="net.rdrei.android.wakimail"
+    android:versionCode="13"
+    android:versionName="1.0.0-SNAPSHOT" >
 
-    <uses-sdk android:minSdkVersion="10"/>
+    <!--
+    We don't have touchscreen-specific features right now. Use could easily
+    use a trackball or keyboard navigation.
+    -->
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-
-    <application android:debuggable="false" android:description="@string/app_description" android:icon="@drawable/icon" android:label="@string/app_name" android:name="WAKiMailApplication" android:theme="@style/Theme">
-        <activity android:name=".ui.DashboardActivity">
+    <application
+        android:name="WAKiMailApplication"
+        android:debuggable="true"
+        android:description="@string/app_description"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:theme="@style/Theme" >
+        <activity android:name=".ui.DashboardActivity" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/app_name" android:name=".ui.LoginActivity">
+        <activity
+            android:name=".ui.LoginActivity"
+            android:label="@string/app_name" >
         </activity>
-        <activity android:name=".ui.MailListActivity">
+        <activity android:name=".ui.MailListActivity" >
         </activity>
-        <activity android:name=".ui.MailDetailActivity">
+        <activity android:name=".ui.MailDetailActivity" >
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.item/vnd.rdrei.wakimail"/>
+                <data android:mimeType="vnd.android.cursor.item/vnd.rdrei.wakimail" />
             </intent-filter>
         </activity>
 
-        <!--
-        We don't have touchscreen-specific features right now. Use could easily
-        use a trackball or keyboard navigation.
-        -->
-        <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
-
-        <provider android:authorities="net.rdrei.android.wakimail.data.mail" android:name=".data.MailProvider">
+        <provider
+            android:name=".data.MailProvider"
+            android:authorities="net.rdrei.android.wakimail.data.mail" >
         </provider>
     </application>
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="15" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

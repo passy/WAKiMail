@@ -1,6 +1,7 @@
 package net.rdrei.android.wakimail.test;
 
 import java.util.Map;
+import java.util.Set;
 
 import net.rdrei.android.wakimail.data.MailPreferences;
 import net.rdrei.android.wakimail.ui.DashboardActivity;
@@ -109,6 +110,12 @@ public class DashboardSavedActivityTest {
 				OnSharedPreferenceChangeListener arg0) {
 			// TODO Auto-generated method stub
 
+		}
+
+		@Override
+		public Set<String> getStringSet(String arg0, Set<String> arg1) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 	}
