@@ -14,6 +14,11 @@
         </repository>
     </repositories>
 
+    <properties>
+        <android.version>4.0.1.2</android.version>
+        <android.platform>14</android.platform>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -24,12 +29,12 @@
             <dependency>
                 <groupId>com.google.android</groupId>
                 <artifactId>android</artifactId>
-                <version>2.3.3</version>
+                <version>${android.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.android</groupId>
                 <artifactId>android-test</artifactId>
-                <version>2.3.3</version>
+                <version>${android.version}</version>
             </dependency>
             <dependency>
                 <groupId>android.support</groupId>
@@ -94,7 +99,7 @@
                     <version>3.0.0</version>
                     <configuration>
                         <sdk>
-                            <platform>10</platform>
+                            <platform>14</platform>
                         </sdk>
                         <emulator>
                             <avd>titanium_6_WVGA800</avd>
