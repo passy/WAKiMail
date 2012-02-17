@@ -3,12 +3,6 @@
 	android:orientation="vertical" android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
-	<net.rdrei.android.wakimail.widget.Navbar
-		android:id="@+id/navbar" style="?attr/navbarStyle">
-		<TextView android:id="@+id/title" android:text="@string/login_signin"
-			style="@style/NavbarTitle.Text" />
-	</net.rdrei.android.wakimail.widget.Navbar>
-
 	<include layout="@layout/partial_login_form" />
 
 	<LinearLayout style="@style/Toolbar">
