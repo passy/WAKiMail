@@ -105,7 +105,7 @@ public class LoginActivity extends RoboFragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		
-		getActionBar().setDisplayShowTitleEnabled(true);
+		getSupportActionBar().setDisplayShowTitleEnabled(true);
 
 		final SignInButtonWatcher watcher = new SignInButtonWatcher();
 
