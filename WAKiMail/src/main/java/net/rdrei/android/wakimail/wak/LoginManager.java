@@ -14,7 +14,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,10 +23,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
 
 import net.rdrei.android.wakimail.Constants;
-
 import roboguice.util.Ln;
 
 public class LoginManager {
@@ -130,7 +127,7 @@ public class LoginManager {
 
 	/**
 	 * Generates the passphrase based on password and current challenge.
-	 * 
+	 *
 	 * @return
 	 * @throws NoSuchAlgorithmException
 	 */
@@ -160,12 +157,12 @@ public class LoginManager {
 			count += 1;
 		}
 
-		return builder.toString().getBytes();
+		return builder.toString().getBytes("utf-8");
 	}
 
 	/**
 	 * Generates the POST parameters required for submitting the login form.
-	 * 
+	 *
 	 * @param passphrase
 	 * @return
 	 * @throws UnsupportedEncodingException
@@ -235,7 +232,7 @@ public class LoginManager {
 	/**
 	 * In order to retrieve the current challenge, you got to call the
 	 * retrieveChallenge() method first.
-	 * 
+	 *
 	 * @param challenge
 	 * @return
 	 * @throws NoSuchAlgorithmException
@@ -253,50 +250,24 @@ public class LoginManager {
 
 		HttpsURLConnection connection = this
 				.buildConnection("community-login.html");
+
 		// Setting method to POST per default.
 		connection.setDoOutput(true);
+		// Implied by the above, but more explicit this way.
 		connection.setRequestMethod("POST");
-		connection.setRequestProperty("Content-Type",
-				"application/x-www-form-urlencoded;charset=utf-8");
-		
-		this.setupSSLConnection(connection);
+		// This is false for 10, but apparently true at least for 14+.
+		connection.setInstanceFollowRedirects(false);
 
 		byte[] params = this.getLoginPostParameters(passphrase, challenge);
 		Ln.d("Sending POST params for login " + new String(params));
 
 		connection.setFixedLengthStreamingMode(params.length);
+
 		OutputStream out = connection.getOutputStream();
 		out.write(params);
 		out.close();
 
 		return handleLoginResponse(connection);
-	}
-	
-	/**
-	 * Sets custom parameters to the connection element to correctly work with
-	 * the horribly misconfigured WAK servers, which raise an 500 otherwise.
-	 * 
-	 * @param connection
-	 */
-	private void setupSSLConnection(HttpsURLConnection connection) {
-		SSLContext context;
-		
-		try {
-			// Enforce TLS connection
-			context = SSLContext.getInstance("TLS");
-		} catch (NoSuchAlgorithmException e) {
-			Ln.w("Loading TLS SSL context failed. Falling back to default.");
-			Ln.w(e);
-			return;
-		}
-		
-		try {
-			context.init(null, null, null);
-		} catch (KeyManagementException e) {
-			Ln.w("Initializing Key Manager failed.");
-			Ln.w(e);
-		}
-		connection.setSSLSocketFactory(context.getSocketFactory());
 	}
 
 	private void raiseLoginErrorFromResponseStream(BufferedReader bufferedReader)
@@ -316,20 +287,20 @@ public class LoginManager {
 
 		throw new LoginException("Unknown login exception.");
 	}
-	
+
 	private void raiseLoginErrorFromServerErrorResponseStream(
 			BufferedReader bufferedReader) throws LoginException, IOException {
-		
+
 		String response = "";
 		String line;
-		
+
 		do {
 			line = bufferedReader.readLine();
 			if (line != null) {
 				response += line + "\n";
 			}
 		} while (line != null);
-		
+
 		Ln.e("WAK server aborted login with error: " + response);
 		throw new LoginException("There was a server error while " +
 				"logging in.");
@@ -337,7 +308,7 @@ public class LoginManager {
 
 	/**
 	 * Extract the challenge value from the response.
-	 * 
+	 *
 	 * @param bufferedReader
 	 * @return String
 	 * @throws IOException
@@ -387,7 +358,7 @@ public class LoginManager {
 	 * After successful login, try to retrieve the user information from the
 	 * main page and verify that the login actually happened or raise an
 	 * exception.
-	 * 
+	 *
 	 * @return User objects, built from the response.
 	 * @throws LoginException
 	 * @throws IOException
