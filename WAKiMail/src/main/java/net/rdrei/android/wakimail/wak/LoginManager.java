@@ -14,6 +14,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 
 import net.rdrei.android.wakimail.Constants;
 
@@ -211,6 +213,16 @@ public class LoginManager {
 				Ln.w("Got a redirect on login to " + location);
 				throw new LoginException("Your account was banned for an hour.");
 			}
+		case 500:
+			// Server error. The HttpURLConnection may provide additional
+			// information.
+			InputStream error = connection.getErrorStream();
+			BufferedReader bufferedErrorReader = new BufferedReader(
+				new InputStreamReader(error), 2 << 11
+			);
+			this.raiseLoginErrorFromServerErrorResponseStream(
+					bufferedErrorReader);
+			break;
 		default:
 			// Throw exception below.
 		}
@@ -244,6 +256,10 @@ public class LoginManager {
 		// Setting method to POST per default.
 		connection.setDoOutput(true);
 		connection.setRequestMethod("POST");
+		connection.setRequestProperty("Content-Type",
+				"application/x-www-form-urlencoded;charset=utf-8");
+		
+		this.setupSSLConnection(connection);
 
 		byte[] params = this.getLoginPostParameters(passphrase, challenge);
 		Ln.d("Sending POST params for login " + new String(params));
@@ -254,6 +270,33 @@ public class LoginManager {
 		out.close();
 
 		return handleLoginResponse(connection);
+	}
+	
+	/**
+	 * Sets custom parameters to the connection element to correctly work with
+	 * the horribly misconfigured WAK servers, which raise an 500 otherwise.
+	 * 
+	 * @param connection
+	 */
+	private void setupSSLConnection(HttpsURLConnection connection) {
+		SSLContext context;
+		
+		try {
+			// Enforce TLS connection
+			context = SSLContext.getInstance("TLS");
+		} catch (NoSuchAlgorithmException e) {
+			Ln.w("Loading TLS SSL context failed. Falling back to default.");
+			Ln.w(e);
+			return;
+		}
+		
+		try {
+			context.init(null, null, null);
+		} catch (KeyManagementException e) {
+			Ln.w("Initializing Key Manager failed.");
+			Ln.w(e);
+		}
+		connection.setSSLSocketFactory(context.getSocketFactory());
 	}
 
 	private void raiseLoginErrorFromResponseStream(BufferedReader bufferedReader)
@@ -272,6 +315,24 @@ public class LoginManager {
 		} while (line != null);
 
 		throw new LoginException("Unknown login exception.");
+	}
+	
+	private void raiseLoginErrorFromServerErrorResponseStream(
+			BufferedReader bufferedReader) throws LoginException, IOException {
+		
+		String response = "";
+		String line;
+		
+		do {
+			line = bufferedReader.readLine();
+			if (line != null) {
+				response += line + "\n";
+			}
+		} while (line != null);
+		
+		Ln.e("WAK server aborted login with error: " + response);
+		throw new LoginException("There was a server error while " +
+				"logging in.");
 	}
 
 	/**
