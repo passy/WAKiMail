@@ -11,6 +11,7 @@ import net.rdrei.android.wakimail.wak.MailListLoaderFactory;
 import net.rdrei.android.wakimail.wak.MailLoaderFactory;
 import android.app.ProgressDialog;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
@@ -18,6 +19,7 @@ public class WAKiMailModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		bind(ActionBar.class).toProvider(ActionBarProvider.class);
 		bind(ProgressDialog.class).toProvider(ProgressDialogProvider.class);
 		bind(URLConnectionFactory.class).to(URLConnectionFactoryImpl.class);
 		

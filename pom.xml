@@ -12,6 +12,15 @@
             <id>acra-releases</id>
             <url>http://acra.googlecode.com/svn/repository/releases</url>
         </repository>
+        <repository>
+            <id>snapshots</id>
+            <name>Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+        <repository>
+            <id>jakewharton</id>
+            <url>http://r.jakewharton.com/maven/release/</url>
+        </repository>
     </repositories>
 
     <properties>
@@ -24,7 +33,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.8.1</version>
+                <version>4.10</version>
             </dependency>
             <dependency>
                 <groupId>com.google.android</groupId>
@@ -35,11 +44,6 @@
                 <groupId>com.google.android</groupId>
                 <artifactId>android-test</artifactId>
                 <version>${android.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>android.support</groupId>
-                <artifactId>compatibility-v4</artifactId>
-                <version>r6</version>
             </dependency>
             <dependency>
                 <groupId>com.google.inject</groupId>
@@ -57,6 +61,12 @@
                 <groupId>org.roboguice</groupId>
                 <artifactId>roboguice</artifactId>
                 <version>2.0-SNAPSHOT</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>android.support</groupId>
+                        <artifactId>compatibility-v4</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.google.inject.extensions</groupId>
@@ -99,13 +109,8 @@
                     <version>3.0.0</version>
                     <configuration>
                         <sdk>
-                            <platform>14</platform>
+                            <platform>${android.platform}</platform>
                         </sdk>
-                        <emulator>
-                            <avd>titanium_6_WVGA800</avd>
-                            <wait>10000</wait>
-                            <!--<options>-no-skin</options>-->
-                        </emulator>
                         <zipalign>
                             <verbose>true</verbose>
                         </zipalign>

@@ -1,5 +1,7 @@
 package net.rdrei.android.wakimail.ui;
 
+import com.google.inject.Inject;
+
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailDatabase;
 import net.rdrei.android.wakimail.data.MailPreferences;
@@ -8,10 +10,14 @@ import roboguice.activity.RoboFragmentActivity;
 import roboguice.util.Ln;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 public class MailListActivity extends RoboFragmentActivity implements
 		OnLogoutRequestedListener {
+	
+	@Inject
+	protected FragmentManager mFragmentManager;
 
 	/**
 	 * Delete all user information from the storage and ends the current
@@ -34,9 +40,8 @@ public class MailListActivity extends RoboFragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_singlepane_empty);
 
-		// First-time init; create fragment to embed in activity.
-		FragmentTransaction ft = getSupportFragmentManager()
-				.beginTransaction();
+		// Create fragment to embed in activity.
+		FragmentTransaction ft = mFragmentManager.beginTransaction();
 		MailListFragment newFragment = new MailListFragment();
 		ft.replace(R.id.root_container, newFragment);
 		ft.commit();
