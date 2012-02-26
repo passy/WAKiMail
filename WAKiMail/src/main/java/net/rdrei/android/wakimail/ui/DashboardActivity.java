@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.google.inject.Inject;
 
 public class DashboardActivity extends RoboFragmentActivity {
@@ -28,6 +29,9 @@ public class DashboardActivity extends RoboFragmentActivity {
 
 	@InjectView(R.id.dashboard_sign_btn)
 	private Button mSignInButton;
+	
+	@Inject
+	private ActionBar mActionBar;
 
 	protected void bindSignInButton() {
 		this.mSignInButton.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +103,9 @@ public class DashboardActivity extends RoboFragmentActivity {
 			Ln.d("User credentials are saved. Skipping dashboard.");
 			this.skipDashboard();
 		}
+		
+		mActionBar.setDisplayShowTitleEnabled(true);
+		
 
 		Ln.d("No user credentials saved.");
 		setContentView(R.layout.activity_dashboard);

@@ -1,6 +1,8 @@
 package net.rdrei.android.wakimail.test;
 
 import net.rdrei.android.wakimail.WAKiMailApplication;
+import net.rdrei.android.wakimail.test.shadow.ShadowFragment;
+import net.rdrei.android.wakimail.test.shadow.ShadowFragmentActivity;
 
 import org.junit.runners.model.InitializationError;
 
@@ -22,5 +24,13 @@ public class InjectedTestRunner extends RobolectricTestRunner {
 
 		Injector injector = RoboGuice.getInjector(application);
 		injector.injectMembers(test);
+	}
+
+	@Override
+	protected void bindShadowClasses() {
+		super.bindShadowClasses();
+		
+		Robolectric.bindShadowClass(ShadowFragment.class);
+		Robolectric.bindShadowClass(ShadowFragmentActivity.class);
 	}
 }

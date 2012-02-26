@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.rdrei.android.wakimail.data.MailPreferences;
+import net.rdrei.android.wakimail.guice.ActionBarProvider;
 import net.rdrei.android.wakimail.ui.DashboardActivity;
 
 import org.junit.Assert;
@@ -16,6 +17,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.google.inject.AbstractModule;
 import com.google.inject.util.Modules;
 import com.xtremelabs.robolectric.Robolectric;
@@ -27,6 +29,7 @@ public class DashboardSavedActivityTest {
 	private class MySavedSharedPreferencesApplication extends AbstractModule {
 		@Override
 		protected void configure() {
+			bind(ActionBar.class).toProvider(ActionBarProvider.class);
 			bind(SharedPreferences.class).toInstance(
 					new SavedSharedPreferences());
 

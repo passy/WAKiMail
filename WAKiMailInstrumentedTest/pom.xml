@@ -13,12 +13,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>android.support</groupId>
-            <artifactId>compatibility-v4</artifactId>
-            <scope>provided</scope>
-            <type>jar</type>
-        </dependency>
-        <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
             <scope>provided</scope>
@@ -57,9 +51,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-        	<groupId>org.acra</groupId>
-        	<artifactId>acra</artifactId>
-        	<scope>provided</scope>
+            <groupId>org.acra</groupId>
+            <artifactId>acra</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
