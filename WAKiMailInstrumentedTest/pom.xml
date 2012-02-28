@@ -43,7 +43,6 @@
         <dependency>
             <groupId>org.roboguice</groupId>
             <artifactId>roboguice</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
@@ -54,6 +53,10 @@
             <groupId>org.acra</groupId>
             <artifactId>acra</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+        	<groupId>com.actionbarsherlock</groupId>
+        	<artifactId>plugin-support-lib</artifactId>
         </dependency>
     </dependencies>
 
