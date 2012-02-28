@@ -1,16 +1,12 @@
 package net.rdrei.android.wakimail.ui;
 
-import org.acra.ErrorReporter;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.task.MailSyncTask;
+
+import org.acra.ErrorReporter;
+
 import roboguice.fragment.RoboListFragment;
-import roboguice.inject.InjectView;
 import roboguice.util.Ln;
 import roboguice.util.RoboAsyncTask;
 import android.app.Activity;
@@ -28,18 +24,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public class MailListFragment extends RoboListFragment implements
 		LoaderCallbacks<Cursor> {
-
-	private final class OnRefreshClickListener implements View.OnClickListener {
-		public void onClick(View v) {
-			refresh();
-		}
-	}
 
 	private static final String[] PROJECTION = { MailTable.Columns._ID,
 			MailTable.Columns.TITLE, MailTable.Columns.SENDER, };
@@ -49,16 +41,6 @@ public class MailListFragment extends RoboListFragment implements
 	private SimpleCursorAdapter adapter;
 
 	private RoboAsyncTask<?> mSyncTask;
-
-	@InjectView(R.id.mail_loadingspinner)
-	private ProgressBar mLoadingSpinner;
-
-	@InjectView(R.id.refresh_btn)
-	private Button mRefreshButton;
-
-	private void bindRefreshButton() {
-		this.mRefreshButton.setOnClickListener(new OnRefreshClickListener());
-	}
 
 	public interface OnLogoutRequestedListener {
 		public void onLogoutRequested();
@@ -107,7 +89,6 @@ public class MailListFragment extends RoboListFragment implements
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		bindRefreshButton();
 		bindListViewOnClick();
 
 		// Trigger initial loading.
@@ -148,7 +129,7 @@ public class MailListFragment extends RoboListFragment implements
 			}
 		});
 	}
-
+	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -172,6 +153,9 @@ public class MailListFragment extends RoboListFragment implements
 			return true;
 		case R.id.menu_logout:
 			this.mLogoutListener.onLogoutRequested();
+			return true;
+		case R.id.menu_refresh:
+			this.refresh();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -208,13 +192,9 @@ public class MailListFragment extends RoboListFragment implements
 	}
 
 	private void showLoadingSpinner() {
-		this.mRefreshButton.setVisibility(View.GONE);
-		this.mLoadingSpinner.setVisibility(View.VISIBLE);
 	}
 
 	private void hideLoadingSpinner() {
-		this.mLoadingSpinner.setVisibility(View.GONE);
-		this.mRefreshButton.setVisibility(View.VISIBLE);
 	}
 
 	@Override
