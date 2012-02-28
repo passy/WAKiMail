@@ -1,7 +1,5 @@
 package net.rdrei.android.wakimail.ui;
 
-import com.google.inject.Inject;
-
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailDatabase;
 import net.rdrei.android.wakimail.data.MailPreferences;
@@ -12,6 +10,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Window;
+
+import com.google.inject.Inject;
 
 public class MailListActivity extends RoboFragmentActivity implements
 		OnLogoutRequestedListener {
@@ -38,6 +39,10 @@ public class MailListActivity extends RoboFragmentActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setProgressBarIndeterminate(false);
+		
 		setContentView(R.layout.activity_singlepane_empty);
 
 		// Create fragment to embed in activity.

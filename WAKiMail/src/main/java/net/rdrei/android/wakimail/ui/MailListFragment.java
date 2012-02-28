@@ -22,6 +22,7 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -109,8 +110,7 @@ public class MailListFragment extends RoboListFragment implements
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu,
-			MenuInflater inflater) {
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.mail_list_menu, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
@@ -129,7 +129,7 @@ public class MailListFragment extends RoboListFragment implements
 			}
 		});
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -192,9 +192,11 @@ public class MailListFragment extends RoboListFragment implements
 	}
 
 	private void showLoadingSpinner() {
+		this.getActivity().setProgressBarIndeterminate(true);
 	}
 
 	private void hideLoadingSpinner() {
+		this.getActivity().setProgressBarIndeterminate(false);
 	}
 
 	@Override
