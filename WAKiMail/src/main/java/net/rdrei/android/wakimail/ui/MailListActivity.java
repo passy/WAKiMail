@@ -41,7 +41,7 @@ public class MailListActivity extends RoboFragmentActivity implements
 		super.onCreate(savedInstanceState);
 		
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setProgressBarIndeterminate(false);
+		setSupportProgressBarIndeterminateVisibility(false);
 		
 		setContentView(R.layout.activity_singlepane_empty);
 

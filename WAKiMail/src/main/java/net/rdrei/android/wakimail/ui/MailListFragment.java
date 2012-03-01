@@ -192,11 +192,11 @@ public class MailListFragment extends RoboListFragment implements
 	}
 
 	private void showLoadingSpinner() {
-		this.getActivity().setProgressBarIndeterminate(true);
+		this.getActivity().setSupportProgressBarIndeterminateVisibility(true);
 	}
 
 	private void hideLoadingSpinner() {
-		this.getActivity().setProgressBarIndeterminate(false);
+		this.getActivity().setSupportProgressBarIndeterminateVisibility(false);
 	}
 
 	@Override
