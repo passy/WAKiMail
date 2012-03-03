@@ -4,17 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <net.rdrei.android.wakimail.widget.Navbar
-        android:id="@+id/navbar"
-        style="?attr/navbarStyle" >
-
-        <TextView
-            android:id="@+id/mail_title"
-            style="@style/NavbarTitle.Text"
-            android:layout_width="fill_parent"
-            android:text="@string/loading" />
-    </net.rdrei.android.wakimail.widget.Navbar>
-
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"

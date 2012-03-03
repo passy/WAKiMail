@@ -2,6 +2,8 @@ package net.rdrei.android.wakimail.ui;
 
 import java.text.SimpleDateFormat;
 
+import com.actionbarsherlock.app.ActionBar;
+
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.task.MailLoadTask;
@@ -153,14 +155,15 @@ public class MailDetailFragment extends RoboListFragment implements
 
 		switch (viewId) {
 		case R.id.mail_title:
+			Ln.d("Setting new title and applying actionbar fix.");
 			String text = cursor.getString(columnIndex);
-			Ln.d("Replacing title navbar with " + text);
 
-			TextView title = (TextView) getActivity().findViewById(
-					R.id.mail_title);
-			title.setText(text);
+			getActivity().getSupportActionBar().setNavigationMode(
+					ActionBar.NAVIGATION_MODE_STANDARD);
+			getActivity().getSupportActionBar().setSubtitle(text);
 			return true;
 		case R.id.mail_date:
+			Ln.d("Setting date.");
 			long date = cursor.getLong(columnIndex);
 			TextView dateView = (TextView) view;
 			dateView.setText(sDateFormatter.format(date));
