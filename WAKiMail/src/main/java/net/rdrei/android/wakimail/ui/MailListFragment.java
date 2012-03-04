@@ -22,7 +22,6 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -44,7 +43,7 @@ public class MailListFragment extends RoboListFragment implements
 	private RoboAsyncTask<?> mSyncTask;
 
 	public interface OnLogoutRequestedListener {
-		public void onLogoutRequested();
+		void onLogoutRequested();
 	}
 
 	private OnLogoutRequestedListener mLogoutListener;
@@ -57,7 +56,7 @@ public class MailListFragment extends RoboListFragment implements
 	@Override
 	public void onAttach(Activity activity) {
 		try {
-			this.mLogoutListener = (OnLogoutRequestedListener) activity;
+			mLogoutListener = (OnLogoutRequestedListener) activity;
 		} catch (ClassCastException e) {
 			Ln.e(e);
 			throw new ClassCastException(activity.toString()
@@ -101,11 +100,11 @@ public class MailListFragment extends RoboListFragment implements
 		super.onCreate(savedInstanceState);
 
 		// Set up the mail display using a SimpleCursorAdapter.
-		this.adapter = new SimpleCursorAdapter(this.getActivity(),
+		adapter = new SimpleCursorAdapter(this.getActivity(),
 				android.R.layout.two_line_list_item, null, new String[] {
 						MailTable.Columns.TITLE, MailTable.Columns.SENDER },
 				new int[] { android.R.id.text1, android.R.id.text2 }, 0);
-		setListAdapter(this.adapter);
+		setListAdapter(adapter);
 		setHasOptionsMenu(true);
 	}
 
@@ -134,9 +133,9 @@ public class MailListFragment extends RoboListFragment implements
 	public void onDestroy() {
 		super.onDestroy();
 
-		if (this.mSyncTask != null) {
+		if (mSyncTask != null) {
 			Ln.d("Canceling old sync task.");
-			this.mSyncTask.cancel(true);
+			mSyncTask.cancel(true);
 		}
 	}
 
@@ -152,7 +151,7 @@ public class MailListFragment extends RoboListFragment implements
 			dialog.show(getFragmentManager(), "dialog");
 			return true;
 		case R.id.menu_logout:
-			this.mLogoutListener.onLogoutRequested();
+			mLogoutListener.onLogoutRequested();
 			return true;
 		case R.id.menu_refresh:
 			this.refresh();
@@ -180,8 +179,8 @@ public class MailListFragment extends RoboListFragment implements
 
 		Ln.d("Starting mail sync task.");
 		synchronized (this) {
-			if (this.mSyncTask == null) {
-				this.mSyncTask = task;
+			if (mSyncTask == null) {
+				mSyncTask = task;
 				task.execute();
 				showLoadingSpinner();
 			} else {
@@ -208,10 +207,10 @@ public class MailListFragment extends RoboListFragment implements
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		this.adapter.swapCursor(cursor);
+		adapter.swapCursor(cursor);
 		hideLoadingSpinner();
 
-		if (this.adapter.isEmpty()) {
+		if (adapter.isEmpty()) {
 			Ln.d("List is empty. Triggering initial loading.");
 			refresh();
 		}
@@ -220,6 +219,6 @@ public class MailListFragment extends RoboListFragment implements
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {
-		this.adapter.swapCursor(null);
+		adapter.swapCursor(null);
 	}
 }

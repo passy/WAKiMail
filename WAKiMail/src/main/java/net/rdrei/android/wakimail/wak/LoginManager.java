@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpCookie;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -63,8 +64,8 @@ public class LoginManager {
 		this.email = email;
 		this.password = password;
 
-		this.cookieManager = new CookieManager();
-		CookieHandler.setDefault(this.cookieManager);
+		cookieManager = new CookieManager();
+		CookieHandler.setDefault(cookieManager);
 	}
 
 	public LoginManager(User user) {
@@ -97,7 +98,7 @@ public class LoginManager {
 	private String getSessionId() {
 		List<HttpCookie> cookies = null;
 		try {
-			cookies = this.cookieManager.getCookieStore().get(
+			cookies = cookieManager.getCookieStore().get(
 					new URI(Constants.URL_BASE));
 		} catch (URISyntaxException e) {
 			// Constant value, cannot happen at runtime.
@@ -135,7 +136,7 @@ public class LoginManager {
 			throws NoSuchAlgorithmException {
 
 		PassphraseGenerator passphraseGenerator = new PassphraseGenerator(
-				this.email, this.password, challenge);
+				email, password, challenge);
 		return passphraseGenerator.generate();
 	}
 
@@ -173,7 +174,7 @@ public class LoginManager {
 		// implementation here.
 		Map<String, String> values = new LinkedHashMap<String, String>();
 
-		values.put("user", this.email);
+		values.put("user", email);
 		values.put("pass", passphrase);
 		values.put("submit", "Anmelden");
 		values.put("logintype", "login");
@@ -189,14 +190,18 @@ public class LoginManager {
 
 		int responseCode = connection.getResponseCode();
 		switch (responseCode) {
-		case 200:
+		case HttpURLConnection.HTTP_OK:
 			// OK, but means we had an error on login.
 			BufferedReader bufferedReader = new BufferedReader(
 					new InputStreamReader(connection.getInputStream()), 2 << 11);
 
-			this.raiseLoginErrorFromResponseStream(bufferedReader);
+			try {
+				this.raiseLoginErrorFromResponseStream(bufferedReader);
+			} finally {
+				bufferedReader.close();
+			}
 			break;
-		case 302:
+		case HttpURLConnection.HTTP_MOVED_TEMP:
 			// Can mean we reached the maximum login attempts or the login
 			// did actually work.
 			String location = connection.getHeaderField("Location");
@@ -210,15 +215,19 @@ public class LoginManager {
 				Ln.w("Got a redirect on login to " + location);
 				throw new LoginException("Your account was banned for an hour.");
 			}
-		case 500:
+		case HttpURLConnection.HTTP_INTERNAL_ERROR:
 			// Server error. The HttpURLConnection may provide additional
 			// information.
 			InputStream error = connection.getErrorStream();
 			BufferedReader bufferedErrorReader = new BufferedReader(
 				new InputStreamReader(error), 2 << 11
 			);
-			this.raiseLoginErrorFromServerErrorResponseStream(
-					bufferedErrorReader);
+			try {
+				this.raiseLoginErrorFromServerErrorResponseStream(
+						bufferedErrorReader);
+			} finally {
+				bufferedErrorReader.close();
+			}
 			break;
 		default:
 			// Throw exception below.
@@ -264,8 +273,12 @@ public class LoginManager {
 		connection.setFixedLengthStreamingMode(params.length);
 
 		OutputStream out = connection.getOutputStream();
-		out.write(params);
-		out.close();
+		
+		try {
+			out.write(params);
+		} finally {
+			out.close();
+		}
 
 		return handleLoginResponse(connection);
 	}
@@ -291,17 +304,17 @@ public class LoginManager {
 	private void raiseLoginErrorFromServerErrorResponseStream(
 			BufferedReader bufferedReader) throws LoginException, IOException {
 
-		String response = "";
+		StringBuffer response = new StringBuffer();
 		String line;
 
 		do {
 			line = bufferedReader.readLine();
 			if (line != null) {
-				response += line + "\n";
+				response.append(line + "\n");
 			}
 		} while (line != null);
 
-		Ln.e("WAK server aborted login with error: " + response);
+		Ln.e("WAK server aborted login with error: " + response.toString());
 		throw new LoginException("There was a server error while " +
 				"logging in.");
 	}
@@ -373,23 +386,27 @@ public class LoginManager {
 		String userName = null;
 		String line;
 
-		do {
-			line = reader.readLine();
-			if (line != null) {
-				userName = extractUserName(line);
-
-				if (userName != null) {
-					break;
+		try {
+			do {
+				line = reader.readLine();
+				if (line != null) {
+					userName = extractUserName(line);
+	
+					if (userName != null) {
+						break;
+					}
 				}
-			}
-		} while (line != null);
+			} while (line != null);
+		} finally {
+			reader.close();
+		}
 
 		if (userName == null) {
 			throw new LoginException("Could not retrieve user name.");
 		}
 
-		User user = new User(this.email, userName, getSessionId());
-		user.setPassword(this.password);
+		User user = new User(email, userName, getSessionId());
+		user.setPassword(password);
 
 		return user;
 	}

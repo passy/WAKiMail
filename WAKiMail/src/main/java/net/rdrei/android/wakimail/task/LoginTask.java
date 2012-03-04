@@ -35,10 +35,10 @@ public class LoginTask extends RdreiAsyncTask<User> {
 	public User call() throws IOException, LoginManager.ChallengeException,
 			LoginManager.LoginException, NoSuchAlgorithmException {
 
-		final String challenge = this.manager.retrieveChallenge();
+		final String challenge = manager.retrieveChallenge();
 		// Would be a good point to push back some progress information to the
 		// UI thread. This is, however, not supported yet by this interface.
-		return this.manager.login(challenge);
+		return manager.login(challenge);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class LoginTask extends RdreiAsyncTask<User> {
 		final String errorMessage = this.formatResourceString(
 				R.string.login_error, err.getMessage());
 		Ln.d("Error message: " + errorMessage);
-		final Toast toast = Toast.makeText(this.context, errorMessage,
+		final Toast toast = Toast.makeText(context, errorMessage,
 				Toast.LENGTH_LONG);
 		toast.show();
 	}
@@ -61,16 +61,16 @@ public class LoginTask extends RdreiAsyncTask<User> {
 	 */
 	@Override
 	protected void onFinally() {
-		if (this.dialog.isShowing()) {
-			this.dialog.dismiss();
+		if (dialog.isShowing()) {
+			dialog.dismiss();
 		}
 	}
 
 	@Override
 	protected void onPreExecute() {
-		this.dialog.setMessage(this
+		dialog.setMessage(this
 				.formatResourceString(R.string.login_signing_in));
-		this.dialog.show();
+		dialog.show();
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class LoginTask extends RdreiAsyncTask<User> {
 		final String messageStr = this
 				.formatResourceString(R.string.login_success);
 		Ln.d("Login successful for User " + user.toString());
-		final Toast toast = Toast.makeText(this.context, messageStr,
+		final Toast toast = Toast.makeText(context, messageStr,
 				Toast.LENGTH_SHORT);
 		toast.show();
 

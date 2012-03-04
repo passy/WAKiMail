@@ -54,12 +54,12 @@ public class MailListLoaderInfiniteLoopRegressionTest {
 		RoboInjector injector = RoboGuice.getInjector(app);
 		injector.injectMembers(this);
 		
-		this.loader = factory.create();
+		loader = factory.create();
 	}
 	
 	@Test
 	public void fetchAllMails() throws IOException, LoginException {
-		List<Mail> mails = this.loader.fetchAllMails();
+		List<Mail> mails = loader.fetchAllMails();
 		Assert.assertEquals(118, mails.size());
 		
 		// Test a control sample

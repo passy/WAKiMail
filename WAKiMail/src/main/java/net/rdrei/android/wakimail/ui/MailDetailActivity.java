@@ -41,7 +41,7 @@ public class MailDetailActivity extends RoboFragmentActivity {
 			startActivity(intent);
 			return true;
 		}
-		
+
 		return super.onOptionsItemSelected(item);
 	}
 }

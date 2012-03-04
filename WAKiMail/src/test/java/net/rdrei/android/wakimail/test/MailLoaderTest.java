@@ -54,7 +54,7 @@ public class MailLoaderTest {
 		RoboInjector injector = RoboGuice.getInjector(app);
 		injector.injectMembers(this);
 		
-		this.user = new User("pascal.hartig@berufsakademie-sh.de",
+		user = new User("pascal.hartig@berufsakademie-sh.de",
 				"Pascal Hartig", "12345");
 	}
 	

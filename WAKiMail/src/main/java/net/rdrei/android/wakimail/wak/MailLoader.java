@@ -1,3 +1,4 @@
+// $codepro.audit.disable unnecessaryImport
 package net.rdrei.android.wakimail.wak;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class MailLoader extends NetLoader {
 
 	@Inject
 	public MailLoader(@Assisted String id) {
-		this.mId = id;
+		mId = id;
 	}
 
 	/**
@@ -44,8 +45,8 @@ public class MailLoader extends NetLoader {
 	 */
 	public String load() throws IOException, LoginException, ChallengeException {
 		final HttpsURLConnection connection = (HttpsURLConnection) this
-				.openWAKConnection(MESSAGE_URL + this.mId);
-		final String response = this.mSessionManager
+				.openWAKConnection(MESSAGE_URL + mId);
+		final String response = mSessionManager
 				.readConnectionWithSessionCheck(connection);
 		Matcher matcher = BODY_PATTERN.matcher(response);
 

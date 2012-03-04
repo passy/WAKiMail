@@ -22,7 +22,7 @@ public class Mail {
 	private Calendar date;
 
 	public String getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(String id) {
@@ -30,7 +30,7 @@ public class Mail {
 	}
 
 	public String getTitle() {
-		return this.title;
+		return title;
 	}
 
 	public void setTitle(String title) {
@@ -38,7 +38,7 @@ public class Mail {
 	}
 
 	public String getSender() {
-		return this.sender;
+		return sender;
 	}
 
 	public void setSender(String sender) {
@@ -46,7 +46,7 @@ public class Mail {
 	}
 
 	public String getBody() {
-		return this.body;
+		return body;
 	}
 
 	public void setBody(String body) {
@@ -54,7 +54,7 @@ public class Mail {
 	}
 
 	public Calendar getDate() {
-		return this.date;
+		return date;
 	}
 
 	public void setDate(Calendar date) {
@@ -86,11 +86,11 @@ public class Mail {
 	public ContentValues getValues() {
 		ContentValues values = new ContentValues();
 		
-		values.put(MailTable.Columns.EXTERNAL_ID, this.id);
-		values.put(MailTable.Columns.TITLE, this.title);
-		values.put(MailTable.Columns.SENDER, this.sender);
-		values.put(MailTable.Columns.BODY, this.body);
-		values.put(MailTable.Columns.DATE, this.date.getTimeInMillis());
+		values.put(MailTable.Columns.EXTERNAL_ID, id);
+		values.put(MailTable.Columns.TITLE, title);
+		values.put(MailTable.Columns.SENDER, sender);
+		values.put(MailTable.Columns.BODY, body);
+		values.put(MailTable.Columns.DATE, date.getTimeInMillis());
 		
 		return values;
 	}

@@ -11,6 +11,9 @@ import javax.net.ssl.HttpsURLConnection;
 
 import net.rdrei.android.wakimail.wak.LoginManager.ChallengeException;
 import net.rdrei.android.wakimail.wak.LoginManager.LoginException;
+
+
+
 import roboguice.util.Ln;
 
 import com.google.inject.Inject;
@@ -67,16 +70,16 @@ public class MailListLoader extends NetLoader implements Iterable<Mail> {
 
 	public void loadResponse() throws IOException, LoginException,
 			ChallengeException {
-		this.mIteratorResponse = this.readMailResponse();
+		mIteratorResponse = this.readMailResponse();
 	}
 
 	@Override
 	public Iterator<Mail> iterator() {
-		if (this.mIteratorResponse == null) {
-			throw new RuntimeException("You need to call loadResponse first "
-					+ "in order to use the iterator.");
+		if (mIteratorResponse == null) {
+			throw new IllegalStateException(
+				"You need to call loadResponse first in order to use the iterator.");
 		}
-		Matcher matcher = MAIL_PATTERN.matcher(this.mIteratorResponse);
+		Matcher matcher = MAIL_PATTERN.matcher(mIteratorResponse);
 		return new MailIterator(matcher);
 	}
 
@@ -84,6 +87,6 @@ public class MailListLoader extends NetLoader implements Iterable<Mail> {
 			ChallengeException {
 		HttpsURLConnection connection = (HttpsURLConnection) this
 				.openWAKConnection(MESSAGES_PATH);
-		return this.sessionManager.readConnectionWithSessionCheck(connection);
+		return sessionManager.readConnectionWithSessionCheck(connection);
 	}
 }

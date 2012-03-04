@@ -5,6 +5,6 @@ import java.net.URLConnection;
 
 public interface URLWrapper {
 
-	public abstract URLConnection openConnection() throws IOException;
+	URLConnection openConnection() throws IOException;
 
 }

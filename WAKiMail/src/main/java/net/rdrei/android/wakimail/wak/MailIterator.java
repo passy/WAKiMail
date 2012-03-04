@@ -19,16 +19,16 @@ public class MailIterator implements Iterator<Mail> {
 	@Override
 	public boolean hasNext() {
 		// Seriously, I like this a lot.
-		return this.matcher.find();
+		return matcher.find();
 	}
 
 	@Override
 	public Mail next() {
 		Mail mail = new Mail();
-		mail.setId(this.matcher.group(1));
-		mail.setTitle(this.matcher.group(2));
-		mail.setDateFromString(this.matcher.group(3));
-		mail.setSender(this.matcher.group(4));
+		mail.setId(matcher.group(1));
+		mail.setTitle(matcher.group(2));
+		mail.setDateFromString(matcher.group(3));
+		mail.setSender(matcher.group(4));
 		return mail;
 	}
 

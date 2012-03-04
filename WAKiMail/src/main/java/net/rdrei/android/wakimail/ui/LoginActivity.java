@@ -50,7 +50,7 @@ public class LoginActivity extends RoboFragmentActivity {
 		@Override
 		public void afterTextChanged(Editable s) {
 			LoginActivity.this.signInButton
-					.setEnabled(areRequiredValuesProvided());
+					.setEnabled(isFormComplete());
 		}
 
 		@Override
@@ -73,16 +73,16 @@ public class LoginActivity extends RoboFragmentActivity {
 	@InjectView(R.id.login_login_btn)
 	private Button signInButton;
 
-	private boolean areRequiredValuesProvided() {
-		return this.emailEdit.length() > 0 && this.passwordEdit.length() > 0;
+	private boolean isFormComplete() {
+		return emailEdit.length() > 0 && passwordEdit.length() > 0;
 	}
 
 	private void login() {
-		final String email = this.emailEdit.getText().toString();
-		final String password = this.passwordEdit.getText().toString();
+		final String email = emailEdit.getText().toString();
+		final String password = passwordEdit.getText().toString();
 
-		this.sessionManager.setUserCredentials(email, password);
-		this.sessionManager.login(this, new LoginTaskResultHandlerCallback());
+		sessionManager.setUserCredentials(email, password);
+		sessionManager.login(this, new LoginTaskResultHandlerCallback());
 	}
 
 	public void onCancel(View v) {
@@ -109,8 +109,8 @@ public class LoginActivity extends RoboFragmentActivity {
 
 		final SignInButtonWatcher watcher = new SignInButtonWatcher();
 
-		this.emailEdit.addTextChangedListener(watcher);
-		this.passwordEdit.addTextChangedListener(watcher);
+		emailEdit.addTextChangedListener(watcher);
+		passwordEdit.addTextChangedListener(watcher);
 	}
 
 	public void onSubmit(View v) {

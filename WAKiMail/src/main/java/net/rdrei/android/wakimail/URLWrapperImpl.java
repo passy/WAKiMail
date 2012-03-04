@@ -14,7 +14,7 @@ public class URLWrapperImpl implements URLWrapper {
 	
 	@Inject
 	public URLWrapperImpl(@Assisted String spec) throws MalformedURLException {
-		this.url = new URL(spec);
+		url = new URL(spec);
 	}
 
 	/* (non-Javadoc)
@@ -22,7 +22,7 @@ public class URLWrapperImpl implements URLWrapper {
 	 */
 	@Override
 	public URLConnection openConnection() throws IOException {
-		return this.mUrlConnectionFactory.create(this.url);
+		return mUrlConnectionFactory.create(url);
 	}
 
 }

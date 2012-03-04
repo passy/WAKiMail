@@ -12,7 +12,7 @@ public class ProgressDialogProvider implements Provider<ProgressDialog> {
 
 	@Override
 	public ProgressDialog get() {
-		return new ProgressDialog(this.context);
+		return new ProgressDialog(context);
 	}
 
 }

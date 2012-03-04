@@ -12,6 +12,33 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 import net.rdrei.android.wakimail.URLConnectionFactory;
 
 
+public class FakeURLConnectionFactoryImpl implements URLConnectionFactory {
+	
+	String streamFixture;
+	protected URL url;
+	
+	/**
+	 * Creates a new FakeURL factory that returns the given resource fixture
+	 * as stream instead of actually opening a network connection.
+	 * 
+	 * @param streamFixture
+	 */
+	public FakeURLConnectionFactoryImpl(String streamFixture) {
+		this.streamFixture = streamFixture;
+	}
+
+	@Override
+	public URLConnection create(URL url) {
+		this.url = url;
+		return new FakeURLConnection(url, streamFixture);
+	}
+	
+	public URL getURL() {
+		return url;
+	}
+}
+
+
 /**
  * Fakes an HTTPS connection to always return the messages
  * html file after a successful login without actual network connection.
@@ -35,11 +62,11 @@ class FakeURLConnection extends HttpsURLConnection {
 	public InputStream getInputStream() throws IOException {
 		// This is were the magic happens.
 		InputStream stream = this.getClass().getResourceAsStream(
-				this.streamFixture);
+				streamFixture);
 		
 		if (stream == null) {
 			throw new IOException("Could not find test fixture " + 
-				this.streamFixture);
+				streamFixture);
 		}
 		
 		return stream;
@@ -71,29 +98,3 @@ class FakeURLConnection extends HttpsURLConnection {
 	}
 }
 
-
-public class FakeURLConnectionFactoryImpl implements URLConnectionFactory {
-	
-	String streamFixture;
-	protected URL url;
-	
-	/**
-	 * Creates a new FakeURL factory that returns the given resource fixture
-	 * as stream instead of actually opening a network connection.
-	 * 
-	 * @param streamFixture
-	 */
-	public FakeURLConnectionFactoryImpl(String streamFixture) {
-		this.streamFixture = streamFixture;
-	}
-
-	@Override
-	public URLConnection create(URL url) {
-		this.url = url;
-		return new FakeURLConnection(url, streamFixture);
-	}
-	
-	public URL getURL() {
-		return url;
-	}
-}

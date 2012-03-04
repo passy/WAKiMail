@@ -45,7 +45,7 @@ public class DashboardSavedActivityTest {
 
 		@Override
 		public boolean contains(String arg0) {
-			return (arg0 == MailPreferences.USER_EMAIL);
+			return arg0.equals(MailPreferences.USER_EMAIL);
 		}
 
 		@Override

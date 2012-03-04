@@ -17,7 +17,7 @@ public class NetLoader {
 	private URLWrapperFactory urlWrapperFactory;
 
 	protected URLWrapper makeWAKUrl(String path) {
-		return this.urlWrapperFactory.create(Constants.URL_BASE + path);
+		return urlWrapperFactory.create(Constants.URL_BASE + path);
 	}
 
 	protected URLConnection openWAKConnection(String path) throws IOException {
@@ -31,10 +31,14 @@ public class NetLoader {
 				inputStream), 2 << 11);
 		final StringBuffer buf = new StringBuffer(2 << 12);
 
-		int character = reader.read();
-		while (character != -1) {
-			buf.append((char) character);
-			character = reader.read();
+		try {
+			int character = reader.read();
+			while (character != -1) {
+				buf.append((char) character);
+				character = reader.read();
+			}
+		} finally {
+			reader.close();
 		}
 
 		return buf.toString();

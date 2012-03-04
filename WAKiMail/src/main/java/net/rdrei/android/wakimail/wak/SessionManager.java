@@ -15,6 +15,8 @@ import net.rdrei.android.wakimail.Constants;
 import net.rdrei.android.wakimail.task.LoginTask;
 import net.rdrei.android.wakimail.wak.LoginManager.ChallengeException;
 import net.rdrei.android.wakimail.wak.LoginManager.LoginException;
+
+
 import roboguice.util.Ln;
 import android.content.Context;
 import android.os.Handler;
@@ -33,7 +35,7 @@ public class SessionManager {
 	}
 
 	public User getUser() {
-		return this.user;
+		return user;
 	}
 	
 	public void setUser(User user) {
@@ -41,18 +43,18 @@ public class SessionManager {
 	}
 
 	public void setUserCredentials(String email, String password) {
-		this.user.setEmail(email);
-		this.user.setPassword(password);
+		user.setEmail(email);
+		user.setPassword(password);
 	}
 
 	public void login(Context context, Handler.Callback callback) {
-		if (this.user == null || !this.user.hasCredentials()) {
+		if (user == null || !user.hasCredentials()) {
 			throw new NullPointerException("The user credentials have "
 					+ "not been set up properly.");
 		}
 
 		Ln.d("Starting login operation.");
-		final LoginManager manager = new LoginManager(this.user);
+		final LoginManager manager = new LoginManager(user);
 		final Handler handler = new Handler(callback);
 		final LoginTask task = new LoginTask(context, handler, manager);
 
@@ -72,10 +74,10 @@ public class SessionManager {
 		if (SessionManager.hasSessionExpired(connection)) {
 			Ln.d("Session expired. Renewing session. Attempt #" + tryCount);
 
-			final LoginManager manager = new LoginManager(this.user);
+			final LoginManager manager = new LoginManager(user);
 			final String challenge = manager.retrieveChallenge();
 			final User newUser = manager.login(challenge);
-			this.user.setSessionId(newUser.getSessionId());
+			user.setSessionId(newUser.getSessionId());
 
 			// Open a new connection and copy the required attributes.
 			HttpURLConnection newConnection = SessionManager
@@ -145,7 +147,7 @@ public class SessionManager {
 	}
 	
 	public void enableUserCookie() {
-		final CookieStore store = this.cookieManager.getCookieStore();
+		final CookieStore store = cookieManager.getCookieStore();
 		URI cookieURI = null;
 		try {
 			cookieURI = new URI(Constants.URL_BASE);
@@ -156,7 +158,7 @@ public class SessionManager {
 		final List<HttpCookie> cookies = store.get(cookieURI);
 		// The cookie we would like to have in it.
 		final HttpCookie cookie = new HttpCookie(Constants.SESSION_COOKIE_NAME,
-				this.user.getSessionId());
+				user.getSessionId());
 		if (!cookies.contains(cookie)) {
 			store.add(cookieURI, cookie);
 		}
@@ -167,10 +169,10 @@ public class SessionManager {
 	 */
 	protected void setDefaultCookieManager() {
 		synchronized (this) {
-			this.cookieManager = (CookieManager) CookieHandler.getDefault();
-			if (this.cookieManager == null) {
-				this.cookieManager = new CookieManager();
-				CookieHandler.setDefault(this.cookieManager);
+			cookieManager = (CookieManager) CookieHandler.getDefault();
+			if (cookieManager == null) {
+				cookieManager = new CookieManager();
+				CookieHandler.setDefault(cookieManager);
 			}
 		}
 	}

@@ -18,21 +18,21 @@ public class MailProvider extends ContentProvider {
 	private static final int MAIL_ID = 2;
 
 	private static final UriMatcher URI_MATCHER;
-	private static HashMap<String, String> mailProjectionMap;
+	private static HashMap<String, String> MailProjectionMap;
 	static {
 		URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 		URI_MATCHER.addURI(MailTable.AUTHORITY, "mails", MAILS);
 		URI_MATCHER.addURI(MailTable.AUTHORITY, "mails/*", MAIL_ID);
 
-		mailProjectionMap = new HashMap<String, String>();
-		mailProjectionMap.put(MailTable.Columns._ID, MailTable.Columns._ID);
-		mailProjectionMap.put(MailTable.Columns.TITLE, MailTable.Columns.TITLE);
-		mailProjectionMap.put(MailTable.Columns.SENDER,
+		MailProjectionMap = new HashMap<String, String>();
+		MailProjectionMap.put(MailTable.Columns._ID, MailTable.Columns._ID);
+		MailProjectionMap.put(MailTable.Columns.TITLE, MailTable.Columns.TITLE);
+		MailProjectionMap.put(MailTable.Columns.SENDER,
 				MailTable.Columns.SENDER);
-		mailProjectionMap.put(MailTable.Columns.DATE, MailTable.Columns.DATE);
-		mailProjectionMap.put(MailTable.Columns.EXTERNAL_ID,
+		MailProjectionMap.put(MailTable.Columns.DATE, MailTable.Columns.DATE);
+		MailProjectionMap.put(MailTable.Columns.EXTERNAL_ID,
 				MailTable.Columns.EXTERNAL_ID);
-		mailProjectionMap.put(MailTable.Columns.BODY, MailTable.Columns.BODY);
+		MailProjectionMap.put(MailTable.Columns.BODY, MailTable.Columns.BODY);
 	}
 
 	private MailDatabase mDatabase;
@@ -40,7 +40,7 @@ public class MailProvider extends ContentProvider {
 	@Override
 	public int delete(Uri uri, String where, String[] whereArgs) {
 		int count;
-		SQLiteDatabase db = this.mDatabase.getWritableDatabase();
+		SQLiteDatabase db = mDatabase.getWritableDatabase();
 
 		switch (URI_MATCHER.match(uri)) {
 		case MAILS:
@@ -89,7 +89,7 @@ public class MailProvider extends ContentProvider {
 			throw new NullPointerException("values must not be null!");
 		}
 
-		SQLiteDatabase db = this.mDatabase.getWritableDatabase();
+		SQLiteDatabase db = mDatabase.getWritableDatabase();
 		rowId = db.insert(MailTable.TABLE_NAME, null, values);
 
 		if (rowId > 0) {
@@ -106,7 +106,7 @@ public class MailProvider extends ContentProvider {
 	public boolean onCreate() {
 		Ln.d("Creating new MailProvider instance.");
 		// Open the database.
-		this.mDatabase = new MailDatabase(getContext());
+		mDatabase = new MailDatabase(getContext());
 		return true;
 	}
 
@@ -119,7 +119,7 @@ public class MailProvider extends ContentProvider {
 		// Use the query builder for orm-like access.
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 		queryBuilder.setTables(MailTable.TABLE_NAME);
-		queryBuilder.setProjectionMap(mailProjectionMap);
+		queryBuilder.setProjectionMap(MailProjectionMap);
 		String[] whereArgs = null;
 
 		switch (URI_MATCHER.match(uri)) {
@@ -146,7 +146,7 @@ public class MailProvider extends ContentProvider {
 			orderBy = sort;
 		}
 
-		SQLiteDatabase db = this.mDatabase.getReadableDatabase();
+		SQLiteDatabase db = mDatabase.getReadableDatabase();
 		Cursor cursor = queryBuilder.query(db, projection, selection,
 				whereArgs, null, null, orderBy);
 
@@ -171,7 +171,7 @@ public class MailProvider extends ContentProvider {
 			selectionArgs = new String[] { uri.getLastPathSegment() };
 		}
 
-		SQLiteDatabase db = this.mDatabase.getWritableDatabase();
+		SQLiteDatabase db = mDatabase.getWritableDatabase();
 		int count = db.update(MailTable.TABLE_NAME, values, where,
 				selectionArgs);
 		

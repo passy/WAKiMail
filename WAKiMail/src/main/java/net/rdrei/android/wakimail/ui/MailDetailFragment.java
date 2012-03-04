@@ -27,14 +27,14 @@ import android.widget.TextView;
 public class MailDetailFragment extends RoboListFragment implements
 		LoaderCallbacks<Cursor>, ViewBinder {
 
-	public final static String KEY_URI = "mailDetailURI";
+	public static final String KEY_URI = "mailDetailURI";
 
 	/**
 	 * This is the Adapter being used to display the list's data.
 	 */
 	private SimpleCursorAdapter mAdapter;
 	private Uri mUri;
-	private static final SimpleDateFormat sDateFormatter = new SimpleDateFormat(
+	private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat(
 			"dd.MM.yyyy HH:mm");
 
 	public static MailDetailFragment newInstance(Uri uri) {
@@ -77,7 +77,7 @@ public class MailDetailFragment extends RoboListFragment implements
 			uri = savedInstanceState.getString(KEY_URI);
 		}
 
-		this.mUri = Uri.parse(uri);
+		mUri = Uri.parse(uri);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class MailDetailFragment extends RoboListFragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		this.mAdapter = new SimpleCursorAdapter(
+		mAdapter = new SimpleCursorAdapter(
 		// The activity the fragment is using.
 				getActivity(),
 				// The layout built to display the mail.
@@ -107,8 +107,8 @@ public class MailDetailFragment extends RoboListFragment implements
 				// No flags.
 				0);
 
-		this.mAdapter.setViewBinder(this);
-		setListAdapter(this.mAdapter);
+		mAdapter.setViewBinder(this);
+		setListAdapter(mAdapter);
 		// Poke the loader to retrieve an async cursor.
 		getLoaderManager().initLoader(0, null, this);
 	}
@@ -123,15 +123,15 @@ public class MailDetailFragment extends RoboListFragment implements
 		super.onSaveInstanceState(outState);
 
 		// Save the URL in the out state for resuming.
-		outState.putString(KEY_URI, this.mUri.toString());
+		outState.putString(KEY_URI, mUri.toString());
 	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		// No need to filter or select anything specific, the URL fetches only
 		// one entry.
-		Ln.d("Requesting a new loader for " + this.mUri);
-		return new CursorLoader(getActivity(), this.mUri,
+		Ln.d("Requesting a new loader for " + mUri);
+		return new CursorLoader(getActivity(), mUri,
 				MailTable.MAILS_PROJECTION, null, null, null);
 	}
 
@@ -139,13 +139,13 @@ public class MailDetailFragment extends RoboListFragment implements
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 		Ln.d("Swapping cursor result.");
 		// Make the new cursor the used cursor.
-		this.mAdapter.swapCursor(cursor);
+		mAdapter.swapCursor(cursor);
 
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		this.mAdapter.swapCursor(null);
+		mAdapter.swapCursor(null);
 	}
 
 	@Override
@@ -177,7 +177,7 @@ public class MailDetailFragment extends RoboListFragment implements
 			Ln.d("Setting date.");
 			long date = cursor.getLong(columnIndex);
 			TextView dateView = (TextView) view;
-			dateView.setText(sDateFormatter.format(date));
+			dateView.setText(DATE_FORMATTER.format(date));
 			return true;
 		case R.id.mail_body:
 			if (cursor.isNull(columnIndex)) {
@@ -215,9 +215,9 @@ public class MailDetailFragment extends RoboListFragment implements
 	 * Start the task downloading the mail body.
 	 */
 	private void loadMailBody() {
-		Ln.d("Downloading mail body for URI " + this.mUri);
+		Ln.d("Downloading mail body for URI " + mUri);
 		Handler handler = new Handler(new MailLoadTaskHandlerCallback());
-		MailLoadTask task = new MailLoadTask(getActivity(), handler, this.mUri);
+		MailLoadTask task = new MailLoadTask(getActivity(), handler, mUri);
 		task.execute();
 	}
 

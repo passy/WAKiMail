@@ -14,6 +14,6 @@ public class SessionManagerTest {
 
 	@Test
 	public void shouldInitialize() {
-		assert this.sessionManager.getUser() == null;
+		assert sessionManager.getUser() == null;
 	}
 }

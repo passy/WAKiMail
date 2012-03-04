@@ -53,7 +53,7 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 
 	@Override
 	public Integer call() throws Exception {
-		final MailListLoader loader = this.mailListLoaderFactory.create();
+		final MailListLoader loader = mailListLoaderFactory.create();
 		loader.loadResponse();
 		return this.syncMail(loader);
 	}
@@ -66,8 +66,8 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 			showSuccessToast(result);
 		}
 
-		if (this.handler != null) {
-			this.handler.sendEmptyMessage(SYNC_SUCCESS_MESSAGE);
+		if (handler != null) {
+			handler.sendEmptyMessage(SYNC_SUCCESS_MESSAGE);
 		}
 	}
 
@@ -78,15 +78,15 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 			showErrorToast(e.getMessage());
 		}
 		
-		if (this.handler != null) {
-			this.handler.sendEmptyMessage(SYNC_ERROR_MESSAGE);
+		if (handler != null) {
+			handler.sendEmptyMessage(SYNC_ERROR_MESSAGE);
 		}
 	}
 
 	private void showSuccessToast(Integer result) {
 		final String text = this.formatResourceString(R.string.refresh_success,
 				result);
-		final Toast toast = Toast.makeText(this.context, text,
+		final Toast toast = Toast.makeText(context, text,
 				Toast.LENGTH_SHORT);
 		toast.show();
 	}
@@ -94,7 +94,7 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 	private void showErrorToast(String message) {
 		final String text = this.formatResourceString(
 				R.string.mail_fetch_error, message);
-		final Toast toast = Toast.makeText(this.context, text,
+		final Toast toast = Toast.makeText(context, text,
 				Toast.LENGTH_SHORT);
 		toast.show();
 	}
@@ -121,7 +121,7 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 
 	private int syncMail(Iterable<Mail> iterator) {
 		// Get the resolver we need to query the database.
-		final ContentResolver contentResolver = this.context
+		final ContentResolver contentResolver = context
 				.getContentResolver();
 
 		// Get the external ID of the last mail we have in the DB.

@@ -57,7 +57,7 @@ public class MailListLoaderTest {
 		RoboInjector injector = RoboGuice.getInjector(app);
 		injector.injectMembers(this);
 
-		this.loader = factory.create();
+		loader = factory.create();
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class MailListLoaderTest {
 
 	@Test
 	public void fetchAllMails() throws IOException, LoginException {
-		List<Mail> mails = this.loader.fetchAllMails();
+		List<Mail> mails = loader.fetchAllMails();
 		Assert.assertEquals(112, mails.size());
 
 		// Test a control sample
