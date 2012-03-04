@@ -129,10 +129,10 @@ public class DashboardSavedActivityTest {
 	public void savedPreferencesSkipDashboard() {
 		mActivity = new DashboardActivity();
 		mActivity.onCreate(null);
-		ComponentName componentName = new ComponentName(
+		final ComponentName componentName = new ComponentName(
 				"net.rdrei.android.wakimail",
 				"net.rdrei.android.wakimail.ui.MailListActivity");
-		Intent intent = new Intent();
+		final Intent intent = new Intent();
 		intent.setComponent(componentName);
 		Assert.assertThat(mActivity, new StartedMatcher(intent));
 	}

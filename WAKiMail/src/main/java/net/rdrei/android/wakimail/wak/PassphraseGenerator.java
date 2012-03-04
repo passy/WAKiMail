@@ -25,7 +25,7 @@ public class PassphraseGenerator {
 	public String generate() throws NoSuchAlgorithmException {
 		final MessageDigest md5 = MessageDigest.getInstance("MD5");
 		
-		String hashedPassword = this.hashToHex(md5.digest(
+		final String hashedPassword = this.hashToHex(md5.digest(
 				password.getBytes()));
 		// Reusing the same instance.
 		md5.reset();

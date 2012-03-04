@@ -15,8 +15,6 @@ import net.rdrei.android.wakimail.Constants;
 import net.rdrei.android.wakimail.task.LoginTask;
 import net.rdrei.android.wakimail.wak.LoginManager.ChallengeException;
 import net.rdrei.android.wakimail.wak.LoginManager.LoginException;
-
-
 import roboguice.util.Ln;
 import android.content.Context;
 import android.os.Handler;
@@ -80,7 +78,7 @@ public class SessionManager {
 			user.setSessionId(newUser.getSessionId());
 
 			// Open a new connection and copy the required attributes.
-			HttpURLConnection newConnection = SessionManager
+			final HttpURLConnection newConnection = SessionManager
 					.copyConnection(connection);
 
 			// Recursively call this method again.
@@ -100,8 +98,8 @@ public class SessionManager {
 	 */
 	public static HttpURLConnection copyConnection(HttpURLConnection connection)
 			throws IOException {
-		URL url = connection.getURL();
-		HttpURLConnection newConnection = (HttpURLConnection) url
+		final URL url = connection.getURL();
+		final HttpURLConnection newConnection = (HttpURLConnection) url
 				.openConnection();
 		newConnection.setDoInput(connection.getDoInput());
 		newConnection.setDoOutput(connection.getDoOutput());
@@ -137,7 +135,7 @@ public class SessionManager {
 	 * @return boolean indicating whether the session is valid
 	 */
 	public static boolean hasSessionExpired(HttpURLConnection connection) {
-		String header = connection.getHeaderField("Set-Cookie");
+		final String header = connection.getHeaderField("Set-Cookie");
 
 		if (header != null) {
 			return header.contains(Constants.SESSION_COOKIE_NAME + "=");

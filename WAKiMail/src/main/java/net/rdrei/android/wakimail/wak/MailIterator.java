@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 
 public class MailIterator implements Iterator<Mail> {
 	
-	private Matcher matcher;
+	private final Matcher matcher;
 
 	/**
 	 * Internal constructor, because we require a *very* specific matcher that
@@ -24,7 +24,7 @@ public class MailIterator implements Iterator<Mail> {
 
 	@Override
 	public Mail next() {
-		Mail mail = new Mail();
+		final Mail mail = new Mail();
 		mail.setId(matcher.group(1));
 		mail.setTitle(matcher.group(2));
 		mail.setDateFromString(matcher.group(3));

@@ -44,14 +44,14 @@ public class MailDatabase extends SQLiteOpenHelper {
 	}
 
 	public long insertMail(Mail mail) {
-		ContentValues values = new ContentValues();
+		final ContentValues values = new ContentValues();
 		values.put(MailTable.Columns.EXTERNAL_ID, mail.getId());
 		values.put(MailTable.Columns.TITLE, mail.getTitle());
 		values.put(MailTable.Columns.DATE, mail.getDate().getTimeInMillis());
 		values.put(MailTable.Columns.SENDER, mail.getSender());
 
 		// Optional field
-		String body = mail.getBody();
+		final String body = mail.getBody();
 		if (body != null) {
 			values.put(MailTable.Columns.BODY, body);
 		}
@@ -66,9 +66,9 @@ public class MailDatabase extends SQLiteOpenHelper {
 	 * @return
 	 */
 	public Cursor getMails(int limit, int offset) {
-		SQLiteDatabase db = this.getReadableDatabase();
+		final SQLiteDatabase db = this.getReadableDatabase();
 
-		String[] columns = new String[] { MailTable.Columns._ID,
+		final String[] columns = new String[] { MailTable.Columns._ID,
 				MailTable.Columns.TITLE, MailTable.Columns.SENDER,
 				MailTable.Columns.DATE, MailTable.Columns.BODY,
 				MailTable.Columns.EXTERNAL_ID };

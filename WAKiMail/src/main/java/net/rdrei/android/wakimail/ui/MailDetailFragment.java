@@ -38,8 +38,8 @@ public class MailDetailFragment extends RoboListFragment implements
 			"dd.MM.yyyy HH:mm");
 
 	public static MailDetailFragment newInstance(Uri uri) {
-		MailDetailFragment fragment = new MailDetailFragment();
-		Bundle args = new Bundle();
+		final MailDetailFragment fragment = new MailDetailFragment();
+		final Bundle args = new Bundle();
 		args.putString(MailDetailFragment.KEY_URI, uri.toString());
 		fragment.setArguments(args);
 
@@ -150,7 +150,7 @@ public class MailDetailFragment extends RoboListFragment implements
 
 	@Override
 	public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-		int viewId = view.getId();
+		final int viewId = view.getId();
 
 		switch (viewId) {
 		case R.id.mail_title:
@@ -175,8 +175,8 @@ public class MailDetailFragment extends RoboListFragment implements
 			return true;
 		case R.id.mail_date:
 			Ln.d("Setting date.");
-			long date = cursor.getLong(columnIndex);
-			TextView dateView = (TextView) view;
+			final long date = cursor.getLong(columnIndex);
+			final TextView dateView = (TextView) view;
 			dateView.setText(DATE_FORMATTER.format(date));
 			return true;
 		case R.id.mail_body:
@@ -216,8 +216,8 @@ public class MailDetailFragment extends RoboListFragment implements
 	 */
 	private void loadMailBody() {
 		Ln.d("Downloading mail body for URI " + mUri);
-		Handler handler = new Handler(new MailLoadTaskHandlerCallback());
-		MailLoadTask task = new MailLoadTask(getActivity(), handler, mUri);
+		final Handler handler = new Handler(new MailLoadTaskHandlerCallback());
+		final MailLoadTask task = new MailLoadTask(getActivity(), handler, mUri);
 		task.execute();
 	}
 

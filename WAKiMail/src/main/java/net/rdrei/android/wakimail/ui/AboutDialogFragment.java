@@ -11,7 +11,7 @@ import roboguice.fragment.RoboDialogFragment;
 public class AboutDialogFragment extends RoboDialogFragment {
 	
 	public static AboutDialogFragment newInstance() {
-		AboutDialogFragment dialog = new AboutDialogFragment();
+		final AboutDialogFragment dialog = new AboutDialogFragment();
 		return dialog;
 	}
 
@@ -21,10 +21,10 @@ public class AboutDialogFragment extends RoboDialogFragment {
 	 */
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		View view = LayoutInflater.from(this.getActivity()).inflate(
+		final View view = LayoutInflater.from(this.getActivity()).inflate(
 				R.layout.dialog_about, null);
-		String title = this.getString(R.string.about_title);
-		String positiveMessage = this.getString(android.R.string.ok);
+		final String title = this.getString(R.string.about_title);
+		final String positiveMessage = this.getString(android.R.string.ok);
 		return new AlertDialog.Builder(getActivity()).setTitle(title)
 				.setCancelable(true).setIcon(R.drawable.icon)
 				.setPositiveButton(positiveMessage, null).setView(view)

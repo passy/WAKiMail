@@ -80,13 +80,13 @@ public class LoginManager {
 	}
 
 	private HttpsURLConnection buildConnection(String path) throws IOException {
-		URL url = new URL(Constants.URL_BASE + path);
-		URLConnection connection = url.openConnection();
+		final URL url = new URL(Constants.URL_BASE + path);
+		final URLConnection connection = url.openConnection();
 		return (HttpsURLConnection) connection;
 	}
 
 	private String extractChallengeFromLine(String line) {
-		Matcher matcher = challengePattern.matcher(line);
+		final Matcher matcher = challengePattern.matcher(line);
 
 		while (matcher.find()) {
 			return matcher.group(1);
@@ -116,7 +116,7 @@ public class LoginManager {
 	}
 
 	private String extractUserName(String line) {
-		Matcher matcher = userNamePattern.matcher(line);
+		final Matcher matcher = userNamePattern.matcher(line);
 
 		String userName = null;
 		while (matcher.find()) {
@@ -135,7 +135,7 @@ public class LoginManager {
 	private String generatePassphrase(String challenge)
 			throws NoSuchAlgorithmException {
 
-		PassphraseGenerator passphraseGenerator = new PassphraseGenerator(
+		final PassphraseGenerator passphraseGenerator = new PassphraseGenerator(
 				email, password, challenge);
 		return passphraseGenerator.generate();
 	}
@@ -143,8 +143,8 @@ public class LoginManager {
 	private byte[] generatePostParamsFromMap(Map<String, String> values)
 			throws UnsupportedEncodingException {
 
-		Iterable<Entry<String, String>> set = values.entrySet();
-		StringBuilder builder = new StringBuilder(2 << 11);
+		final Iterable<Entry<String, String>> set = values.entrySet();
+		final StringBuilder builder = new StringBuilder(2 << 11);
 		int count = 0;
 
 		for (Entry<String, String> entry : set) {
@@ -172,7 +172,7 @@ public class LoginManager {
 			throws UnsupportedEncodingException {
 		// The order might matter, so we use the linked hash map
 		// implementation here.
-		Map<String, String> values = new LinkedHashMap<String, String>();
+		final Map<String, String> values = new LinkedHashMap<String, String>();
 
 		values.put("user", email);
 		values.put("pass", passphrase);
@@ -188,11 +188,11 @@ public class LoginManager {
 	private User handleLoginResponse(HttpsURLConnection connection)
 			throws IOException, LoginException {
 
-		int responseCode = connection.getResponseCode();
+		final int responseCode = connection.getResponseCode();
 		switch (responseCode) {
 		case HttpURLConnection.HTTP_OK:
 			// OK, but means we had an error on login.
-			BufferedReader bufferedReader = new BufferedReader(
+			final BufferedReader bufferedReader = new BufferedReader(
 					new InputStreamReader(connection.getInputStream()), 2 << 11);
 
 			try {
@@ -204,7 +204,7 @@ public class LoginManager {
 		case HttpURLConnection.HTTP_MOVED_TEMP:
 			// Can mean we reached the maximum login attempts or the login
 			// did actually work.
-			String location = connection.getHeaderField("Location");
+			final String location = connection.getHeaderField("Location");
 
 			if (location.equals("/index.php?id=90")) {
 				// The success page.
@@ -218,8 +218,8 @@ public class LoginManager {
 		case HttpURLConnection.HTTP_INTERNAL_ERROR:
 			// Server error. The HttpURLConnection may provide additional
 			// information.
-			InputStream error = connection.getErrorStream();
-			BufferedReader bufferedErrorReader = new BufferedReader(
+			final InputStream error = connection.getErrorStream();
+			final BufferedReader bufferedErrorReader = new BufferedReader(
 				new InputStreamReader(error), 2 << 11
 			);
 			try {
@@ -257,7 +257,7 @@ public class LoginManager {
 		}
 		Ln.d("Passphrase: " + passphrase);
 
-		HttpsURLConnection connection = this
+		final HttpsURLConnection connection = this
 				.buildConnection("community-login.html");
 
 		// Setting method to POST per default.
@@ -267,12 +267,12 @@ public class LoginManager {
 		// This is false for 10, but apparently true at least for 14+.
 		connection.setInstanceFollowRedirects(false);
 
-		byte[] params = this.getLoginPostParameters(passphrase, challenge);
+		final byte[] params = this.getLoginPostParameters(passphrase, challenge);
 		Ln.d("Sending POST params for login " + new String(params));
 
 		connection.setFixedLengthStreamingMode(params.length);
 
-		OutputStream out = connection.getOutputStream();
+		final OutputStream out = connection.getOutputStream();
 		
 		try {
 			out.write(params);
@@ -304,7 +304,7 @@ public class LoginManager {
 	private void raiseLoginErrorFromServerErrorResponseStream(
 			BufferedReader bufferedReader) throws LoginException, IOException {
 
-		StringBuffer response = new StringBuffer();
+		final StringBuffer response = new StringBuffer();
 		String line;
 
 		do {
@@ -346,10 +346,10 @@ public class LoginManager {
 	}
 
 	public String retrieveChallenge() throws IOException, ChallengeException {
-		HttpsURLConnection connection = this.buildConnection("30.html");
-		InputStream stream = connection.getInputStream();
+		final HttpsURLConnection connection = this.buildConnection("30.html");
+		final InputStream stream = connection.getInputStream();
 
-		BufferedReader bufferedReader = new BufferedReader(
+		final BufferedReader bufferedReader = new BufferedReader(
 				new InputStreamReader(stream), 2 << 11);
 
 		String challenge = null;
@@ -377,10 +377,10 @@ public class LoginManager {
 	 * @throws IOException
 	 */
 	private User retrieveUserInformation() throws LoginException, IOException {
-		HttpsURLConnection connection = buildConnection("c_uebersicht.html");
+		final HttpsURLConnection connection = buildConnection("c_uebersicht.html");
 
-		InputStream stream = connection.getInputStream();
-		BufferedReader reader = new BufferedReader(
+		final InputStream stream = connection.getInputStream();
+		final BufferedReader reader = new BufferedReader(
 				new InputStreamReader(stream));
 
 		String userName = null;
@@ -405,7 +405,7 @@ public class LoginManager {
 			throw new LoginException("Could not retrieve user name.");
 		}
 
-		User user = new User(email, userName, getSessionId());
+		final User user = new User(email, userName, getSessionId());
 		user.setPassword(password);
 
 		return user;

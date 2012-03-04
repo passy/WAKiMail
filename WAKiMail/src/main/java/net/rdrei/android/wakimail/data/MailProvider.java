@@ -40,7 +40,7 @@ public class MailProvider extends ContentProvider {
 	@Override
 	public int delete(Uri uri, String where, String[] whereArgs) {
 		int count;
-		SQLiteDatabase db = mDatabase.getWritableDatabase();
+		final SQLiteDatabase db = mDatabase.getWritableDatabase();
 
 		switch (URI_MATCHER.match(uri)) {
 		case MAILS:
@@ -53,7 +53,7 @@ public class MailProvider extends ContentProvider {
 						+ "using were clause!");
 			}
 
-			String rowId = uri.getPathSegments().get(1);
+			final String rowId = uri.getPathSegments().get(1);
 			count = db.delete(MailTable.TABLE_NAME, MailTable.Columns._ID
 					+ "=?", new String[] { rowId });
 			break;
@@ -79,7 +79,7 @@ public class MailProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		long rowId;
+		final long rowId;
 
 		if (URI_MATCHER.match(uri) != MAILS) {
 			throw new IllegalArgumentException("Invalid insert URI " + uri);
@@ -89,11 +89,11 @@ public class MailProvider extends ContentProvider {
 			throw new NullPointerException("values must not be null!");
 		}
 
-		SQLiteDatabase db = mDatabase.getWritableDatabase();
+		final SQLiteDatabase db = mDatabase.getWritableDatabase();
 		rowId = db.insert(MailTable.TABLE_NAME, null, values);
 
 		if (rowId > 0) {
-			Uri newUri = ContentUris.withAppendedId(MailTable.ALL_MAILS_URI,
+			final Uri newUri = ContentUris.withAppendedId(MailTable.ALL_MAILS_URI,
 					rowId);
 			getContext().getContentResolver().notifyChange(newUri, null);
 			return newUri;
@@ -117,7 +117,7 @@ public class MailProvider extends ContentProvider {
 		Ln.d("Received query from URI " + uri);
 
 		// Use the query builder for orm-like access.
-		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 		queryBuilder.setTables(MailTable.TABLE_NAME);
 		queryBuilder.setProjectionMap(MailProjectionMap);
 		String[] whereArgs = null;
@@ -146,8 +146,8 @@ public class MailProvider extends ContentProvider {
 			orderBy = sort;
 		}
 
-		SQLiteDatabase db = mDatabase.getReadableDatabase();
-		Cursor cursor = queryBuilder.query(db, projection, selection,
+		final SQLiteDatabase db = mDatabase.getReadableDatabase();
+		final Cursor cursor = queryBuilder.query(db, projection, selection,
 				whereArgs, null, null, orderBy);
 
 		// Tell the requester where to watch for changes.
@@ -171,8 +171,8 @@ public class MailProvider extends ContentProvider {
 			selectionArgs = new String[] { uri.getLastPathSegment() };
 		}
 
-		SQLiteDatabase db = mDatabase.getWritableDatabase();
-		int count = db.update(MailTable.TABLE_NAME, values, where,
+		final SQLiteDatabase db = mDatabase.getWritableDatabase();
+		final int count = db.update(MailTable.TABLE_NAME, values, where,
 				selectionArgs);
 		
 		getContext().getContentResolver().notifyChange(uri, null);

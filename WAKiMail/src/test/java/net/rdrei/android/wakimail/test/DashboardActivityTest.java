@@ -31,13 +31,13 @@ public class DashboardActivityTest {
 
 	@Test
 	public void loginButtonStartsLoginActivity() {
-		Button button = (Button) mActivity
+		final Button button = (Button) mActivity
 				.findViewById(R.id.dashboard_sign_btn);
 		button.performClick();
 
-		ComponentName cm = new ComponentName("net.rdrei.android.wakimail",
+		final ComponentName cm = new ComponentName("net.rdrei.android.wakimail",
 				"net.rdrei.android.wakimail.ui.LoginActivity");
-		Intent intent = new Intent();
+		final Intent intent = new Intent();
 		intent.setComponent(cm);
 		Assert.assertThat(mActivity, new StartedMatcher(intent));
 	}

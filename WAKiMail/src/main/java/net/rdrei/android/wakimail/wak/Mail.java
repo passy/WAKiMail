@@ -84,7 +84,7 @@ public class Mail {
 	}
 	
 	public ContentValues getValues() {
-		ContentValues values = new ContentValues();
+		final ContentValues values = new ContentValues();
 		
 		values.put(MailTable.Columns.EXTERNAL_ID, id);
 		values.put(MailTable.Columns.TITLE, title);

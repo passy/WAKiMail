@@ -25,16 +25,16 @@ public class LoginActivityTest {
 
 	@Test
 	public void hasButtonText() {
-		Resources r = activity.getResources();
-		String s = r.getString(R.string.login_signin);
+		final Resources r = activity.getResources();
+		final String s = r.getString(R.string.login_signin);
 		Assert.assertEquals("Sign In", s);
 	}
 
 	@Test
 	public void shouldActivateSignInButtonIfCredentialsProvided() {
-		EditText emailText = (EditText) this.findView(R.id.login_email);
-		EditText passwordText = (EditText) this.findView(R.id.login_password);
-		Button signInBtn = (Button) this.findView(R.id.login_login_btn);
+		final EditText emailText = (EditText) this.findView(R.id.login_email);
+		final EditText passwordText = (EditText) this.findView(R.id.login_password);
+		final Button signInBtn = (Button) this.findView(R.id.login_login_btn);
 
 		emailText.setText("hello@example.com");
 		passwordText.setText("world");

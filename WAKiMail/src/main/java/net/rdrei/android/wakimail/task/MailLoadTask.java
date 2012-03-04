@@ -18,7 +18,7 @@ public class MailLoadTask extends RdreiAsyncTask<Void> {
 
 	@Inject
 	private MailLoaderFactory mailLoaderFactory;
-	private Uri mUri;
+	private final Uri mUri;
 
 	public static final int LOAD_SUCCESS_MESSAGE = 0;
 	public static final int LOAD_ERROR_MESSAGE = -1;
@@ -30,11 +30,11 @@ public class MailLoadTask extends RdreiAsyncTask<Void> {
 
 	@Override
 	public Void call() throws Exception {
-		ContentResolver resolver = getContext().getContentResolver();
-		String externalId = getExternalId(resolver);
+		final ContentResolver resolver = getContext().getContentResolver();
+		final String externalId = getExternalId(resolver);
 
-		MailLoader loader = mailLoaderFactory.create(externalId);
-		String body = loader.load();
+		final MailLoader loader = mailLoaderFactory.create(externalId);
+		final String body = loader.load();
 		saveMailBody(resolver, body);
 
 		return null;
@@ -60,16 +60,16 @@ public class MailLoadTask extends RdreiAsyncTask<Void> {
 			// Don't handle interruptions as usual exceptions.
 			return;
 		}
-		String text = this.formatResourceString(R.string.login_error,
+		final String text = this.formatResourceString(R.string.login_error,
 				e.getMessage());
-		Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+		final Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
 		toast.show();
 
 		handler.sendEmptyMessage(LOAD_ERROR_MESSAGE);
 	}
 
 	private int saveMailBody(ContentResolver resolver, String body) {
-		ContentValues values = new ContentValues(1);
+		final ContentValues values = new ContentValues(1);
 		values.put(MailTable.Columns.BODY, body);
 		return resolver.update(mUri, values, null, null);
 	}
@@ -84,7 +84,7 @@ public class MailLoadTask extends RdreiAsyncTask<Void> {
 		// We don't need transactional management, though. Even if there would
 		// be conflicting queries, the worst result would be to save the same
 		// result twice.
-		Cursor cursor = resolver.query(mUri,
+		final Cursor cursor = resolver.query(mUri,
 				new String[] { MailTable.Columns.EXTERNAL_ID }, null, null,
 				null);
 		cursor.moveToFirst();

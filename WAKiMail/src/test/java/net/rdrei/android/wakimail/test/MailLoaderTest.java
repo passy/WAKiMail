@@ -37,7 +37,7 @@ public class MailLoaderTest {
 	
 	@Before
 	public void setUp() {
-		AbstractModule module = new AbstractModule() {
+		final AbstractModule module = new AbstractModule() {
 			@Override
 			protected void configure() {
 				urlConnectionFactory = new FakeURLConnectionFactoryImpl(
@@ -46,12 +46,12 @@ public class MailLoaderTest {
 			}
 		};
 		
-		Module moduleOverride = Modules.override(new WAKiMailModule()).with(module);
-		Application app = Robolectric.application;
+		final Module moduleOverride = Modules.override(new WAKiMailModule()).with(module);
+		final Application app = Robolectric.application;
 		RoboGuice.setBaseApplicationInjector(app, RoboGuice.DEFAULT_STAGE,
 				RoboGuice.newDefaultRoboModule(app), moduleOverride);
 		
-		RoboInjector injector = RoboGuice.getInjector(app);
+		final RoboInjector injector = RoboGuice.getInjector(app);
 		injector.injectMembers(this);
 		
 		user = new User("pascal.hartig@berufsakademie-sh.de",
@@ -60,11 +60,11 @@ public class MailLoaderTest {
 	
 	@Test
 	public void shouldLoadCorrectMail() throws IOException, LoginException, ChallengeException {
-		String id = "1234567";
-		MailLoader loader = loaderFactory.create(id);
+		final String id = "1234567";
+		final MailLoader loader = loaderFactory.create(id);
 		
 		loader.load();
-		URL url = urlConnectionFactory.getURL();
+		final URL url = urlConnectionFactory.getURL();
 		Assert.assertEquals(
 				Constants.URL_BASE +
 				"c_email.html?action=getviewmessagessingle&msg_uid=" + id,
@@ -73,8 +73,8 @@ public class MailLoaderTest {
 	
 	@Test
 	public void shouldExtractBody() throws IOException, LoginException, ChallengeException {
-		MailLoader loader = loaderFactory.create("123456");
-		String body = loader.load();
+		final MailLoader loader = loaderFactory.create("123456");
+		final String body = loader.load();
 		
 		Assert.assertEquals("Ich würde vorschlagen wir treffen uns nächste " +
 				"Woche Montag (17.10.2011) um 15:15 Uhr vor der Aula und " +

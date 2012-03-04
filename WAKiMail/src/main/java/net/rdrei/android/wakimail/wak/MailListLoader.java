@@ -11,9 +11,6 @@ import javax.net.ssl.HttpsURLConnection;
 
 import net.rdrei.android.wakimail.wak.LoginManager.ChallengeException;
 import net.rdrei.android.wakimail.wak.LoginManager.LoginException;
-
-
-
 import roboguice.util.Ln;
 
 import com.google.inject.Inject;
@@ -45,7 +42,7 @@ public class MailListLoader extends NetLoader implements Iterable<Mail> {
 	private SessionManager sessionManager;
 
 	public List<Mail> fetchAllMails() throws IOException, LoginException {
-		String response;
+		final String response;
 		try {
 			response = this.readMailResponse();
 		} catch (ChallengeException e) {
@@ -53,9 +50,9 @@ public class MailListLoader extends NetLoader implements Iterable<Mail> {
 			// Return an empty list.
 			return new ArrayList<Mail>();
 		}
-		Matcher matcher = MAIL_PATTERN.matcher(response);
+		final Matcher matcher = MAIL_PATTERN.matcher(response);
 
-		List<Mail> result = new ArrayList<Mail>();
+		final List<Mail> result = new ArrayList<Mail>();
 		while (matcher.find()) {
 			Mail mail = new Mail();
 			mail.setId(matcher.group(1));
@@ -75,17 +72,17 @@ public class MailListLoader extends NetLoader implements Iterable<Mail> {
 
 	@Override
 	public Iterator<Mail> iterator() {
-		if (mIteratorResponse == null) {
+		if (null == mIteratorResponse) {
 			throw new IllegalStateException(
-				"You need to call loadResponse first in order to use the iterator.");
+					"You need to call loadResponse first in order to use the iterator.");
 		}
-		Matcher matcher = MAIL_PATTERN.matcher(mIteratorResponse);
+		final Matcher matcher = MAIL_PATTERN.matcher(mIteratorResponse);
 		return new MailIterator(matcher);
 	}
 
 	protected String readMailResponse() throws IOException, LoginException,
 			ChallengeException {
-		HttpsURLConnection connection = (HttpsURLConnection) this
+		final HttpsURLConnection connection = (HttpsURLConnection) this
 				.openWAKConnection(MESSAGES_PATH);
 		return sessionManager.readConnectionWithSessionCheck(connection);
 	}

@@ -38,23 +38,23 @@ public class MailListLoaderTest {
 
 	@Before
 	public void setUp() {
-		AbstractModule module = new AbstractModule() {
+		final AbstractModule module = new AbstractModule() {
 			@Override
 			protected void configure() {
-				FakeURLConnectionFactoryImpl urlConnectionFactory = new FakeURLConnectionFactoryImpl(
+				final FakeURLConnectionFactoryImpl urlConnectionFactory = new FakeURLConnectionFactoryImpl(
 						"/fixtures/test_nachrichten.html");
 				bind(URLConnectionFactory.class).toInstance(
 						urlConnectionFactory);
 			}
 		};
 
-		Module moduleOverride = Modules.override(new WAKiMailModule()).with(
+		final Module moduleOverride = Modules.override(new WAKiMailModule()).with(
 				module);
-		Application app = Robolectric.application;
+		final Application app = Robolectric.application;
 		RoboGuice.setBaseApplicationInjector(app, RoboGuice.DEFAULT_STAGE,
 				RoboGuice.newDefaultRoboModule(app), moduleOverride);
 
-		RoboInjector injector = RoboGuice.getInjector(app);
+		final RoboInjector injector = RoboGuice.getInjector(app);
 		injector.injectMembers(this);
 
 		loader = factory.create();
@@ -69,11 +69,11 @@ public class MailListLoaderTest {
 
 	@Test
 	public void fetchAllMails() throws IOException, LoginException {
-		List<Mail> mails = loader.fetchAllMails();
+		final List<Mail> mails = loader.fetchAllMails();
 		Assert.assertEquals(112, mails.size());
 
 		// Test a control sample
-		Mail mail = mails.get(5);
+		final Mail mail = mails.get(5);
 		Assert.assertEquals("392797", mail.getId());
 		Assert.assertEquals("Dirk Marx-Stölting", mail.getSender());
 		Assert.assertEquals("Unterrichtstausch", mail.getTitle());
@@ -84,7 +84,7 @@ public class MailListLoaderTest {
 			ChallengeException {
 		int count = 0;
 
-		MailListLoader loader = this.loader;
+		final MailListLoader loader = this.loader;
 		loader.loadResponse();
 		for (Mail mail : loader) {
 			// Test the same as above to make sure that the APIs are

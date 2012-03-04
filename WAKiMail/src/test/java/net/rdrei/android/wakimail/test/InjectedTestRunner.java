@@ -20,9 +20,9 @@ public class InjectedTestRunner extends RobolectricTestRunner {
 
 	@Override
 	public void prepareTest(final Object test) {
-		WAKiMailApplication application = (WAKiMailApplication) Robolectric.application;
+		final WAKiMailApplication application = (WAKiMailApplication) Robolectric.application;
 
-		Injector injector = RoboGuice.getInjector(application);
+		final Injector injector = RoboGuice.getInjector(application);
 		injector.injectMembers(test);
 	}
 

@@ -58,7 +58,7 @@ public class MailDetailFragmentTest {
 	
 	@Test
 	public void fragmentShouldLoad() {
-		MailDetailFragment fragment = spy(mFragment);
+		final MailDetailFragment fragment = spy(mFragment);
 		when(fragment.getLoaderManager()).thenReturn(new LoaderManagerMock());
 		
 		fragment.onActivityCreated(null);

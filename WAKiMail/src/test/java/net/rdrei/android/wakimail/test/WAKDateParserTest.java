@@ -13,10 +13,10 @@ public class WAKDateParserTest {
 	
 	@Test
 	public void testParser() {
-		String dateString = "11.10.2011, 09:08";
-		Calendar date = WAKDateParser.parse(dateString);
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		CharSequence formatted = format.format(date.getTime());
+		final String dateString = "11.10.2011, 09:08";
+		final Calendar date = WAKDateParser.parse(dateString);
+		final DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		final CharSequence formatted = format.format(date.getTime());
 		Assert.assertEquals("2011-10-11 09:08", formatted);
 	}
 }

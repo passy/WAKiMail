@@ -10,7 +10,7 @@ import com.google.inject.assistedinject.Assisted;
 
 public class URLWrapperImpl implements URLWrapper {
 	@Inject private URLConnectionFactory mUrlConnectionFactory;
-	private URL url;
+	private final URL url;
 	
 	@Inject
 	public URLWrapperImpl(@Assisted String spec) throws MalformedURLException {

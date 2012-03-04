@@ -121,9 +121,9 @@ public class MailListFragment extends RoboListFragment implements
 					int position, long id) {
 
 				// When clicked, open the detail view.
-				Uri uri = ContentUris.withAppendedId(MailTable.ALL_MAILS_URI,
+				final Uri uri = ContentUris.withAppendedId(MailTable.ALL_MAILS_URI,
 						id);
-				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 				MailListFragment.this.startActivity(intent);
 			}
 		});
@@ -147,7 +147,7 @@ public class MailListFragment extends RoboListFragment implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_about:
-			AboutDialogFragment dialog = AboutDialogFragment.newInstance();
+			final AboutDialogFragment dialog = AboutDialogFragment.newInstance();
 			dialog.show(getFragmentManager(), "dialog");
 			return true;
 		case R.id.menu_logout:
@@ -161,7 +161,7 @@ public class MailListFragment extends RoboListFragment implements
 	}
 
 	private void refresh() {
-		MailSyncTask task = new MailSyncTask(this.getActivity()) {
+		final MailSyncTask task = new MailSyncTask(this.getActivity()) {
 			@Override
 			protected void onException(Exception err) {
 				super.onException(err);

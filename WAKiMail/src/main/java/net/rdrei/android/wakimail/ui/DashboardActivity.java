@@ -62,7 +62,7 @@ public class DashboardActivity extends RoboFragmentActivity {
 		// need to check for all of them. If one is missing, the user
 		// manipulated the storage.
 		if (mPreferences.contains(MailPreferences.USER_EMAIL)) {
-			User user = new User();
+			final User user = new User();
 			user.setEmail(mPreferences.getString(
 					MailPreferences.USER_EMAIL, ""));
 			user.setPassword(mPreferences.getString(
@@ -98,7 +98,7 @@ public class DashboardActivity extends RoboFragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		User user = this.loadUserCredentials();
+		final User user = this.loadUserCredentials();
 		if (user != null) {
 			Ln.d("User credentials are saved. Skipping dashboard.");
 			this.skipDashboard();
@@ -115,7 +115,7 @@ public class DashboardActivity extends RoboFragmentActivity {
 	private void saveUserCredentials(User user) {
 		mSessionManager.setUser(user);
 
-		Editor editor = mPreferences.edit();
+		final Editor editor = mPreferences.edit();
 		editor.putString(MailPreferences.USER_EMAIL, user.getEmail());
 		editor.putString(MailPreferences.USER_PASSWORD, user.getPassword());
 		editor.putString(MailPreferences.USER_SESSIONID, user.getSessionId());

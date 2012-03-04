@@ -47,7 +47,7 @@ public class FakeURLConnectionFactoryImpl implements URLConnectionFactory {
  */
 class FakeURLConnection extends HttpsURLConnection {
 	
-	private String streamFixture;
+	private final String streamFixture;
 
 	protected FakeURLConnection(URL url, String streamFixture) {
 		super(url);
@@ -61,7 +61,7 @@ class FakeURLConnection extends HttpsURLConnection {
 	
 	public InputStream getInputStream() throws IOException {
 		// This is were the magic happens.
-		InputStream stream = this.getClass().getResourceAsStream(
+		final InputStream stream = this.getClass().getResourceAsStream(
 				streamFixture);
 		
 		if (stream == null) {

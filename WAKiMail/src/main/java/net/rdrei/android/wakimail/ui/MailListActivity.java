@@ -47,8 +47,8 @@ public class MailListActivity extends RoboFragmentActivity implements
 		setContentView(R.layout.activity_singlepane_empty);
 
 		// Create fragment to embed in activity.
-		FragmentTransaction ft = mFragmentManager.beginTransaction();
-		MailListFragment newFragment = new MailListFragment();
+		final FragmentTransaction ft = mFragmentManager.beginTransaction();
+		final MailListFragment newFragment = new MailListFragment();
 		ft.replace(R.id.root_container, newFragment);
 		ft.commit();
 	}

@@ -37,21 +37,21 @@ public class MailListLoaderInfiniteLoopRegressionTest {
 	
 	@Before
 	public void setUp() {
-		AbstractModule module = new AbstractModule() {
+		final AbstractModule module = new AbstractModule() {
 			@Override
 			protected void configure() {
-				FakeURLConnectionFactoryImpl urlConnectionFactory = 
+				final FakeURLConnectionFactoryImpl urlConnectionFactory = 
 						new FakeURLConnectionFactoryImpl("/fixtures/test_nachrichten2.html");
 				bind(URLConnectionFactory.class).toInstance(urlConnectionFactory);
 			}
 		};
 		
-		Module moduleOverride = Modules.override(new WAKiMailModule()).with(module);
-		Application app = Robolectric.application;
+		final Module moduleOverride = Modules.override(new WAKiMailModule()).with(module);
+		final Application app = Robolectric.application;
 		RoboGuice.setBaseApplicationInjector(app, RoboGuice.DEFAULT_STAGE,
 				RoboGuice.newDefaultRoboModule(app), moduleOverride);
 		
-		RoboInjector injector = RoboGuice.getInjector(app);
+		final RoboInjector injector = RoboGuice.getInjector(app);
 		injector.injectMembers(this);
 		
 		loader = factory.create();
@@ -59,11 +59,11 @@ public class MailListLoaderInfiniteLoopRegressionTest {
 	
 	@Test
 	public void fetchAllMails() throws IOException, LoginException {
-		List<Mail> mails = loader.fetchAllMails();
+		final List<Mail> mails = loader.fetchAllMails();
 		Assert.assertEquals(118, mails.size());
 		
 		// Test a control sample
-		Mail mail = mails.get(0);
+		final Mail mail = mails.get(0);
 		Assert.assertEquals("402020", mail.getId());
 		Assert.assertEquals("Elmar Wiechers", mail.getSender());
 		Assert.assertEquals("Nachschreibklausur ReWe", mail.getTitle());
