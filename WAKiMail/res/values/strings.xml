@@ -32,5 +32,6 @@
         Developed by Pascal Hartig.\n\n
         Report bugs at http://github.com/passy/WAKiMail
     </string>
+    <string name="activity_label_inbox">Inbox</string>
 
 </resources>

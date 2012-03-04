@@ -37,9 +37,9 @@
             android:name=".ui.LoginActivity"
             android:label="@string/login_signin" >
         </activity>
-        <activity android:name=".ui.MailListActivity" >
+        <activity android:name=".ui.MailListActivity" android:label="@string/activity_label_inbox">
         </activity>
-        <activity android:name=".ui.MailDetailActivity" >
+        <activity android:name=".ui.MailDetailActivity" android:label="@string/activity_label_inbox">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

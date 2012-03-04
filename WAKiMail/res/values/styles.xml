@@ -34,7 +34,6 @@
         <item name="android:paddingRight">8.0dip</item>
     </style>
     <style name="Theme" parent="@style/Theme.Sherlock.Light">
-        <item name="navbarStyle">@style/Navbar</item>
     </style>
     <style name="Theme.Dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowTitleStyle">@android:style/TextAppearance.Large</item>
@@ -57,73 +56,6 @@
     <style name="Byline.Small" parent="@style/Byline">
         <item name="android:textSize">11.5sp</item>
     </style>
-    <style name="Navbar">
-        <item name="android:background">@drawable/top_toolbar_bg</item>
-        <item name="android:padding">0.0dip</item>
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">@dimen/titlebar_height</item>
-    </style>
-    <style name="NavbarTitle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">6.0dip</item>
-        <item name="android:layout_centerVertical">true</item>
-    </style>
-    <style name="NavbarTitle.Text" parent="@style/NavbarTitle">
-        <item name="android:textSize">17.0sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:layout_alignParentLeft">true</item>
-    </style>
-    <style name="NavbarSep">
-        <item name="android:background">@drawable/nav_line_separator</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_alignParentTop">true</item>
-        <item name="android:layout_alignParentBottom">true</item>
-    </style>
-    <style name="NavbarProgress" parent="@android:style/Widget.ProgressBar.Small">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginRight">6.0dip</item>
-        <item name="android:layout_centerVertical">true</item>
-    </style>
-    <style name="NavbarBtn">
-        <item name="android:background">@color/clear</item>
-        <item name="android:layout_width">50.0dip</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_alignParentTop">true</item>
-        <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:layout_alignWithParentIfMissing">true</item>
-    </style>
-    <style name="NavbarSpinner">
-        <item name="android:layout_width">30.0dip</item>
-        <item name="android:layout_height">30.0dip</item>
-        <item name="android:layout_marginLeft">6.0dip</item>
-        <item name="android:layout_marginRight">6.0dip</item>
-        <item name="android:layout_centerVertical">true</item>
-    </style>
-    <style name="NavbarTextBtn">
-        <item name="android:textSize">15.0sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/nav_btn_text</item>
-        <item name="android:background">@drawable/nav_button_bg</item>
-        <item name="android:paddingLeft">10.0dip</item>
-        <item name="android:paddingRight">10.0dip</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">30.0dip</item>
-        <item name="android:layout_marginLeft">6.0dip</item>
-        <item name="android:layout_marginRight">6.0dip</item>
-        <item name="android:shadowColor">@android:color/black</item>
-        <item name="android:shadowDy">1.0</item>
-        <item name="android:shadowRadius">0.5</item>
-        <item name="android:layout_centerVertical">true</item>
-    </style>
-    <style name="NavbarTextBtn.Dark" parent="@style/NavbarTextBtn">
-        <item name="android:background">@drawable/dark_nav_button_bg</item>
-    </style>
     <style name="PreviewImage">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -140,36 +72,28 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">3.0dip</item>
     </style>
-    <style name="Profile">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:singleLine">true</item>
-    </style>
-    <style name="Profile.Edit" parent="@style/Profile">
-        <item name="android:layout_marginLeft">10.0dip</item>
-        <item name="android:layout_marginRight">10.0dip</item>
-    </style>
-    <style name="Profile.Title" parent="@style/Profile">
-        <item name="android:textSize">21.0sp</item>
-    </style>
-    <style name="Profile.Title.Edit" parent="@style/Profile.Title">
-        <item name="android:layout_marginLeft">10.0dip</item>
-    </style>
-    <style name="ButtonBar">
-        <item name="android:background">@drawable/btn_bar_bg</item>
-        <item name="android:padding">8.0dip</item>
-        <item name="android:layout_marginLeft">6.0dip</item>
-        <item name="android:layout_marginTop">12.0dip</item>
-        <item name="android:layout_marginRight">6.0dip</item>
-        <item name="android:layout_marginBottom">6.0dip</item>
-    </style>
-    <style name="Toolbar">
+        <style name="Toolbar">
         <item name="android:background">@drawable/tool_bar_background</item>
         <item name="android:padding">6.0dip</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">46.0dip</item>
     </style>
-    <style name="SignupLabel">
+    <style name="List">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:fadingEdge">none</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:listSelector">@color/clear</item>
+        <item name="android:drawSelectorOnTop">false</item>
+        <item name="android:cacheColorHint">@android:color/white</item>
+        <item name="android:divider">@drawable/list_rule</item>
+        <item name="android:dividerHeight">1.0px</item>
+    </style>
+    <style name="Label" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+        <style name="SignupLabel">
         <item name="android:textColor">@color/text_color</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -183,22 +107,5 @@
     <style name="SignupEdit">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-    </style>
-    <style name="Map">
-        <item name="android:background">@color/action_bar</item>
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">@dimen/map_height</item>
-        <item name="android:scaleType">center</item>
-    </style>
-    <style name="List">
-        <item name="android:background">@android:color/white</item>
-        <item name="android:fadingEdge">none</item>
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:listSelector">@color/clear</item>
-        <item name="android:drawSelectorOnTop">false</item>
-        <item name="android:cacheColorHint">@android:color/white</item>
-        <item name="android:divider">@drawable/list_rule</item>
-        <item name="android:dividerHeight">1.0px</item>
     </style>
 </resources>

@@ -155,12 +155,11 @@ public class MailDetailFragment extends RoboListFragment implements
 
 		switch (viewId) {
 		case R.id.mail_title:
-			Ln.d("Setting new title and applying actionbar fix.");
 			String text = cursor.getString(columnIndex);
+			Ln.i("Setting new title: " + text);
 
-			getActivity().getSupportActionBar().setNavigationMode(
-					ActionBar.NAVIGATION_MODE_STANDARD);
-			getActivity().getSupportActionBar().setSubtitle(text);
+			((TextView)view).setText(text);
+			getActivity().getSupportActionBar().setTitle(text);
 			return true;
 		case R.id.mail_date:
 			Ln.d("Setting date.");
