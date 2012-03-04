@@ -2,8 +2,6 @@ package net.rdrei.android.wakimail.ui;
 
 import java.text.SimpleDateFormat;
 
-import com.actionbarsherlock.app.ActionBar;
-
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.task.MailLoadTask;
@@ -15,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -155,11 +154,24 @@ public class MailDetailFragment extends RoboListFragment implements
 
 		switch (viewId) {
 		case R.id.mail_title:
-			String text = cursor.getString(columnIndex);
+			final String text = cursor.getString(columnIndex);
 			Ln.i("Setting new title: " + text);
 
-			((TextView)view).setText(text);
-			getActivity().getSupportActionBar().setTitle(text);
+			final TextView titleView = (TextView) view;
+
+			titleView.setText(text);
+
+			// Delaying the title update until the event loop is finished causes
+			// the title to be displayed completely instead of being truncated
+			// after the length of the previously displayed string is exceeded.
+			getActivity().getWindow().getDecorView().post(new Runnable() {
+
+				@Override
+				public void run() {
+					final FragmentActivity activity = getActivity();
+					activity.setTitle(text);
+				}
+			});
 			return true;
 		case R.id.mail_date:
 			Ln.d("Setting date.");
