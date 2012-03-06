@@ -1,16 +1,16 @@
 package net.rdrei.android.wakimail.ui;
 
 import net.rdrei.android.wakimail.R;
-import roboguice.activity.RoboFragmentActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 
-public class MailDetailActivity extends RoboFragmentActivity {
+public class MailDetailActivity extends SherlockFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

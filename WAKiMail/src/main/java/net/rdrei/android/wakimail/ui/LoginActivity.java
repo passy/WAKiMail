@@ -1,6 +1,7 @@
 package net.rdrei.android.wakimail.ui;
 
 import net.rdrei.android.wakimail.R;
+import net.rdrei.android.wakimail.robo.RoboSherlockFragmentActivity;
 import net.rdrei.android.wakimail.task.LoginTask;
 import net.rdrei.android.wakimail.wak.SessionManager;
 import net.rdrei.android.wakimail.wak.User;
@@ -19,7 +20,7 @@ import android.widget.EditText;
 
 import com.google.inject.Inject;
 
-public class LoginActivity extends RoboFragmentActivity {
+public class LoginActivity extends RoboSherlockFragmentActivity {
 	public static final String USER_EXTRA_KEY = "net.rdrei.android.wakimail.User";
 
 	@Inject

@@ -88,7 +88,7 @@
             <dependency>
             	<groupId>com.actionbarsherlock</groupId>
             	<artifactId>plugin-support-lib</artifactId>
-            	<version>4.0.0-RC1</version>
+            	<version>4.0.0-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

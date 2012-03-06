@@ -2,6 +2,7 @@ package net.rdrei.android.wakimail.ui;
 
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
+import net.rdrei.android.wakimail.robo.RoboSherlockListFragment;
 import net.rdrei.android.wakimail.task.MailSyncTask;
 
 import org.acra.ErrorReporter;
@@ -26,11 +27,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class MailListFragment extends RoboListFragment implements
+public class MailListFragment extends RoboSherlockListFragment implements
 		LoaderCallbacks<Cursor> {
 
 	private static final String[] PROJECTION = { MailTable.Columns._ID,
@@ -121,8 +123,8 @@ public class MailListFragment extends RoboListFragment implements
 					int position, long id) {
 
 				// When clicked, open the detail view.
-				final Uri uri = ContentUris.withAppendedId(MailTable.ALL_MAILS_URI,
-						id);
+				final Uri uri = ContentUris.withAppendedId(
+						MailTable.ALL_MAILS_URI, id);
 				final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 				MailListFragment.this.startActivity(intent);
 			}
@@ -147,7 +149,8 @@ public class MailListFragment extends RoboListFragment implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_about:
-			final AboutDialogFragment dialog = AboutDialogFragment.newInstance();
+			final AboutDialogFragment dialog = AboutDialogFragment
+					.newInstance();
 			dialog.show(getFragmentManager(), "dialog");
 			return true;
 		case R.id.menu_logout:
@@ -191,11 +194,13 @@ public class MailListFragment extends RoboListFragment implements
 	}
 
 	private void showLoadingSpinner() {
-		this.getActivity().setSupportProgressBarIndeterminateVisibility(true);
+		((SherlockFragmentActivity) this.getActivity())
+				.setSupportProgressBarIndeterminateVisibility(true);
 	}
 
 	private void hideLoadingSpinner() {
-		this.getActivity().setSupportProgressBarIndeterminateVisibility(false);
+		((SherlockFragmentActivity) this.getActivity())
+				.setSupportProgressBarIndeterminateVisibility(false);
 	}
 
 	@Override

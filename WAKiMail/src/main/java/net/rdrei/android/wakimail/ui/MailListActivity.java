@@ -4,6 +4,7 @@ package net.rdrei.android.wakimail.ui;
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailDatabase;
 import net.rdrei.android.wakimail.data.MailPreferences;
+import net.rdrei.android.wakimail.robo.RoboSherlockFragmentActivity;
 import net.rdrei.android.wakimail.ui.MailListFragment.OnLogoutRequestedListener;
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.util.Ln;
@@ -15,7 +16,7 @@ import android.view.Window;
 
 import com.google.inject.Inject;
 
-public class MailListActivity extends RoboFragmentActivity implements
+public class MailListActivity extends RoboSherlockFragmentActivity implements
 		OnLogoutRequestedListener {
 	
 	@Inject
@@ -41,8 +42,12 @@ public class MailListActivity extends RoboFragmentActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setSupportProgressBarIndeterminateVisibility(false);
+		if (requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS)) {
+			Ln.d("Enabled indeterminate progress.");
+			setSupportProgressBarIndeterminateVisibility(false);
+		} else {
+			Ln.d("No indeterminate progress available.");
+		}
 		
 		setContentView(R.layout.activity_singlepane_empty);
 
