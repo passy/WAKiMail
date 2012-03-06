@@ -2,10 +2,10 @@ package net.rdrei.android.wakimail.ui;
 
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailPreferences;
+import net.rdrei.android.wakimail.robo.RoboSherlockFragmentActivity;
 import net.rdrei.android.wakimail.wak.SessionManager;
 import net.rdrei.android.wakimail.wak.User;
 import roboguice.activity.RoboActivity;
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
 import android.content.Intent;
@@ -18,7 +18,7 @@ import android.widget.Button;
 import com.actionbarsherlock.app.ActionBar;
 import com.google.inject.Inject;
 
-public class DashboardActivity extends RoboFragmentActivity {
+public class DashboardActivity extends RoboSherlockFragmentActivity {
 
 	private static final int LOGIN_REQUEST = 1;
 	@Inject
@@ -29,7 +29,7 @@ public class DashboardActivity extends RoboFragmentActivity {
 
 	@InjectView(R.id.dashboard_sign_btn)
 	private Button mSignInButton;
-	
+
 	@Inject
 	private ActionBar mActionBar;
 
@@ -63,14 +63,13 @@ public class DashboardActivity extends RoboFragmentActivity {
 		// manipulated the storage.
 		if (mPreferences.contains(MailPreferences.USER_EMAIL)) {
 			final User user = new User();
-			user.setEmail(mPreferences.getString(
-					MailPreferences.USER_EMAIL, ""));
+			user.setEmail(mPreferences
+					.getString(MailPreferences.USER_EMAIL, ""));
 			user.setPassword(mPreferences.getString(
 					MailPreferences.USER_PASSWORD, ""));
 			user.setSessionId(mPreferences.getString(
 					MailPreferences.USER_SESSIONID, ""));
-			user.setName(mPreferences.getString(MailPreferences.USER_NAME,
-					""));
+			user.setName(mPreferences.getString(MailPreferences.USER_NAME, ""));
 
 			mSessionManager.setUser(user);
 			return user;
@@ -103,9 +102,8 @@ public class DashboardActivity extends RoboFragmentActivity {
 			Ln.d("User credentials are saved. Skipping dashboard.");
 			this.skipDashboard();
 		}
-		
+
 		mActionBar.setDisplayShowTitleEnabled(true);
-		
 
 		Ln.d("No user credentials saved.");
 		setContentView(R.layout.activity_dashboard);
