@@ -7,7 +7,6 @@ import net.rdrei.android.wakimail.task.MailSyncTask;
 
 import org.acra.ErrorReporter;
 
-import roboguice.fragment.RoboListFragment;
 import roboguice.util.Ln;
 import roboguice.util.RoboAsyncTask;
 import android.app.Activity;

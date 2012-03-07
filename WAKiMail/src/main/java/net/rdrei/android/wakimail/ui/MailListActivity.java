@@ -6,14 +6,13 @@ import net.rdrei.android.wakimail.data.MailDatabase;
 import net.rdrei.android.wakimail.data.MailPreferences;
 import net.rdrei.android.wakimail.robo.RoboSherlockFragmentActivity;
 import net.rdrei.android.wakimail.ui.MailListFragment.OnLogoutRequestedListener;
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.util.Ln;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Window;
 
+import com.actionbarsherlock.view.Window;
 import com.google.inject.Inject;
 
 public class MailListActivity extends RoboSherlockFragmentActivity implements
@@ -42,12 +41,8 @@ public class MailListActivity extends RoboSherlockFragmentActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		if (requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS)) {
-			Ln.d("Enabled indeterminate progress.");
-			setSupportProgressBarIndeterminateVisibility(false);
-		} else {
-			Ln.d("No indeterminate progress available.");
-		}
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setSupportProgressBarIndeterminateVisibility(false);
 		
 		setContentView(R.layout.activity_singlepane_empty);
 
