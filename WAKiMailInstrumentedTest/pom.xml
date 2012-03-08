@@ -54,10 +54,6 @@
             <artifactId>acra</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-        	<groupId>com.actionbarsherlock</groupId>
-        	<artifactId>plugin-support-lib</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

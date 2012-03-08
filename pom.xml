@@ -86,9 +86,10 @@
                 <version>4.2.3</version>
             </dependency>
             <dependency>
-            	<groupId>com.actionbarsherlock</groupId>
-            	<artifactId>plugin-support-lib</artifactId>
-            	<version>4.0.0-SNAPSHOT</version>
+                <groupId>com.actionbarsherlock</groupId>
+                <artifactId>library</artifactId>
+                <type>apklib</type>
+                <version>4.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
