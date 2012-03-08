@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:installLocation="auto"
     package="net.rdrei.android.wakimail"
+    android:installLocation="auto"
     android:versionCode="13"
     android:versionName="1.0.0-SNAPSHOT" >
 
@@ -36,9 +36,13 @@
             android:name=".ui.LoginActivity"
             android:label="@string/login_signin" >
         </activity>
-        <activity android:name=".ui.MailListActivity" android:label="@string/activity_label_inbox">
+        <activity
+            android:name=".ui.MailListActivity"
+            android:label="@string/activity_label_inbox" >
         </activity>
-        <activity android:name=".ui.MailDetailActivity" android:label="@string/activity_label_inbox">
+        <activity
+            android:name=".ui.MailDetailActivity"
+            android:label="@string/activity_label_inbox" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -53,4 +57,5 @@
             android:authorities="net.rdrei.android.wakimail.data.mail" >
         </provider>
     </application>
+
 </manifest>
