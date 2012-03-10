@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.rdrei.android.wakimail"
     android:installLocation="auto"
-    android:versionCode="13"
-    android:versionName="1.0.0-SNAPSHOT" >
+    android:versionCode="15"
+    android:versionName="0.8" >
 
     <!--
     We don't have touchscreen-specific features right now. Use could easily
