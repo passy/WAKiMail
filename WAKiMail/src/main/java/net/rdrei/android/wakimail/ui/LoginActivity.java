@@ -5,7 +5,6 @@ import net.rdrei.android.wakimail.robo.RoboSherlockFragmentActivity;
 import net.rdrei.android.wakimail.task.LoginTask;
 import net.rdrei.android.wakimail.wak.SessionManager;
 import net.rdrei.android.wakimail.wak.User;
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
 import android.content.Intent;

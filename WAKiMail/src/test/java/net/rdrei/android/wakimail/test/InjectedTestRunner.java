@@ -2,6 +2,7 @@ package net.rdrei.android.wakimail.test;
 
 import net.rdrei.android.wakimail.WAKiMailApplication;
 import net.rdrei.android.wakimail.test.shadow.ShadowFragment;
+import net.rdrei.android.wakimail.test.shadow.ShadowFragmentActivity;
 import net.rdrei.android.wakimail.test.shadow.ShadowSherlockActivity;
 import net.rdrei.android.wakimail.test.shadow.ShadowSherlockFragmentActivity;
 
@@ -34,6 +35,7 @@ public class InjectedTestRunner extends RobolectricTestRunner {
 		super.bindShadowClasses();
 		
 		Robolectric.bindShadowClass(ShadowFragment.class);
+		Robolectric.bindShadowClass(ShadowFragmentActivity.class);
 		Robolectric.bindShadowClass(ShadowSherlockActivity.class);
 		Robolectric.bindShadowClass(ShadowSherlockFragmentActivity.class);
 	}
