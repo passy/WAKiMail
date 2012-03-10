@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import roboguice.RoboGuice;
+import android.app.Application;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,16 +26,6 @@ import com.xtremelabs.robolectric.matchers.StartedMatcher;
 
 @RunWith(InjectedTestRunner.class)
 public class DashboardSavedActivityTest {
-
-	private class MySavedSharedPreferencesApplication extends AbstractModule {
-		@Override
-		protected void configure() {
-			bind(ActionBar.class).toProvider(ActionBarProvider.class);
-			bind(SharedPreferences.class).toInstance(
-					new SavedSharedPreferences());
-
-		}
-	}
 
 	private class SavedSharedPreferences implements SharedPreferences {
 
@@ -140,14 +131,22 @@ public class DashboardSavedActivityTest {
 	@Before
 	public void setUp() {
 		// Override the SharedPreferences injection with our mock.
-		RoboGuice
-				.setBaseApplicationInjector(
-						Robolectric.application,
-						RoboGuice.DEFAULT_STAGE,
-						Modules.override(
-								RoboGuice
-										.newDefaultRoboModule(Robolectric.application))
-								.with(new MySavedSharedPreferencesApplication()));
+		
+		final AbstractModule module = new AbstractModule() {
+			
+			@Override
+			protected void configure() {
+				bind(SharedPreferences.class).toInstance(
+						new SavedSharedPreferences());
+				bind(ActionBar.class).toProvider(ActionBarProvider.class);
+			}
+		};
+		
+		final Application app = Robolectric.application;
+		RoboGuice.setBaseApplicationInjector(
+				app,
+				RoboGuice.DEFAULT_STAGE,
+				Modules.override(RoboGuice.newDefaultRoboModule(app)).with(module));
 	}
 
 }
