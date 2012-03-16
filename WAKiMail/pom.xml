@@ -121,7 +121,7 @@
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
-				<version>3.0.3-SNAPSHOT</version><!--$NO-MVN-MAN-VER$ -->
+				<version>3.1.1</version><!--$NO-MVN-MAN-VER$ -->
 				<extensions>true</extensions>
 				<configuration>
 					<resourceDirectory>${project.build.directory}/filtered-res</resourceDirectory>
