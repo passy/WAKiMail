@@ -27,32 +27,14 @@
             <artifactId>wakimail-app</artifactId>
             <version>${project.version}</version>
             <type>apk</type>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.rdrei.android.wakimail.app</groupId>
             <artifactId>wakimail-app</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <classifier>no_aop</classifier>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.roboguice</groupId>
-            <artifactId>roboguice</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject.extensions</groupId>
-            <artifactId>guice-assistedinject</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.acra</groupId>
-            <artifactId>acra</artifactId>
-            <scope>provided</scope>
+            <type>jar</type>
         </dependency>
     </dependencies>
 
