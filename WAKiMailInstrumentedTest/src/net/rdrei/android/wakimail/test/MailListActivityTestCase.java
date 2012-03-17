@@ -31,7 +31,7 @@ public class MailListActivityTestCase extends
 		instrumentation.callActivityOnResume(mActivity);
 
 		View view = mActivity
-				.findViewById(net.rdrei.android.wakimail.R.id.mail_loadingspinner);
+				.findViewById(net.rdrei.android.wakimail.R.id.mail_loadingspinner_list);
 		// Make sure the correct fragment was loaded.
 		Assert.assertNotNull(view);
 	}
@@ -43,7 +43,7 @@ public class MailListActivityTestCase extends
 		instrumentation.callActivityOnStart(mActivity);
 
 		View view = mActivity
-				.findViewById(net.rdrei.android.wakimail.R.id.mail_loadingspinner);
+				.findViewById(net.rdrei.android.wakimail.R.id.mail_loadingspinner_list);
 		// Make sure the correct fragment was loaded.
 		Assert.assertNotNull(view);
 	}
@@ -59,7 +59,7 @@ public class MailListActivityTestCase extends
 				.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 		View view = mActivity
-				.findViewById(net.rdrei.android.wakimail.R.id.mail_loadingspinner);
+				.findViewById(net.rdrei.android.wakimail.R.id.mail_loadingspinner_list);
 		Assert.assertNotNull(view);
 	}
 }
