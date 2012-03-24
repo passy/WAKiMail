@@ -107,13 +107,17 @@ public class MailSyncTask extends RdreiAsyncTask<Integer> {
 				MailTable.Columns.EXTERNAL_ID + " DESC LIMIT 1");
 
 		final String lastId;
-		if (lastCursor.moveToFirst()) {
-			// Get the only column queried if available.
-			lastId = lastCursor.getString(0);
-		} else {
-			// Compare to a string of 0, which should always fail.
-			// Not an empty string, because this is easier to debug.
-			lastId = "0";
+		try {
+			if (lastCursor.moveToFirst()) {
+				// Get the only column queried if available.
+				lastId = lastCursor.getString(0);
+			} else {
+				// Compare to a string of 0, which should always fail.
+				// Not an empty string, because this is easier to debug.
+				lastId = "0";
+			}
+		} finally {
+			lastCursor.close();
 		}
 
 		return lastId;
