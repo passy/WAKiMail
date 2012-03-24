@@ -16,13 +16,11 @@ import android.os.StrictMode;
 public class WAKiMailApplication extends Application {
 	@Override
 	public void onCreate() {
+		ACRA.init(this);
 		super.onCreate();
 
 		if (isDebuggable()) {
 			enableStrictMode();
-		} else {
-			// Only if DEBUG is disabled.
-			ACRA.init(this);
 		}
 	}
 
