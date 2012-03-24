@@ -2,7 +2,6 @@ package net.rdrei.android.wakimail.ui;
 
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
-import net.rdrei.android.wakimail.robo.RoboSherlockListFragment;
 import net.rdrei.android.wakimail.task.MailSyncTask;
 
 import org.acra.ErrorReporter;
@@ -30,6 +29,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockListFragment;
 
 public class MailListFragment extends RoboSherlockListFragment implements
 		LoaderCallbacks<Cursor> {

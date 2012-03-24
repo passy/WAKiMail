@@ -4,7 +4,6 @@ package net.rdrei.android.wakimail.ui;
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailDatabase;
 import net.rdrei.android.wakimail.data.MailPreferences;
-import net.rdrei.android.wakimail.robo.RoboSherlockFragmentActivity;
 import net.rdrei.android.wakimail.ui.MailListFragment.OnLogoutRequestedListener;
 import roboguice.util.Ln;
 import android.content.SharedPreferences;
@@ -13,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.actionbarsherlock.view.Window;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
 public class MailListActivity extends RoboSherlockFragmentActivity implements

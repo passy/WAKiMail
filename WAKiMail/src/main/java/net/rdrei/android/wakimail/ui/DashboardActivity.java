@@ -2,7 +2,6 @@ package net.rdrei.android.wakimail.ui;
 
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailPreferences;
-import net.rdrei.android.wakimail.robo.RoboSherlockFragmentActivity;
 import net.rdrei.android.wakimail.wak.SessionManager;
 import net.rdrei.android.wakimail.wak.User;
 import roboguice.activity.RoboActivity;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
 public class DashboardActivity extends RoboSherlockFragmentActivity {

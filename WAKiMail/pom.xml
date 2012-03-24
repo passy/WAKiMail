@@ -73,6 +73,10 @@
 			<artifactId>android-gridlayout</artifactId>
 			<version>4.0.3-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.github.rtyley</groupId>
+			<artifactId>roboguice-sherlock</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

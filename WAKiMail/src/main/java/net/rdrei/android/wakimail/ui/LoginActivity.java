@@ -1,7 +1,6 @@
 package net.rdrei.android.wakimail.ui;
 
 import net.rdrei.android.wakimail.R;
-import net.rdrei.android.wakimail.robo.RoboSherlockFragmentActivity;
 import net.rdrei.android.wakimail.task.LoginTask;
 import net.rdrei.android.wakimail.wak.SessionManager;
 import net.rdrei.android.wakimail.wak.User;
@@ -17,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
 public class LoginActivity extends RoboSherlockFragmentActivity {
