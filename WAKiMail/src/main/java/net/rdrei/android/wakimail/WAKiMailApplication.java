@@ -4,6 +4,7 @@ import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 
 import android.app.Application;
+import android.content.pm.ApplicationInfo;
 import android.os.StrictMode;
 
 /**
@@ -17,12 +18,17 @@ public class WAKiMailApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 
-		if (BuildConfig.DEBUG) {
+		if (isDebuggable()) {
 			enableStrictMode();
 		} else {
 			// Only if DEBUG is disabled.
 			ACRA.init(this);
 		}
+	}
+
+	private boolean isDebuggable() {
+		final int applicationFlags = this.getApplicationInfo().flags;
+		return (applicationFlags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
 	}
 
 	private void enableStrictMode() {
