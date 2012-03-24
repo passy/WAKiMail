@@ -87,7 +87,11 @@ public class MailLoadTask extends RdreiAsyncTask<Void> {
 		final Cursor cursor = resolver.query(mUri,
 				new String[] { MailTable.Columns.EXTERNAL_ID }, null, null,
 				null);
-		cursor.moveToFirst();
-		return cursor.getString(0);
+		try {
+			cursor.moveToFirst();
+			return cursor.getString(0);
+		} finally {
+			cursor.close();
+		}
 	}
 }
