@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="dot">#ffdfdfdf</color>
     <color name="text_color">#ff424242</color>
-    
     <color name="link_color">#ff236ed8</color>
     <color name="gray_color">#ff888888</color>
     <color name="clear">#00000000</color>
@@ -10,5 +10,6 @@
     <color name="button_text_disabled">#ff858585</color>
     <color name="soft_black">#ff333333</color>
     <color name="solid_white">#ffffffff</color>
-    
+    <color name="position_bar_background">#ff777777</color>
+
 </resources>

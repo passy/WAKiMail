@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
-    android:background="@color/soft_black" >
+    android:background="@color/position_bar_background" >
 
     <LinearLayout
         android:id="@+id/position_bar"
