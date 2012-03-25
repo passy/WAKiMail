@@ -6,6 +6,7 @@ package net.rdrei.android.wakimail.test.shadow;
 
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.xtremelabs.robolectric.internal.Implementation;
@@ -23,5 +24,10 @@ public class ShadowFragmentActivity extends ShadowActivity {
 	@Implementation
 	public ActionBar getSupportActionBar() {
 		return new ActionBarStub();
+	}
+	
+	@Implementation
+	public LoaderManager getSupportLoaderManager() {
+		return new LoaderManagerStub();
 	}
 }

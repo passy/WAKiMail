@@ -8,6 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import android.content.Intent;
+import android.net.Uri;
+
 @RunWith(InjectedTestRunner.class)
 public class MailDetailFragmentPagerActivityTest {
 	
@@ -16,6 +19,9 @@ public class MailDetailFragmentPagerActivityTest {
 	@Before
 	public void setUp() {
 		mActivity = new MailDetailFragmentPagerActivity();
+		Intent intent = new Intent();
+		intent.setData(Uri.parse("content://wakimail/mail/1"));
+		mActivity.setIntent(intent);
 		mActivity.onCreate(null);
 	}
 	
