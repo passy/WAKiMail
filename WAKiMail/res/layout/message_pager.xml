@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dip"
-            android:text="newer"
+            android:text="@string/newer"
             android:textColor="@android:color/white" />
 
         <LinearLayout
@@ -29,7 +29,7 @@
                 android:id="@+id/position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="x of y"
+                android:text="@string/pager_position"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dip"
-            android:text="older"
+            android:text="@string/older"
             android:textColor="@android:color/white" />
     </LinearLayout>
 

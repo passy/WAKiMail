@@ -60,7 +60,7 @@ public class MailDetailFragmentPagerActivity extends
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mail_detail_fragment_pager);
-		
+
 		mUri = this.getIntent().getData();
 
 		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -78,7 +78,7 @@ public class MailDetailFragmentPagerActivity extends
 	}
 
 	protected void onPageSelected(int position) {
-		mPositionText.setText(String.format("%d of %d", position + 1,
+		mPositionText.setText(getString(R.string.pager_position, position + 1,
 				mItemCount));
 
 		if (position == 0) {
@@ -92,14 +92,14 @@ public class MailDetailFragmentPagerActivity extends
 		} else {
 			mOlderText.setVisibility(View.VISIBLE);
 		}
-		
+
 		MailDetailFragment fragment = null;
 		try {
 			fragment = (MailDetailFragment) mAdapter.getFragment(position);
 		} catch (IndexOutOfBoundsException e) {
 			Ln.w("GC cleaned up our active fragment. Weird.");
 		}
-		
+
 		if (fragment != null) {
 			fragment.getTitleAsync(new GetTitleCallback() {
 				@Override
@@ -144,7 +144,7 @@ public class MailDetailFragmentPagerActivity extends
 		// Set the new adapter.
 		mPager.setAdapter(mAdapter);
 		mPositionBar.setVisibility(View.VISIBLE);
-		
+
 		selectInitialPage(mailIdMap);
 	}
 
@@ -153,7 +153,7 @@ public class MailDetailFragmentPagerActivity extends
 	 */
 	private void selectInitialPage(List<Integer> mailIdMap) {
 		final int id = Integer.parseInt(mUri.getLastPathSegment());
-		
+
 		// Find the ID in our list.
 		final int position = mailIdMap.indexOf(id);
 		mPager.setCurrentItem(position);
