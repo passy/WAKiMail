@@ -3,12 +3,9 @@ package net.rdrei.android.wakimail;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 
-import roboguice.util.Ln;
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.os.StrictMode;
-import android.os.StrictMode.VmPolicy;
-import android.os.StrictMode.VmPolicy.Builder;
 
 /**
  * Sets up settings that are required for the application to run.
@@ -36,24 +33,7 @@ public class WAKiMailApplication extends Application {
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
 				.detectAll().penaltyLog().build());
 
-		VmPolicy vmPolicy = null;
-
-		try {
-			Builder.class.getMethod("detectLeakedClosableObjects");
-		} catch (SecurityException e) {
-			Ln.e(e);
-			return;
-		} catch (NoSuchMethodException e) {
-			vmPolicy = new StrictMode.VmPolicy.Builder()
-					.detectLeakedSqlLiteObjects().penaltyLog().build();
-		}
-
-		if (vmPolicy == null) {
-			vmPolicy = new StrictMode.VmPolicy.Builder()
-					.detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
-					.penaltyLog().build();
-		}
-
-		StrictMode.setVmPolicy(vmPolicy);
+		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll()
+				.penaltyLog().build());
 	}
 }
