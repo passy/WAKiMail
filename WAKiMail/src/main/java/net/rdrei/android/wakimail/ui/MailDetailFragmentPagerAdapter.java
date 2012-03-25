@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.rdrei.android.wakimail.data.MailTable;
-import roboguice.util.Ln;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
