@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
+import net.rdrei.android.wakimail.ui.MailDetailFragment.GetTitleCallback;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
 import android.content.Intent;
@@ -49,9 +50,11 @@ public class MailDetailFragmentPagerActivity extends
 	private int mItemCount = -1;
 
 	/**
-	 * Stores the URI this Activity was called with initally.
+	 * Stores the URI this Activity was called with initially.
 	 */
 	private Uri mUri;
+
+	private MailDetailFragmentPagerAdapter mAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,26 @@ public class MailDetailFragmentPagerActivity extends
 		} else {
 			mOlderText.setVisibility(View.VISIBLE);
 		}
+		
+		MailDetailFragment fragment = null;
+		try {
+			fragment = (MailDetailFragment) mAdapter.getFragment(position);
+		} catch (IndexOutOfBoundsException e) {
+			Ln.w("GC cleaned up our active fragment. Weird.");
+		}
+		
+		if (fragment != null) {
+			fragment.getTitleAsync(new GetTitleCallback() {
+				@Override
+				public void onGetTitle(CharSequence title) {
+					Ln.d("Setting title from fragment pager: " + title);
+					setTitle(title);
+				}
+			});
+		} else {
+			Ln.w("Fragment wasn't cached. Can't set title.");
+			setTitle(null);
+		}
 	}
 
 	@Override
@@ -115,12 +138,11 @@ public class MailDetailFragmentPagerActivity extends
 			cursor.close();
 		}
 
-		// Create the new adapter with the mapping we just got.
-		final MailDetailFragmentPagerAdapter adapter = new MailDetailFragmentPagerAdapter(
+		mAdapter = new MailDetailFragmentPagerAdapter(
 				getSupportFragmentManager(), mailIdMap);
 
 		// Set the new adapter.
-		mPager.setAdapter(adapter);
+		mPager.setAdapter(mAdapter);
 		mPositionBar.setVisibility(View.VISIBLE);
 		
 		selectInitialPage(mailIdMap);

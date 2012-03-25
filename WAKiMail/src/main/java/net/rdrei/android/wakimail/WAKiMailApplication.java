@@ -35,7 +35,7 @@ public class WAKiMailApplication extends Application {
 		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
 				.detectLeakedSqlLiteObjects()
 				// Only on 11+ if I'm not mistaken.
-				.detectLeakedClosableObjects().penaltyLog().penaltyDeath()
+				.detectLeakedClosableObjects().penaltyLog()
 				.build());
 	}
 }
