@@ -1,6 +1,7 @@
 package net.rdrei.android.wakimail.test.shadow;
 
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -23,5 +24,10 @@ public class ShadowSherlockFragmentActivity extends ShadowActivity {
 	@Implementation
 	public FragmentManager getSupportFragmentManager() {
 		return new FragmentManagerStub();
+	}
+	
+	@Implementation
+	public LoaderManager getSupportLoaderManager() {
+		return new LoaderManagerStub();
 	}
 }

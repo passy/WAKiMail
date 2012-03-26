@@ -1,3 +1,15 @@
+WAKiMail v0.9
+=============
+
+  * Pagination for detail view
+
+WAKiMail v0.8
+=============
+
+  * Replaced custom actionbar with ICS ActionBar
+  * Style update for details
+  * ICS fix for HTTP redirects
+
 WAKiMail v0.7.3
 ===============
 

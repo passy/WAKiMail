@@ -30,5 +30,8 @@
         Entwickelt von Pascal Hartig.\n\n
         Bug-Reports unter http://github.com/passy/WAKiMail
     </string>
-
+    <string name="activity_label_inbox">Posteingang</string>
+    <string name="newer">neuer</string>
+    <string name="pager_position" formatted="false">%d von %d</string>
+    <string name="older">älter</string>
 </resources>

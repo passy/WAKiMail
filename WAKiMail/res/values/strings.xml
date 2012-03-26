@@ -33,5 +33,8 @@
         Report bugs at http://github.com/passy/WAKiMail
     </string>
     <string name="activity_label_inbox">Inbox</string>
+    <string name="newer">newer</string>
+    <string name="pager_position" formatted="false">%d of %d</string>
+    <string name="older">older</string>
 
 </resources>

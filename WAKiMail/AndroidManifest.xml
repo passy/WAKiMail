@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.rdrei.android.wakimail"
     android:installLocation="auto"
-    android:versionCode="15"
-    android:versionName="0.8" >
+    android:versionCode="16"
+    android:versionName="1.0.0-SNAPSHOT" >
 
     <!--
     We don't have touchscreen-specific features right now. Use could easily
@@ -40,9 +40,13 @@
             android:name=".ui.MailListActivity"
             android:label="@string/activity_label_inbox" >
         </activity>
-        <activity
-            android:name=".ui.MailDetailActivity"
-            android:label="@string/activity_label_inbox" >
+
+        <provider
+            android:name=".data.MailProvider"
+            android:authorities="net.rdrei.android.wakimail.data.mail" >
+        </provider>
+
+        <activity android:name=".ui.MailDetailFragmentPagerActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -51,11 +55,6 @@
                 <data android:mimeType="vnd.android.cursor.item/vnd.rdrei.wakimail" />
             </intent-filter>
         </activity>
-
-        <provider
-            android:name=".data.MailProvider"
-            android:authorities="net.rdrei.android.wakimail.data.mail" >
-        </provider>
     </application>
 
 </manifest>

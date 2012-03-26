@@ -32,10 +32,8 @@ public class WAKiMailApplication extends Application {
 	private void enableStrictMode() {
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
 				.detectAll().penaltyLog().build());
-		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-				.detectLeakedSqlLiteObjects()
-				// Only on 11+ if I'm not mistaken.
-				.detectLeakedClosableObjects().penaltyLog().penaltyDeath()
-				.build());
+
+		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll()
+				.penaltyLog().build());
 	}
 }

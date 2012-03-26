@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -34,6 +33,11 @@ public class MailDetailFragment extends RoboListFragment implements
 	 */
 	private SimpleCursorAdapter mAdapter;
 	private Uri mUri;
+	/**
+	 * Stores the title of the mail displayed. Null until loaded.
+	 */
+	private String mTitle;
+	private GetTitleCallback mTitleCallback;
 	private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat(
 			"dd.MM.yyyy HH:mm");
 
@@ -160,18 +164,10 @@ public class MailDetailFragment extends RoboListFragment implements
 			final TextView titleView = (TextView) view;
 
 			titleView.setText(text);
+			mTitle = text;
+			Ln.d("Delayed title callback fired.");
+			fireTitleCallback();
 
-			// Delaying the title update until the event loop is finished causes
-			// the title to be displayed completely instead of being truncated
-			// after the length of the previously displayed string is exceeded.
-			getActivity().getWindow().getDecorView().post(new Runnable() {
-
-				@Override
-				public void run() {
-					final FragmentActivity activity = getActivity();
-					activity.setTitle(text);
-				}
-			});
 			return true;
 		case R.id.mail_date:
 			Ln.d("Setting date.");
@@ -221,6 +217,32 @@ public class MailDetailFragment extends RoboListFragment implements
 		task.execute();
 	}
 
+	/**
+	 * Asynchronously asks for the title of the fragment. Only one request may
+	 * be running at a time. The last one wins. The callback is only executed
+	 * once.
+	 * 
+	 * @param titleCallback
+	 */
+	public void getTitleAsync(GetTitleCallback titleCallback) {
+		Ln.d("Setting new title callback.");
+		mTitleCallback = titleCallback;
+		
+		if (mTitle != null) {
+			// Fire right away.
+			Ln.d("Title is known. Firing title call back right away.");
+			fireTitleCallback();
+		}
+	}
+
+	private void fireTitleCallback() {
+		if (mTitleCallback != null) {
+			mTitleCallback.onGetTitle(mTitle);
+		}
+		// Only called once.
+		mTitleCallback = null;
+	}
+
 	private class MailLoadTaskHandlerCallback implements Handler.Callback {
 		@Override
 		public boolean handleMessage(Message msg) {
@@ -243,6 +265,9 @@ public class MailDetailFragment extends RoboListFragment implements
 			}
 			return false;
 		}
-
+	}
+	
+	public static interface GetTitleCallback {
+		public void onGetTitle(CharSequence title);
 	}
 }
