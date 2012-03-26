@@ -24,7 +24,7 @@ public class MailLoader extends NetLoader {
 	private SessionManager mSessionManager;
 	private final String mId;
 	private static final String MESSAGE_URL = "c_email.html?action="
-			+ "getviewmessagessingle&msg_uid=%d";
+			+ "getviewmessagessingle&msg_uid=%s";
 
 	private static final Pattern BODY_PATTERN = Pattern.compile(
 			"<td valign=\"top\">Nachricht:</td>" + "<td>(.+?)</td>",
