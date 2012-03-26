@@ -24,7 +24,7 @@ public class MailLoader extends NetLoader {
 	private SessionManager mSessionManager;
 	private final String mId;
 	private static final String MESSAGE_URL = "c_email.html?action="
-			+ "getviewmessagessingle&msg_uid=";
+			+ "getviewmessagessingle&msg_uid=%d";
 
 	private static final Pattern BODY_PATTERN = Pattern.compile(
 			"<td valign=\"top\">Nachricht:</td>" + "<td>(.+?)</td>",
@@ -45,7 +45,7 @@ public class MailLoader extends NetLoader {
 	 */
 	public String load() throws IOException, LoginException, ChallengeException {
 		final HttpsURLConnection connection = (HttpsURLConnection) this
-				.openWAKConnection(MESSAGE_URL + mId);
+				.openWAKConnection(String.format(MESSAGE_URL, mId));
 		final String response = mSessionManager
 				.readConnectionWithSessionCheck(connection);
 		final Matcher matcher = BODY_PATTERN.matcher(response);
