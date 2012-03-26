@@ -40,9 +40,14 @@ public class MailLoader extends NetLoader {
 	 * 
 	 * @return body of the mail.
 	 * @throws IOException
+	 *             Loading of the mail failed due to an invalid response.
 	 * @throws ChallengeException
+	 *             The login challenge could not be extracted.
 	 * @throws LoginException
+	 *             The login failed due to invalid credentials or too many
+	 *             failed attempts.
 	 */
+
 	public String load() throws IOException, LoginException, ChallengeException {
 		final HttpsURLConnection connection = (HttpsURLConnection) this
 				.openWAKConnection(String.format(MESSAGE_URL, mId));
