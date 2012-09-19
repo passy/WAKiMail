@@ -1,0 +1,37 @@
+diff --git a/WAKiMail/pom.xml b/WAKiMail/pom.xml
+index a16074d..007656f 100644
+--- a/WAKiMail/pom.xml
++++ b/WAKiMail/pom.xml
+@@ -42,26 +42,15 @@
+ 		</dependency>
+ 		<!-- We have unit tests within this sub-project. -->
+ 		<dependency>
+-			<groupId>junit</groupId>
+-			<artifactId>junit</artifactId>
+-			<scope>test</scope>
+-		</dependency>
+-		<dependency>
+ 			<groupId>com.google.android</groupId>
+ 			<artifactId>android-test</artifactId>
+ 			<scope>provided</scope>
+-		</dependency>
+-		<dependency>
+-			<groupId>com.pivotallabs</groupId>
+-			<artifactId>robolectric</artifactId>
+-			<version>1.2-SNAPSHOT</version>
+-			<scope>test</scope>
+-		</dependency>
+-		<dependency>
+-			<groupId>org.mockito</groupId>
+-			<artifactId>mockito-core</artifactId>
+-			<version>1.9.0</version>
+-			<scope>test</scope>
++			<exclusions>
++				<exclusion>
++					<artifactId>junit</artifactId>
++					<groupId>junit</groupId>
++				</exclusion>
++			</exclusions>
+ 		</dependency>
+ 	</dependencies>
+ 
