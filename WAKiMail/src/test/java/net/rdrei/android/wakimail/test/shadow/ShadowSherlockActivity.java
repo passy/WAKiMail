@@ -1,15 +1,16 @@
 package net.rdrei.android.wakimail.test.shadow;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
+import android.app.ActionBar;
+import android.app.Activity;
+
 import com.xtremelabs.robolectric.internal.Implementation;
 import com.xtremelabs.robolectric.internal.Implements;
 import com.xtremelabs.robolectric.shadows.ShadowActivity;
 
-@Implements(SherlockActivity.class)
+@Implements(Activity.class)
 public class ShadowSherlockActivity extends ShadowActivity {
 	@Implementation
-	public ActionBar getSupportActionBar() {
+	public ActionBar getActionBar() {
 		return new ActionBarStub();
 	}
 		

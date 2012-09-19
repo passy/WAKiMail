@@ -1,6 +1,5 @@
 package net.rdrei.android.wakimail.guice;
 
-import roboguice.inject.SharedPreferencesName;
 import net.rdrei.android.wakimail.URLConnectionFactory;
 import net.rdrei.android.wakimail.URLConnectionFactoryImpl;
 import net.rdrei.android.wakimail.URLWrapper;
@@ -9,9 +8,10 @@ import net.rdrei.android.wakimail.URLWrapperImpl;
 import net.rdrei.android.wakimail.data.MailPreferences;
 import net.rdrei.android.wakimail.wak.MailListLoaderFactory;
 import net.rdrei.android.wakimail.wak.MailLoaderFactory;
+import roboguice.inject.SharedPreferencesName;
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 

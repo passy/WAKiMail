@@ -6,6 +6,7 @@ import net.rdrei.android.wakimail.task.MailSyncTask;
 
 import org.acra.ErrorReporter;
 
+import roboguice.fragment.RoboListFragment;
 import roboguice.util.Ln;
 import roboguice.util.RoboAsyncTask;
 import android.app.Activity;
@@ -14,24 +15,22 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockListFragment;
-
-public class MailListFragment extends RoboSherlockListFragment implements
+public class MailListFragment extends RoboListFragment implements
 		LoaderCallbacks<Cursor> {
 
 	private static final String[] PROJECTION = { MailTable.Columns._ID,
@@ -193,13 +192,13 @@ public class MailListFragment extends RoboSherlockListFragment implements
 	}
 
 	private void showLoadingSpinner() {
-		((SherlockFragmentActivity) this.getActivity())
-				.setSupportProgressBarIndeterminateVisibility(true);
+		((FragmentActivity) this.getActivity())
+				.setProgressBarIndeterminateVisibility(true);
 	}
 
 	private void hideLoadingSpinner() {
-		((SherlockFragmentActivity) this.getActivity())
-				.setSupportProgressBarIndeterminateVisibility(false);
+		((FragmentActivity) this.getActivity())
+				.setProgressBarIndeterminateVisibility(false);
 	}
 
 	@Override

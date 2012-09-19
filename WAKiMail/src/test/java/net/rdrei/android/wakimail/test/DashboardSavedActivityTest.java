@@ -13,12 +13,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import roboguice.RoboGuice;
+import android.app.ActionBar;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.google.inject.AbstractModule;
 import com.google.inject.util.Modules;
 import com.xtremelabs.robolectric.Robolectric;
