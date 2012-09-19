@@ -1,9 +1,9 @@
 package net.rdrei.android.wakimail.guice;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -14,6 +14,6 @@ public class ActionBarProvider implements Provider<ActionBar> {
 
 	@Override
 	public ActionBar get() {
-		return ((SherlockFragmentActivity) activity).getSupportActionBar();
+		return ((FragmentActivity) activity).getActionBar();
 	}
 }

@@ -4,6 +4,7 @@ import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.task.LoginTask;
 import net.rdrei.android.wakimail.wak.SessionManager;
 import net.rdrei.android.wakimail.wak.User;
+import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
 import android.content.Intent;
@@ -16,10 +17,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.google.inject.Inject;
 
-public class LoginActivity extends RoboSherlockFragmentActivity {
+public class LoginActivity extends RoboFragmentActivity {
 	public static final String USER_EXTRA_KEY = "net.rdrei.android.wakimail.User";
 
 	@Inject
@@ -105,7 +105,7 @@ public class LoginActivity extends RoboSherlockFragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		
-		getSupportActionBar().setDisplayShowTitleEnabled(true);
+		getActionBar().setDisplayShowTitleEnabled(true);
 
 		final SignInButtonWatcher watcher = new SignInButtonWatcher();
 

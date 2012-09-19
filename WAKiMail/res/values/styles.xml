@@ -33,7 +33,7 @@
         <item name="android:paddingLeft">8.0dip</item>
         <item name="android:paddingRight">8.0dip</item>
     </style>
-    <style name="Theme" parent="@style/Theme.Sherlock.Light">
+    <style name="Theme" parent="@android:style/Theme.Holo.Light">
     </style>
     <style name="Theme.Dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowTitleStyle">@android:style/TextAppearance.Large</item>

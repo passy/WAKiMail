@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.rdrei.android.wakimail"
     android:installLocation="auto"
-    android:versionCode="16"
-    android:versionName="1.0.0-SNAPSHOT" >
+    android:versionCode="18"
+    android:versionName="0.9.1" >
 
     <!--
     We don't have touchscreen-specific features right now. Use could easily
@@ -14,8 +14,8 @@
         android:required="false" />
 
     <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="15" />
+        android:minSdkVersion="14"
+        android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 

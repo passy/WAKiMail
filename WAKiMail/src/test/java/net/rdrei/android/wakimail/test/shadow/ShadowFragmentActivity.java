@@ -4,11 +4,11 @@
  */
 package net.rdrei.android.wakimail.test.shadow;
 
+import android.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.xtremelabs.robolectric.internal.Implementation;
 import com.xtremelabs.robolectric.internal.Implements;
 import com.xtremelabs.robolectric.shadows.ShadowActivity;

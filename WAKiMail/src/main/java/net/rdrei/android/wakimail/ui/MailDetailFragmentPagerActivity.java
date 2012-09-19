@@ -6,8 +6,10 @@ import java.util.List;
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.ui.MailDetailFragment.GetTitleCallback;
+import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,15 +18,12 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.MenuItem;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
-
 public class MailDetailFragmentPagerActivity extends
-		RoboSherlockFragmentActivity implements LoaderCallbacks<Cursor> {
+		RoboFragmentActivity implements LoaderCallbacks<Cursor> {
 
 	private static final String[] PROJECTION = { MailTable.Columns._ID };
 
@@ -72,7 +71,7 @@ public class MailDetailFragmentPagerActivity extends
 		});
 		getSupportLoaderManager().initLoader(0, null, this);
 
-		final ActionBar actionBar = this.getSupportActionBar();
+		final ActionBar actionBar = this.getActionBar();
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME
 				| ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 	}
