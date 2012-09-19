@@ -11,5 +11,10 @@ public final class Constants {
 	 * The cookie name used to store the session ID.
 	 */
 	public static final String SESSION_COOKIE_NAME = "fe_typo_user";
+	
+	/**
+	 * API key for bugsense.
+	 */
+	public static final String BUGSENSE_API_KEY = "2b0a6e7c";
 
 }

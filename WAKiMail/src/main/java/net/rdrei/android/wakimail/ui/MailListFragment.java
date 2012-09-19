@@ -3,9 +3,6 @@ package net.rdrei.android.wakimail.ui;
 import net.rdrei.android.wakimail.R;
 import net.rdrei.android.wakimail.data.MailTable;
 import net.rdrei.android.wakimail.task.MailSyncTask;
-
-import org.acra.ErrorReporter;
-
 import roboguice.fragment.RoboListFragment;
 import roboguice.util.Ln;
 import roboguice.util.RoboAsyncTask;
@@ -29,6 +26,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
+import com.bugsense.trace.BugSenseHandler;
 
 public class MailListFragment extends RoboListFragment implements
 		LoaderCallbacks<Cursor> {
@@ -167,7 +166,7 @@ public class MailListFragment extends RoboListFragment implements
 			protected void onException(Exception err) {
 				super.onException(err);
 
-				ErrorReporter.getInstance().handleException(err);
+				BugSenseHandler.sendException(err);
 			}
 
 			@Override
