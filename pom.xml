@@ -17,10 +17,6 @@
             <name>Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
-        <repository>
-            <id>jakewharton</id>
-            <url>http://r.jakewharton.com/maven/release/</url>
-        </repository>
     </repositories>
 
     <properties>
