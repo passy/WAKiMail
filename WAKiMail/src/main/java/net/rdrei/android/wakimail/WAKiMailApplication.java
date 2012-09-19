@@ -15,7 +15,7 @@ public class WAKiMailApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		BugSenseHandler.initAndStartSession(this, Constants.BUGSENSE_API_KEY);
 
 		if (isDebuggable()) {

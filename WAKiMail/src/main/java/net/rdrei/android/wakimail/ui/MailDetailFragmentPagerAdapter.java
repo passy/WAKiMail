@@ -63,6 +63,10 @@ public class MailDetailFragmentPagerAdapter extends FragmentStatePagerAdapter {
 	 */
 	public Fragment getFragment(int position) {
 		WeakReference<Fragment> weakReference = mFragments.get(position);
+
+		if (weakReference == null) {
+			throw new IndexOutOfBoundsException();
+		}
 		return weakReference.get();
 	}
 
