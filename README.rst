@@ -2,12 +2,12 @@
 WAKiMail
 ========
 
-This is a `RoboGuice`_ based Android application to read emails you receive on
-the WAK_ platform. You can install this app from the `Android Market`_.
+This is a `RoboGuice`_-based Android application to read emails you receive on
+the WAK_ platform. You can install this app from the `Google Play`_.
 
 .. _WAK: http://www.wak-sh.de/
 .. _RoboGuice: http://code.google.com/p/roboguice/
-.. _Android Market: https://market.android.com/details?id=net.rdrei.android.wakimail
+.. _Google Play: https://play.google.com/store/apps/details?id=net.rdrei.android.wakimail
 
 Licensing
 =========
@@ -42,3 +42,4 @@ Libraries used:
     * Mocking: `Mockito <http://mockito.org/>`_ (MIT License)
     * Android Fragments/LoaderManagers: `Android Support Library <http://developer.android.com/sdk/compatibility-library.html>`_
 
+Big thanks to `BugSense <http://www.bugsense.com/>` for providing excellent crash analytics for free.
