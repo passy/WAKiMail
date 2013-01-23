@@ -42,4 +42,4 @@ Libraries used:
     * Mocking: `Mockito <http://mockito.org/>`_ (MIT License)
     * Android Fragments/LoaderManagers: `Android Support Library <http://developer.android.com/sdk/compatibility-library.html>`_
 
-Big thanks to `BugSense <http://www.bugsense.com/>` for providing excellent crash analytics for free.
+Big thanks to `BugSense <http://www.bugsense.com/>`_ for providing excellent crash analytics for free.
